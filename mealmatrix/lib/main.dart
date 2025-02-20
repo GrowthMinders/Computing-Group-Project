@@ -1,0 +1,346 @@
+import 'package:flutter/material.dart';
+import 'RegistrationPage.dart';
+import 'TermsAndConditions.dart';
+import 'forgot_password.dart';
+import 'Home.dart';
+import 'package:http/http.dart' as http;
+import 'dart:developer';
+
+void main() {
+  runApp(MaterialApp(debugShowCheckedModeBanner: false, home: MyApp()));
+}
+
+class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
+  @override
+  MyAppState createState() => MyAppState();
+}
+
+TextEditingController controller1 = TextEditingController();
+TextEditingController controller2 = TextEditingController();
+
+class Logdata {
+  static String email = "";
+  static String pass = "";
+  static int error = 0;
+  static String errmessage = "";
+
+  static void validate() {
+    error = 0;
+    errmessage = "";
+
+    RegExp regexmail = RegExp('^[A-Za-z0-9]{3,50}@(students.nsbm.ac.lk)\$');
+
+    if (controller1.text.isEmpty) {
+      Logdata.error++;
+      Logdata.errmessage = "Please enter your email";
+    } else if (controller2.text.isEmpty) {
+      Logdata.error++;
+      Logdata.errmessage = "Please enter your password";
+    } else if (!regexmail.hasMatch(Logdata.email)) {
+      Logdata.error++;
+      Logdata.errmessage = "Invalid email address";
+    }
+  }
+}
+
+Widget errors() {
+  if (Logdata.errmessage.isNotEmpty) {
+    return SizedBox(
+      child: Text(
+        '* ${Logdata.errmessage}',
+        style: const TextStyle(
+          color: Color.fromARGB(119, 235, 17, 17),
+          fontSize: 15,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+  }
+  return const SizedBox.shrink();
+}
+
+class MyAppState extends State<MyApp> {
+  bool isChecked = false;
+  bool isHoveredLogin = false;
+  bool isHoveredRegister = false;
+  bool obscureText = true;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  errors(),
+                  // Logo
+                  Image.asset(
+                    'lib/assets/images/Meal Matrix Logo.png',
+                    height: 250,
+                    width: 250,
+                    fit: BoxFit.contain,
+                  ),
+                  const SizedBox(height: 20),
+
+                  // Welcome Text
+                  const Text(
+                    'Welcome to Meal Matrix \n\n',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Color(0xff228B22),
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+
+                  // Username Field
+                  SizedBox(
+                    width: 300,
+                    child: TextField(
+                      onTap: () {
+                        setState(() {
+                          Logdata.error = 0;
+                          Logdata.errmessage = "";
+                        });
+                      },
+                      controller: controller1,
+                      decoration: InputDecoration(
+                        prefixIcon: const Icon(Icons.person_2_outlined),
+                        prefixIconColor: const Color(0xffA6A6A6),
+                        hintText: 'Enter Email',
+                        hintStyle: const TextStyle(
+                          color: Color(0xffA6A6A6),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+
+                  // Password Field
+                  SizedBox(
+                    width: 300,
+                    child: TextField(
+                      onTap: () {
+                        setState(() {
+                          Logdata.error = 0;
+                          Logdata.errmessage = "";
+                        });
+                      },
+                      controller: controller2,
+                      obscureText: obscureText,
+                      decoration: InputDecoration(
+                        prefixIcon: const Icon(Icons.lock_outline_rounded),
+                        prefixIconColor: const Color(0xffA6A6A6),
+                        hintText: 'Enter Password',
+                        suffixIcon: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              if (obscureText == true) {
+                                obscureText = false;
+                              } else {
+                                obscureText = true;
+                              }
+                            });
+                          },
+                          child: const Icon(
+                            Icons.remove_red_eye_outlined,
+                            color: Color(0xff888888),
+                          ),
+                        ),
+                        hintStyle: const TextStyle(
+                          color: Color(0xffA6A6A6),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+
+                  // Remember Password Checkbox and Forgot Password
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: 200, // Adjusted width
+                        child: CheckboxListTile(
+                          value: isChecked,
+                          title: const Text('Remember Password'),
+                          controlAffinity: ListTileControlAffinity.leading,
+                          onChanged: (value) {
+                            setState(() {
+                              isChecked = value ?? false;
+                            });
+                          },
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => forgot_password(),
+                            ),
+                          );
+                        },
+                        child: const Text(
+                          "Forgot Password?",
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  // Login and Register Buttons
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // Login Button
+                      MouseRegion(
+                        onEnter: (_) => setState(() => isHoveredLogin = true),
+                        onExit: (_) => setState(() => isHoveredLogin = false),
+                        child: SizedBox(
+                          width: 130,
+                          child: ElevatedButton(
+                            onPressed: () async {
+                              setState(() {
+                                Logdata.email = controller1.text.trim();
+                                Logdata.pass = controller2.text.trim();
+                              });
+                              Logdata.validate();
+                              if (Logdata.error == 0) {
+                                try {
+                                  var url = Uri.parse(
+                                    "http://10.18.52.113/Firebase/login.php",
+                                  );
+
+                                  var response = await http.post(
+                                    url,
+                                    body: {
+                                      'email': Logdata.email,
+                                      'pass': Logdata.pass,
+                                    },
+                                  );
+                                  if (response.statusCode == 200) {
+                                    log("Success: Login Suceeded");
+                                    Navigator.push(
+                                      // ignore: use_build_context_synchronously
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => Home(),
+                                      ),
+                                    );
+                                    setState(() {
+                                      controller1.text = "";
+                                      controller2.text = "";
+                                      Regdata.email = "";
+                                      Regdata.pass = "";
+                                      Regdata.error = 0;
+                                      Regdata.errmessage = "";
+                                    });
+                                  } else if (response.statusCode == 203) {
+                                    log("Invalid Credentials");
+                                    setState(() {
+                                      Logdata.error++;
+                                      Logdata.errmessage =
+                                          "Invalid Credentials";
+                                    });
+                                  } else if (response.statusCode == 204) {
+                                    log("Accont does not exist");
+                                    setState(() {
+                                      Logdata.error++;
+                                      Logdata.errmessage =
+                                          "Accont does not exist";
+                                    });
+                                  }
+                                } catch (ex) {
+                                  log("Unexpected error: $ex");
+                                }
+                              }
+                              // Login Logic end
+                            },
+                            style: ButtonStyle(
+                              backgroundColor: WidgetStateProperty.all(
+                                isHoveredLogin ? Colors.green : Colors.white,
+                              ),
+                              foregroundColor: WidgetStateProperty.all(
+                                isHoveredLogin ? Colors.white : Colors.black,
+                              ),
+                            ),
+                            child: const Text(
+                              'Log in',
+                              style: TextStyle(fontFamily: "Trebuchet MS"),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 20),
+
+                      // Register Button
+                      MouseRegion(
+                        onEnter:
+                            (_) => setState(() => isHoveredRegister = true),
+                        onExit:
+                            (_) => setState(() => isHoveredRegister = false),
+                        child: SizedBox(
+                          width: 130,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => RegistrationPage(),
+                                ),
+                              );
+                            },
+                            style: ButtonStyle(
+                              backgroundColor: WidgetStateProperty.all(
+                                isHoveredRegister ? Colors.green : Colors.white,
+                              ),
+                              foregroundColor: WidgetStateProperty.all(
+                                isHoveredRegister ? Colors.white : Colors.black,
+                              ),
+                            ),
+                            child: const Text('Register'),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 30),
+                  const Text('By signing you are agreeing to our'),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => TermsAndConditions(),
+                        ),
+                      );
+                    },
+                    child: Text.rich(
+                      TextSpan(
+                        text: 'Terms and Conditions',
+                        style: TextStyle(color: Colors.blue),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
