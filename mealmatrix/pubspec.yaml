@@ -50,9 +50,15 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^5.0.0
+  flutter_launcher_icons: any
 
-# For information on the generic Dart part of this file, see the
-# following page: https://dart.dev/tools/pub/pubspec
+# Flutter Launcher Icons Configuration
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "lib/assets/images/Meal Matrix Logo.png"  # Path to your icon file
+  adaptive_icon_background: "#FFFFFF"  # Background color for adaptive icons (Android)
+  adaptive_icon_foreground: "lib/assets/images/Meal Matrix Logo.png"  # Foreground icon for adaptive icons (Android)
 
 # The following section is specific to Flutter packages.
 flutter:
