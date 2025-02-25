@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mealmatrix/Edge.dart';
+import 'package:mealmatrix/Finagle.dart';
 import 'package:mealmatrix/Hostel.dart';
 
 class Home extends StatefulWidget {
@@ -162,7 +163,10 @@ class HomeState extends State<Home> {
                       imageUrl:
                           'https://images.pexels.com/photos/1860208/pexels-photo-1860208.jpeg?cs=srgb&dl=cooked-food-1860208.jpg&fm=jpg',
                       onTap: () {
-                        print('Finagle Canteen tapped'); // Corrected message
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Finagle()),
+                        );
                       },
                     ),
                     _buildCanteenItem(
