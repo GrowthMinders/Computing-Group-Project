@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:mealmatrix/Audi.dart';
 import 'package:mealmatrix/Edge.dart';
 import 'package:mealmatrix/Finagle.dart';
 import 'package:mealmatrix/Hostel.dart';
@@ -196,9 +197,10 @@ class HomeState extends State<Home> {
                       imageUrl:
                           'https://c8.alamy.com/comp/KCEPHE/chinese-food-delicious-fast-food-hotel-momos-nobody-restaurant-serving-KCEPHE.jpg',
                       onTap: () {
-                        print(
-                          'Audi Canteen tapped',
-                        ); // Corrected message and placement
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Audi()),
+                        );
                       },
                     ),
                   ],

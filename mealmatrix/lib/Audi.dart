@@ -1,4 +1,4 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, deprecated_member_use
 import 'package:flutter/material.dart';
 
 class MyApp extends StatelessWidget {
@@ -79,7 +79,7 @@ class AudiState extends State<Audi> {
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Image.asset(
-                      'assets/Meal Matrix Logo.jpg',
+                      'lib/assets/Meal Matrix Logo.jpg',
                       width: 50,
                       height: 50,
                     ),
@@ -321,4 +321,75 @@ class AudiState extends State<Audi> {
   }
 
   // End of Janusha's part
+
+  Widget _buildFoodItem(String name, String price, String imageUrl) {
+    return Column(
+      children: [
+        Stack(
+          children: [
+            Container(
+              width: 100,
+              height: 100,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(50),
+                border: Border.all(color: Colors.grey.shade300),
+                image: DecorationImage(
+                  image: AssetImage(imageUrl),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            Positioned(
+              right: 0,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.3),
+                      spreadRadius: 1,
+                      blurRadius: 2,
+                    ),
+                  ],
+                ),
+                child: const Icon(Icons.add, size: 20),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 8),
+        Text(
+          name,
+          textAlign: TextAlign.center,
+          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          price,
+          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildBottomNavItem(IconData icon, String label, int index) {
+    final isSelected = _selectedIndex == index;
+    return GestureDetector(
+      onTap: () => _onItemTapped(index),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, color: isSelected ? Colors.green : Colors.black),
+          const SizedBox(height: 4),
+          Text(
+            label,
+            style: TextStyle(color: isSelected ? Colors.green : Colors.black),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // End of Dewmini's part
 }
