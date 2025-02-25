@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:mealmatrix/Edge.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -176,7 +177,10 @@ class HomeState extends State<Home> {
                       imageUrl:
                           'https://th.bing.com/th/id/OIP.p8oKkuom1Hc0xnT4Y7OGPgHaE7?w=283&h=189&c=7&r=0&o=5&dpr=1.3&pid=1.7',
                       onTap: () {
-                        print('Edge Canteen tapped'); // Corrected message
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Edge()),
+                        );
                       },
                     ),
                     _buildCanteenItem(
