@@ -1,4 +1,5 @@
-// ignore_for_file: file_names, camel_case_types
+// ignore_for_file: file_names, deprecated_member_use
+
 import 'package:flutter/material.dart';
 
 class MyApp extends StatelessWidget {
@@ -12,19 +13,19 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.green,
         scaffoldBackgroundColor: Colors.white,
       ),
-      home: const Edge(),
+      home: const Hostel(),
     );
   }
 }
 
-class Edge extends StatefulWidget {
-  const Edge({super.key});
+class Hostel extends StatefulWidget {
+  const Hostel({super.key});
 
   @override
-  EdgeState createState() => EdgeState();
+  HostelState createState() => HostelState();
 }
 
-class EdgeState extends State<Edge> {
+class HostelState extends State<Hostel> {
   int _selectedIndex = 0; // Track the selected index
 
   void _onItemTapped(int index) {
@@ -64,7 +65,7 @@ class EdgeState extends State<Edge> {
                     },
                   ),
                   Text(
-                    'Edge Canteen',
+                    'Hostal Canteen',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 24,
@@ -345,7 +346,6 @@ class EdgeState extends State<Edge> {
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      // ignore: deprecated_member_use
                       color: Colors.grey.withOpacity(0.3),
                       spreadRadius: 1,
                       blurRadius: 2,

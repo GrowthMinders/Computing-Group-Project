@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mealmatrix/Edge.dart';
+import 'package:mealmatrix/Hostel.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -169,7 +170,10 @@ class HomeState extends State<Home> {
                       imageUrl:
                           'https://th.bing.com/th/id/OIP.2g-dT3nt55YRPRmOlkYxsQHaE8?rs=1&pid=ImgDetMain',
                       onTap: () {
-                        print('Hostal Canteen tapped'); // Corrected message
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Hostel()),
+                        );
                       },
                     ),
                     _buildCanteenItem(
