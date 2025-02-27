@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mealmatrix/Audi.dart';
 import 'package:mealmatrix/Edge.dart';
+import 'package:mealmatrix/Favorite.dart';
 import 'package:mealmatrix/Finagle.dart';
 import 'package:mealmatrix/Hostel.dart';
 import 'package:http/http.dart' as http;
@@ -305,7 +306,7 @@ class HomeState extends State<Home> {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => Audi()),
+                          MaterialPageRoute(builder: (context) => Favorite()),
                           //change Audi name
                         );
                       },
