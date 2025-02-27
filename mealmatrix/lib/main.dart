@@ -220,7 +220,7 @@ class MyAppState extends State<MyApp> {
                               if (Logdata.error == 0) {
                                 try {
                                   var url = Uri.parse(
-                                    "http://10.18.52.113/Firebase/login.php",
+                                    "http://192.168.72.67/Firebase/login.php",
                                   );
 
                                   var response = await http.post(

@@ -71,6 +71,11 @@ flutter:
   assets:
     - lib/assets/images/Meal Matrix Logo.png
     - lib/assets/images/1.png
+    - lib/assets/images/kottu.jpg
+    - lib/assets/images/Audi.jpg
+    - lib/assets/images/Edge.jpeg
+    - lib/assets/images/Hostel.jpeg
+    - lib/assets/images/Finagle.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

@@ -6,6 +6,8 @@ import 'package:mealmatrix/Audi.dart';
 import 'package:mealmatrix/Edge.dart';
 import 'package:mealmatrix/Finagle.dart';
 import 'package:mealmatrix/Hostel.dart';
+import 'package:http/http.dart' as http;
+import 'dart:developer';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -160,47 +162,109 @@ class HomeState extends State<Home> {
                   mainAxisSpacing: 8,
                   children: [
                     _buildCanteenItem(
-                      title: 'Finagle Canteen', // Removed \n
-                      imageUrl:
-                          'https://images.pexels.com/photos/1860208/pexels-photo-1860208.jpeg?cs=srgb&dl=cooked-food-1860208.jpg&fm=jpg',
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Finagle()),
-                        );
+                      title: 'Finagle Canteen',
+                      imagePath: 'lib/assets/images/Finagle.jpg',
+                      onTap: () async {
+                        try {
+                          final response = await http.get(
+                            Uri.parse(
+                              'http://192.168.72.67/Firebase/Menus/Finagle.php',
+                            ),
+                          );
+
+                          if (response.statusCode == 200) {
+                            Navigator.push(
+                              // ignore: use_build_context_synchronously
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Finagle(),
+                              ),
+                            );
+                            log("Data found");
+                          } else {
+                            log("Data not available");
+                          }
+                        } catch (ex) {
+                          log("Unexpected error: $ex");
+                        }
                       },
                     ),
                     _buildCanteenItem(
-                      title: 'Hostal Canteen', // Removed \n
-                      imageUrl:
-                          'https://th.bing.com/th/id/OIP.2g-dT3nt55YRPRmOlkYxsQHaE8?rs=1&pid=ImgDetMain',
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Hostel()),
-                        );
+                      title: 'Hostel Canteen',
+                      imagePath: 'lib/assets/images/Hostel.jpeg',
+                      onTap: () async {
+                        try {
+                          final response = await http.get(
+                            Uri.parse(
+                              'http://192.168.72.67/Firebase/Menus/Hostel.php',
+                            ),
+                          );
+
+                          if (response.statusCode == 200) {
+                            Navigator.push(
+                              // ignore: use_build_context_synchronously
+                              context,
+                              MaterialPageRoute(builder: (context) => Hostel()),
+                            );
+                            log("Data found");
+                          } else {
+                            log("Data not available");
+                          }
+                        } catch (ex) {
+                          log("Unexpected error: $ex");
+                        }
                       },
                     ),
                     _buildCanteenItem(
-                      title: 'Edge Canteen', // Removed \n
-                      imageUrl:
-                          'https://th.bing.com/th/id/OIP.p8oKkuom1Hc0xnT4Y7OGPgHaE7?w=283&h=189&c=7&r=0&o=5&dpr=1.3&pid=1.7',
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Edge()),
-                        );
+                      title: 'Edge Canteen',
+                      imagePath: 'lib/assets/images/Edge.jpeg',
+                      onTap: () async {
+                        try {
+                          final response = await http.get(
+                            Uri.parse(
+                              'http://192.168.72.67/Firebase/Menus/Edge.php',
+                            ),
+                          );
+
+                          if (response.statusCode == 200) {
+                            Navigator.push(
+                              // ignore: use_build_context_synchronously
+                              context,
+                              MaterialPageRoute(builder: (context) => Edge()),
+                            );
+                            log("Data found");
+                          } else {
+                            log("Data not available");
+                          }
+                        } catch (ex) {
+                          log("Unexpected error: $ex");
+                        }
                       },
                     ),
                     _buildCanteenItem(
-                      title: 'Audi Canteen', // Removed \n
-                      imageUrl:
-                          'https://c8.alamy.com/comp/KCEPHE/chinese-food-delicious-fast-food-hotel-momos-nobody-restaurant-serving-KCEPHE.jpg',
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Audi()),
-                        );
+                      title: 'Audi Canteen',
+                      imagePath: 'lib/assets/images/Audi.jpg',
+                      onTap: () async {
+                        try {
+                          final response = await http.get(
+                            Uri.parse(
+                              'http://192.168.72.67/Firebase/Menus/Audi.php',
+                            ),
+                          );
+
+                          if (response.statusCode == 200) {
+                            Navigator.push(
+                              // ignore: use_build_context_synchronously
+                              context,
+                              MaterialPageRoute(builder: (context) => Audi()),
+                            );
+                            log("Data found");
+                          } else {
+                            log("Data not available");
+                          }
+                        } catch (ex) {
+                          log("Unexpected error: $ex");
+                        }
                       },
                     ),
                   ],
@@ -215,8 +279,10 @@ class HomeState extends State<Home> {
                       'Home',
                       const Color.fromARGB(255, 74, 73, 73),
                       onTap: () {
-                        // Handle Home tap
-                        print('Home tapped');
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Home()),
+                        );
                       },
                     ),
                     _buildBottomNavItem(
@@ -224,8 +290,10 @@ class HomeState extends State<Home> {
                       'Orders',
                       const Color.fromARGB(255, 74, 73, 73),
                       onTap: () {
-                        // Handle Orders tap
-                        print('Orders tapped');
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Home()),
+                        );
                       },
                     ),
                     _buildBottomNavItem(
@@ -233,8 +301,11 @@ class HomeState extends State<Home> {
                       'Favorite',
                       const Color.fromARGB(255, 74, 73, 73),
                       onTap: () {
-                        // Handle Favorite tap
-                        print('Favorite tapped');
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Audi()),
+                          //change Audi name
+                        );
                       },
                     ),
                     _buildBottomNavItem(
@@ -242,8 +313,11 @@ class HomeState extends State<Home> {
                       'Setting',
                       const Color.fromARGB(255, 74, 73, 73),
                       onTap: () {
-                        // Handle Setting tap
-                        print('Setting tapped');
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Audi()),
+                          //change Audi name
+                        );
                       },
                     ),
                   ],
@@ -275,7 +349,7 @@ class HomeState extends State<Home> {
 
   Widget _buildCanteenItem({
     required String title,
-    required String imageUrl,
+    required String imagePath,
     required VoidCallback onTap, // Add onTap as a required parameter
   }) {
     return GestureDetector(
@@ -284,11 +358,15 @@ class HomeState extends State<Home> {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(10),
-            child: Image.network(
-              imageUrl,
+            child: Container(
               height: 100,
               width: double.infinity,
-              fit: BoxFit.cover,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(imagePath),
+                  fit: BoxFit.cover,
+                ),
+              ),
             ),
           ),
           SizedBox(height: 5),
