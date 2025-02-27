@@ -9,6 +9,8 @@ import 'package:mealmatrix/Hostel.dart';
 import 'package:http/http.dart' as http;
 import 'dart:developer';
 
+import 'package:mealmatrix/Setting.dart';
+
 class Home extends StatefulWidget {
   const Home({super.key});
 
@@ -315,7 +317,7 @@ class HomeState extends State<Home> {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => Audi()),
+                          MaterialPageRoute(builder: (context) => Setting()),
                           //change Audi name
                         );
                       },
