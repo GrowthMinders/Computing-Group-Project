@@ -55,8 +55,7 @@ class FinagleState extends State<Finagle> {
           ricecurry =
               products.where((p) => p['category'] == 'Rice and Curry').toList();
           kottu = products.where((p) => p['category'] == 'Kottu').toList();
-          teacoffee =
-              products.where((p) => p['category'] == 'Tea Coffee').toList();
+          teacoffee = products.where((p) => p['category'] == 'Drink').toList();
           snack = products.where((p) => p['category'] == 'Snack').toList();
           desert = products.where((p) => p['category'] == 'Desert').toList();
         });
@@ -120,7 +119,7 @@ class FinagleState extends State<Finagle> {
             },
           ),
           const Text(
-            'Audi Canteen',
+            'Finagle Canteen',
             style: TextStyle(
               color: Colors.white,
               fontSize: 24,

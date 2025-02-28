@@ -30,12 +30,12 @@ class SettingState extends State<Setting> {
         backgroundColor: Colors.green,
         title: Row(
           children: [
-            Icon(Icons.settings, color: Colors.black),
+            Icon(Icons.settings, color: Colors.white),
             SizedBox(width: 10),
             Text(
               'Settings',
               style: TextStyle(
-                color: Colors.black,
+                color: Colors.white,
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
@@ -46,7 +46,9 @@ class SettingState extends State<Setting> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: CircleAvatar(
-              backgroundImage: AssetImage('assets/Meal Matrix Logo.jpg'),
+              backgroundImage: AssetImage(
+                'lib/assets/images/Meal Matrix Logo.png',
+              ),
               radius: 25,
             ),
           ),
@@ -64,6 +66,7 @@ class SettingState extends State<Setting> {
         padding: const EdgeInsets.all(16.0),
         child: ListView(
           children: [
+            SizedBox(height: 50),
             Card(
               elevation: 4,
               child: ListTile(
@@ -74,6 +77,7 @@ class SettingState extends State<Setting> {
                 },
               ),
             ),
+            SizedBox(height: 10),
             Card(
               elevation: 4,
               child: ListTile(
@@ -89,6 +93,7 @@ class SettingState extends State<Setting> {
                 ),
               ),
             ),
+            SizedBox(height: 10),
             Card(
               elevation: 4,
               child: ListTile(
@@ -99,6 +104,7 @@ class SettingState extends State<Setting> {
                 },
               ),
             ),
+            SizedBox(height: 10),
             Card(
               elevation: 4,
               child: ListTile(
@@ -109,6 +115,7 @@ class SettingState extends State<Setting> {
                 },
               ),
             ),
+            SizedBox(height: 10),
             Card(
               elevation: 4,
               child: ListTile(
