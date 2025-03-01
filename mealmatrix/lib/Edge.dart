@@ -6,6 +6,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:mealmatrix/Home.dart';
+import 'package:mealmatrix/ProductDetails.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -191,18 +192,26 @@ class EdgeState extends State<Edge> {
           itemCount: items.length,
           itemBuilder: (context, index) {
             final product = items[index];
-            return Column(
-              children: [
-                ListTile(
-                  leading: CircleAvatar(
-                    backgroundImage: NetworkImage(product['image']),
-                    radius: 30,
+            return GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ProductDetail()),
+                );
+              },
+              child: Column(
+                children: [
+                  ListTile(
+                    leading: CircleAvatar(
+                      backgroundImage: NetworkImage(product['image']),
+                      radius: 30,
+                    ),
+                    title: Text(product['name']),
+                    subtitle: Text('Rs.${product['price']}'),
                   ),
-                  title: Text(product['name']),
-                  subtitle: Text('Rs.${product['price']}'),
-                ),
-                const Divider(),
-              ],
+                  const Divider(),
+                ],
+              ),
             );
           },
         ),

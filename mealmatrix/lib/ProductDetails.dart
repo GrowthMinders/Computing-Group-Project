@@ -3,9 +3,7 @@
 import 'package:flutter/material.dart';
 
 class ProductDetail extends StatelessWidget {
-  final Map<String, String> item;
-
-  const ProductDetail({super.key, required this.item});
+  const ProductDetail({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +35,7 @@ class ProductDetail extends StatelessWidget {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(15.0),
                       child: Image.asset(
-                        item['image'] ?? 'assets/fish.jpg',
+                        'assets/fish.jpg',
                         width: MediaQuery.of(context).size.width * 0.8,
                         height: 200,
                         fit: BoxFit.cover,
@@ -59,7 +57,7 @@ class ProductDetail extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               Text(
-                item['name']!,
+                'name',
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -67,8 +65,7 @@ class ProductDetail extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               Text(
-                item['description'] ??
-                    "Chicken sausages & onions with a double layer of cheese.",
+                "Chicken sausages & onions with a double layer of cheese.",
                 style: const TextStyle(fontSize: 16),
               ),
               const SizedBox(height: 60),
@@ -76,7 +73,7 @@ class ProductDetail extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    item['price']!,
+                    'Rs. 300/=',
                     style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
