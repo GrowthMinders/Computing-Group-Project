@@ -1,7 +1,14 @@
-// ignore_for_file: file_names, use_key_in_widget_constructors
+// ignore_for_file: file_names, use_key_in_widget_constructors, camel_case_types
 
 import 'package:flutter/material.dart';
+import 'package:mealmatrix/ChangePassword.dart';
+import 'package:mealmatrix/CustomerSupport.dart';
 import 'package:mealmatrix/Home.dart';
+import 'package:mealmatrix/Profile.dart';
+import 'package:mealmatrix/main.dart';
+import 'package:http/http.dart' as http;
+import 'dart:developer';
+import 'dart:convert';
 
 class MyApp extends StatelessWidget {
   @override
@@ -13,6 +20,12 @@ class MyApp extends StatelessWidget {
 class Setting extends StatefulWidget {
   @override
   SettingState createState() => SettingState();
+}
+
+class user {
+  static String name = "";
+  static String email = "";
+  static String tel = "";
 }
 
 class SettingState extends State<Setting> {
@@ -72,8 +85,31 @@ class SettingState extends State<Setting> {
               child: ListTile(
                 leading: Icon(Icons.person, color: Colors.green),
                 title: Text('My Account'),
-                onTap: () {
-                  // Implement navigation or action
+                onTap: () async {
+                  try {
+                    var url = Uri.parse(
+                      "http://192.168.72.67/Firebase/profile.php",
+                    );
+
+                    var response = await http.post(
+                      url,
+                      body: {'email': Logdata.userEmail},
+                    );
+                    if (response.statusCode == 200) {
+                      log("Success: Account information loaded");
+                      List<dynamic> jsonResponse = json.decode(response.body);
+                      user.name = jsonResponse[1];
+                      user.email = jsonResponse[2];
+                      user.tel = jsonResponse[4];
+                      Navigator.push(
+                        // ignore: use_build_context_synchronously
+                        context,
+                        MaterialPageRoute(builder: (context) => Profile()),
+                      );
+                    }
+                  } catch (ex) {
+                    log("Unexpected error: $ex");
+                  }
                 },
               ),
             ),
@@ -100,7 +136,10 @@ class SettingState extends State<Setting> {
                 leading: Icon(Icons.support, color: Colors.green),
                 title: Text('Customer Support'),
                 onTap: () {
-                  // Implement navigation or action
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => CustomerSupport()),
+                  );
                 },
               ),
             ),
@@ -111,7 +150,10 @@ class SettingState extends State<Setting> {
                 leading: Icon(Icons.lock, color: Colors.green),
                 title: Text('Change password'),
                 onTap: () {
-                  // Implement navigation or action
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ChangePassword()),
+                  );
                 },
               ),
             ),
@@ -122,7 +164,15 @@ class SettingState extends State<Setting> {
                 leading: Icon(Icons.logout, color: Colors.green),
                 title: Text('Log Out'),
                 onTap: () {
-                  // Implement navigation or action
+                  Logdata.userEmail = "";
+                  user.email = "";
+                  user.name = "";
+                  user.tel = "";
+                  Logdata.canteen = false;
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MyApp()),
+                  );
                 },
               ),
             ),

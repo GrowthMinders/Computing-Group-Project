@@ -167,8 +167,6 @@ class EdgeState extends State<Edge> {
             ),
           ),
           const SizedBox(width: 8),
-          const Icon(Icons.notifications_outlined),
-          const SizedBox(width: 8),
           const Icon(Icons.shopping_cart_outlined),
         ],
       ),

@@ -16,7 +16,7 @@ $row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC);
 // If the email exists in the database
 if ($row) {
     // Initialize cURL session
-    $ch = curl_init("http://10.18.52.113/Firebase/passwordresetmail.php");
+    $ch = curl_init("http://192.168.72.67/Firebase/passwordresetmail.php");
 
     // Set cURL options
     curl_setopt($ch, CURLOPT_POST, 1);

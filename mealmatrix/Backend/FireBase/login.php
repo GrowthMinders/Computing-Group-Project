@@ -17,6 +17,8 @@ if ($row) {
 
     if (password_verify($pass, $dbpass)) {
         http_response_code(200);
+        $_SESSION['user'] = $email;
+        echo json_encode(['user' => $email]);
     } else {
         http_response_code(203);
     }

@@ -22,7 +22,7 @@ if (empty($email)) {
 }
 
 // Create the password reset link
-$message = "http://10.18.52.113/Firebase/passwordreset.php?email=" . urlencode(string: $email);
+$message = "http://192.168.72.67/Firebase/passwordreset.php?email=" . urlencode(string: $email);
 
 // Create a new PHPMailer instance
 $mail = new PHPMailer(true);

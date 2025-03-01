@@ -167,8 +167,6 @@ class AudiState extends State<Audi> {
             ),
           ),
           const SizedBox(width: 8),
-          const Icon(Icons.notifications_outlined),
-          const SizedBox(width: 8),
           const Icon(Icons.shopping_cart_outlined),
         ],
       ),

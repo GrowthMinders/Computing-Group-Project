@@ -19,7 +19,6 @@ class Profile extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.green,
-        leading: Icon(Icons.arrow_back, color: Colors.white),
         title: Text('My Account', style: TextStyle(color: Colors.white)),
         actions: [
           Padding(
@@ -34,7 +33,7 @@ class Profile extends StatelessWidget {
       ),
       body: Column(
         children: [
-          SizedBox(height: 100), // Increased height to lower the items
+          SizedBox(height: 100),
           Center(
             child: CircleAvatar(
               radius: 75,
@@ -43,7 +42,7 @@ class Profile extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: 40), // Increased height to lower the items
+          SizedBox(height: 40),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Column(
@@ -51,22 +50,34 @@ class Profile extends StatelessWidget {
               children: [
                 Align(
                   alignment: Alignment.centerLeft,
-                  child: Text('Name', style: TextStyle(fontSize: 18)),
+                  child: Text(
+                    'Name : ${user.name}',
+                    style: TextStyle(fontSize: 18),
+                  ),
                 ),
                 SizedBox(height: 10),
                 Align(
                   alignment: Alignment.centerLeft,
-                  child: Text('Email', style: TextStyle(fontSize: 18)),
+                  child: Text(
+                    'Email : ${user.email}',
+                    style: TextStyle(fontSize: 18),
+                  ),
                 ),
                 SizedBox(height: 10),
                 Align(
                   alignment: Alignment.centerLeft,
-                  child: Text('Student ID', style: TextStyle(fontSize: 18)),
+                  child: Text(
+                    'Password : **********',
+                    style: TextStyle(fontSize: 18),
+                  ),
                 ),
                 SizedBox(height: 10),
                 Align(
                   alignment: Alignment.centerLeft,
-                  child: Text('Faculty', style: TextStyle(fontSize: 18)),
+                  child: Text(
+                    'Telephone number : ${user.tel}',
+                    style: TextStyle(fontSize: 18),
+                  ),
                 ),
               ],
             ),

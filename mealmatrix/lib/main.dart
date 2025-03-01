@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:mealmatrix/CanteenOwner.dart';
 import 'RegistrationPage.dart';
 import 'TermsAndConditions.dart';
 import 'forgot_password.dart';
 import 'Home.dart';
 import 'package:http/http.dart' as http;
 import 'dart:developer';
+import 'dart:convert';
 
 void main() {
   runApp(MaterialApp(debugShowCheckedModeBanner: false, home: MyApp()));
@@ -25,12 +27,15 @@ class Logdata {
   static String pass = "";
   static int error = 0;
   static String errmessage = "";
+  static String userEmail = "";
+  static bool canteen = false;
 
   static void validate() {
     error = 0;
     errmessage = "";
 
-    RegExp regexmail = RegExp('^[A-Za-z0-9]{3,50}@(students.nsbm.ac.lk)\$');
+    RegExp regexmail = RegExp('^[A-Za-z]{3,50}@(students.nsbm.ac.lk)\$');
+    RegExp regexmailcanteen = RegExp('^[A-Za-z]{3,50}@(gmail.com)\$');
 
     if (controller1.text.isEmpty) {
       Logdata.error++;
@@ -38,9 +43,12 @@ class Logdata {
     } else if (controller2.text.isEmpty) {
       Logdata.error++;
       Logdata.errmessage = "Please enter your password";
-    } else if (!regexmail.hasMatch(Logdata.email)) {
+    } else if (!regexmail.hasMatch(Logdata.email) ||
+        !regexmailcanteen.hasMatch(Logdata.email)) {
       Logdata.error++;
       Logdata.errmessage = "Invalid email address";
+    } else if (regexmailcanteen.hasMatch(Logdata.email)) {
+      canteen = true;
     }
   }
 }
@@ -107,6 +115,7 @@ class MyAppState extends State<MyApp> {
                         setState(() {
                           Logdata.error = 0;
                           Logdata.errmessage = "";
+                          Logdata.canteen = false;
                         });
                       },
                       controller: controller1,
@@ -131,6 +140,7 @@ class MyAppState extends State<MyApp> {
                         setState(() {
                           Logdata.error = 0;
                           Logdata.errmessage = "";
+                          Logdata.canteen = false;
                         });
                       },
                       controller: controller2,
@@ -232,13 +242,32 @@ class MyAppState extends State<MyApp> {
                                   );
                                   if (response.statusCode == 200) {
                                     log("Success: Login Suceeded");
-                                    Navigator.push(
-                                      // ignore: use_build_context_synchronously
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => Home(),
-                                      ),
-                                    );
+                                    if (Logdata.canteen) {
+                                      final Map<String, dynamic> responseData =
+                                          jsonDecode(response.body);
+                                      // Access the 'user' value
+                                      Logdata.userEmail = responseData['user'];
+                                      Navigator.push(
+                                        // ignore: use_build_context_synchronously
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => Canteen(),
+                                        ),
+                                      );
+                                    } else {
+                                      final Map<String, dynamic> responseData =
+                                          jsonDecode(response.body);
+                                      // Access the 'user' value
+                                      Logdata.userEmail = responseData['user'];
+                                      Navigator.push(
+                                        // ignore: use_build_context_synchronously
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => Home(),
+                                        ),
+                                      );
+                                    }
+
                                     setState(() {
                                       controller1.text = "";
                                       controller2.text = "";
@@ -253,6 +282,7 @@ class MyAppState extends State<MyApp> {
                                       Logdata.error++;
                                       Logdata.errmessage =
                                           "Invalid Credentials";
+                                      Logdata.canteen = false;
                                     });
                                   } else if (response.statusCode == 204) {
                                     log("Accont does not exist");
@@ -260,6 +290,7 @@ class MyAppState extends State<MyApp> {
                                       Logdata.error++;
                                       Logdata.errmessage =
                                           "Accont does not exist";
+                                      Logdata.canteen = false;
                                     });
                                   }
                                 } catch (ex) {
