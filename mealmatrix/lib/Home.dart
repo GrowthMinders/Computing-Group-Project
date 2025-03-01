@@ -8,6 +8,7 @@ import 'package:mealmatrix/Favorite.dart';
 import 'package:mealmatrix/Finagle.dart';
 import 'package:mealmatrix/Hostel.dart';
 import 'package:http/http.dart' as http;
+import 'package:mealmatrix/OrderHistory.dart';
 import 'dart:developer';
 
 import 'package:mealmatrix/Setting.dart';
@@ -295,7 +296,9 @@ class HomeState extends State<Home> {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => Home()),
+                          MaterialPageRoute(
+                            builder: (context) => OrderHistory(),
+                          ),
                         );
                       },
                     ),

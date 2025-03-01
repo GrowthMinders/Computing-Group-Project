@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:mealmatrix/Order.dart';
 
 import 'package:mealmatrix/Setting.dart';
 
@@ -74,7 +75,7 @@ class CanteenState extends State<Canteen> {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => //Home()),
+                          MaterialPageRoute(builder: (context) => Order()),
                         );
                       },
                     ),
