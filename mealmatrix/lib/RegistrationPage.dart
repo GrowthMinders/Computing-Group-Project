@@ -6,6 +6,7 @@ import 'main.dart';
 import 'TermsAndConditions.dart';
 import 'package:http/http.dart' as http;
 import 'dart:developer';
+import 'package:file_picker/file_picker.dart';
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({super.key});
@@ -19,6 +20,7 @@ TextEditingController controller2 = TextEditingController();
 TextEditingController controller3 = TextEditingController();
 TextEditingController controller4 = TextEditingController();
 TextEditingController controller5 = TextEditingController();
+TextEditingController controller6 = TextEditingController();
 
 class Regdata {
   static String name = "";
@@ -104,9 +106,21 @@ class Regdata {
 }
 
 class RegistrationPageState extends State<RegistrationPage> {
+  String? filePath;
   bool obscureText = true;
   bool obscureTextc = true;
   TextEditingController controller = TextEditingController();
+
+  void pickMedia() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+
+    if (result != null) {
+      setState(() {
+        filePath = result.files.single.path;
+        controller6.text = filePath ?? '';
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -396,6 +410,52 @@ class RegistrationPageState extends State<RegistrationPage> {
                 ),
                 const SizedBox(height: 20),
 
+                //Image Uploading start
+                Row(
+                  children: [
+                    SizedBox(
+                      width: 300,
+                      height: 45,
+                      child: TextField(
+                        readOnly: true, // Make the text field non-editable
+                        onTap: () {
+                          setState(() {
+                            Regdata.error = 0;
+                            Regdata.errmessage = "";
+                          });
+                        },
+                        controller: controller6,
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: const Color(0xffDDDDDD),
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          hintText: 'Choose image file',
+                          hintStyle: const TextStyle(color: Color(0xff888888)),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ), // Add some space between the text field and button
+                    ElevatedButton(
+                      onPressed: pickMedia,
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 12,
+                        ),
+                      ),
+                      child: const Text('Choose File'),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 20),
+
+                //Image Uploading end
                 // Checkbox for Terms & Policy
                 SizedBox(
                   width: 400,
@@ -466,7 +526,7 @@ class RegistrationPageState extends State<RegistrationPage> {
                       if (Regdata.error == 0) {
                         try {
                           var url = Uri.parse(
-                            "http://192.168.72.67/Firebase/register.php",
+                            "http://192.168.108.67/Firebase/register.php",
                           );
 
                           var response = await http.post(
@@ -476,6 +536,7 @@ class RegistrationPageState extends State<RegistrationPage> {
                               'email': Regdata.email,
                               'phone': Regdata.phone,
                               'pass': Regdata.pass,
+                              'image': filePath,
                             },
                           );
                           if (response.statusCode == 200) {

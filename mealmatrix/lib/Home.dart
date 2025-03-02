@@ -167,12 +167,15 @@ class HomeState extends State<Home> {
                   children: [
                     _buildCanteenItem(
                       title: 'Finagle Canteen',
+                      time: '8.0 AM - 5.0 PM',
+                      telephone: '0761571745',
+                      location: 'map location',
                       imagePath: 'lib/assets/images/Finagle.jpg',
                       onTap: () async {
                         try {
                           final response = await http.get(
                             Uri.parse(
-                              'http://192.168.72.67/Firebase/Menus/Finagle.php',
+                              'http://192.168.108.67/Firebase/Menus/Finagle.php',
                             ),
                           );
 
@@ -195,12 +198,15 @@ class HomeState extends State<Home> {
                     ),
                     _buildCanteenItem(
                       title: 'Hostel Canteen',
+                      time: '8.0 AM - 5.0 PM',
+                      telephone: '0761571744',
+                      location: 'map location',
                       imagePath: 'lib/assets/images/Hostel.jpeg',
                       onTap: () async {
                         try {
                           final response = await http.get(
                             Uri.parse(
-                              'http://192.168.72.67/Firebase/Menus/Hostel.php',
+                              'http://192.168.108.67/Firebase/Menus/Hostel.php',
                             ),
                           );
 
@@ -221,12 +227,15 @@ class HomeState extends State<Home> {
                     ),
                     _buildCanteenItem(
                       title: 'Edge Canteen',
+                      time: '8.0 AM - 5.0 PM',
+                      telephone: '0761571743',
+                      location: 'map location',
                       imagePath: 'lib/assets/images/Edge.jpeg',
                       onTap: () async {
                         try {
                           final response = await http.get(
                             Uri.parse(
-                              'http://192.168.72.67/Firebase/Menus/Edge.php',
+                              'http://192.168.108.67/Firebase/Menus/Edge.php',
                             ),
                           );
 
@@ -247,12 +256,15 @@ class HomeState extends State<Home> {
                     ),
                     _buildCanteenItem(
                       title: 'Audi Canteen',
+                      time: '8.0 AM - 5.0 PM',
+                      telephone: '0761571845',
+                      location: 'map location',
                       imagePath: 'lib/assets/images/Audi.jpg',
                       onTap: () async {
                         try {
                           final response = await http.get(
                             Uri.parse(
-                              'http://192.168.72.67/Firebase/Menus/Audi.php',
+                              'http://192.168.108.67/Firebase/Menus/Audi.php',
                             ),
                           );
 
@@ -355,6 +367,9 @@ class HomeState extends State<Home> {
 
   Widget _buildCanteenItem({
     required String title,
+    required String time,
+    required String telephone,
+    required String location,
     required String imagePath,
     required VoidCallback onTap, // Add onTap as a required parameter
   }) {
@@ -378,7 +393,19 @@ class HomeState extends State<Home> {
           SizedBox(height: 5),
           Text(
             title,
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+          Text(
+            time,
             style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+          ),
+          Text(
+            telephone,
+            style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+          ),
+          Text(
+            location,
+            style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
           ),
         ],
       ),

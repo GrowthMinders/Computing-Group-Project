@@ -3,7 +3,7 @@
   "packages": [
     {
       "name": "archive",
-      "rootUri": "file:///C:/Users/Supun/AppData/Local/Pub/Cache/hosted/pub.dev/archive-4.0.2",
+      "rootUri": "file:///C:/Users/Supun/AppData/Local/Pub/Cache/hosted/pub.dev/archive-4.0.4",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     },
@@ -80,6 +80,12 @@
       "languageVersion": "3.7"
     },
     {
+      "name": "file_picker",
+      "rootUri": "file:///C:/Users/Supun/AppData/Local/Pub/Cache/hosted/pub.dev/file_picker-6.2.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.19"
+    },
+    {
       "name": "flutter",
       "rootUri": "file:///C:/flutter/src/packages/flutter",
       "packageUri": "lib/",
@@ -94,6 +100,12 @@
     {
       "name": "flutter_lints",
       "rootUri": "file:///C:/Users/Supun/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_lints-5.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.5"
+    },
+    {
+      "name": "flutter_plugin_android_lifecycle",
+      "rootUri": "file:///C:/Users/Supun/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_plugin_android_lifecycle-2.0.26",
       "packageUri": "lib/",
       "languageVersion": "3.5"
     },
@@ -123,7 +135,7 @@
     },
     {
       "name": "image",
-      "rootUri": "file:///C:/Users/Supun/AppData/Local/Pub/Cache/hosted/pub.dev/image-4.5.2",
+      "rootUri": "file:///C:/Users/Supun/AppData/Local/Pub/Cache/hosted/pub.dev/image-4.5.3",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     },
@@ -309,9 +321,15 @@
     },
     {
       "name": "web",
-      "rootUri": "file:///C:/Users/Supun/AppData/Local/Pub/Cache/hosted/pub.dev/web-1.1.0",
+      "rootUri": "file:///C:/Users/Supun/AppData/Local/Pub/Cache/hosted/pub.dev/web-1.1.1",
       "packageUri": "lib/",
       "languageVersion": "3.4"
+    },
+    {
+      "name": "win32",
+      "rootUri": "file:///C:/Users/Supun/AppData/Local/Pub/Cache/hosted/pub.dev/win32-5.11.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.7"
     },
     {
       "name": "xml",
@@ -332,7 +350,7 @@
       "languageVersion": "3.7"
     }
   ],
-  "generated": "2025-02-25T11:26:30.198486Z",
+  "generated": "2025-03-02T08:27:15.937968Z",
   "generator": "pub",
   "generatorVersion": "3.7.0",
   "flutterRoot": "file:///C:/flutter/src",

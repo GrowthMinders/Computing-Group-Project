@@ -1,6 +1,7 @@
 // ignore_for_file: file_names, use_key_in_widget_constructors
 
 import 'package:flutter/material.dart';
+import 'package:mealmatrix/OrderHistory.dart';
 import 'package:mealmatrix/Setting.dart';
 import 'package:mealmatrix/Home.dart';
 
@@ -61,7 +62,7 @@ class Favorite extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Home()),
+                  MaterialPageRoute(builder: (context) => OrderHistory()),
                 );
               },
             ),

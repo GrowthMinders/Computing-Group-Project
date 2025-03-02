@@ -3,7 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:mealmatrix/Favorite.dart';
 import 'package:mealmatrix/Home.dart';
+import 'package:mealmatrix/Order.dart';
+import 'package:mealmatrix/OrderHistory.dart';
 import 'package:mealmatrix/Setting.dart';
+import 'package:mealmatrix/main.dart';
 
 class MyApp extends StatelessWidget {
   @override
@@ -12,7 +15,12 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class Profile extends StatelessWidget {
+class Profile extends StatefulWidget {
+  @override
+  ProfileState createState() => ProfileState();
+}
+
+class ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,11 +45,13 @@ class Profile extends StatelessWidget {
           Center(
             child: CircleAvatar(
               radius: 75,
-              backgroundImage: NetworkImage(
-                'https://storage.googleapis.com/a1aa/image/UXV79DBPDB0-gF-RsmCELmBK045-ZIMqvyz6OP-2orI.jpg',
-              ),
+              backgroundImage:
+                  user.imageBytes != null
+                      ? Image.memory(user.imageBytes!).image
+                      : AssetImage('lib/assets/images/DefaultProfile.png'),
             ),
           ),
+
           SizedBox(height: 40),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -84,7 +94,6 @@ class Profile extends StatelessWidget {
           ),
         ],
       ),
-
       bottomNavigationBar: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
@@ -104,10 +113,17 @@ class Profile extends StatelessWidget {
             'Orders',
             const Color.fromARGB(255, 74, 73, 73),
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Home()),
-              );
+              if (Logdata.userEmail == "ayushcafe2002@gmail.com") {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Order()),
+                );
+              } else {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => OrderHistory()),
+                );
+              }
             },
           ),
           _buildBottomNavItem(

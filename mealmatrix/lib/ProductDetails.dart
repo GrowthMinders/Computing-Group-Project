@@ -2,22 +2,35 @@
 
 import 'package:flutter/material.dart';
 
-class ProductDetail extends StatelessWidget {
-  const ProductDetail({super.key});
+class ProductDetail extends StatefulWidget {
+  final String name;
+  final String image;
+  final String price;
+  final String supply;
+  final String canteen;
+
+  const ProductDetail({
+    super.key,
+    required this.name,
+    required this.image,
+    required this.price,
+    required this.supply,
+    required this.canteen,
+  });
+
+  @override
+  State<ProductDetail> createState() => ProductDetailState();
+}
+
+class ProductDetailState extends State<ProductDetail> {
+  int qty = 1;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        title: const Text("pizza"),
+        title: const Text("Product Details"),
         actions: [
-          IconButton(icon: const Icon(Icons.notifications), onPressed: () {}),
           IconButton(icon: const Icon(Icons.shopping_cart), onPressed: () {}),
         ],
       ),
@@ -34,18 +47,19 @@ class ProductDetail extends StatelessWidget {
                   Center(
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(15.0),
-                      child: Image.asset(
-                        'assets/fish.jpg',
+                      child: Image.network(
+                        widget.image,
                         width: MediaQuery.of(context).size.width * 0.8,
                         height: 200,
                         fit: BoxFit.cover,
                       ),
                     ),
                   ),
+
                   Padding(
                     padding: const EdgeInsets.only(bottom: 10.0, left: 10.0),
                     child: Text(
-                      "Pizza",
+                      widget.name,
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 24,
@@ -57,23 +71,20 @@ class ProductDetail extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               Text(
-                'name',
+                widget.price,
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               const SizedBox(height: 10),
-              Text(
-                "Chicken sausages & onions with a double layer of cheese.",
-                style: const TextStyle(fontSize: 16),
-              ),
+              Text(widget.supply, style: const TextStyle(fontSize: 16)),
               const SizedBox(height: 60),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Rs. 300/=',
+                    widget.canteen,
                     style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -98,12 +109,22 @@ class ProductDetail extends StatelessWidget {
                       children: [
                         IconButton(
                           icon: const Icon(Icons.remove),
-                          onPressed: () {},
+                          onPressed: () {
+                            setState(() {
+                              if (qty > 1) {
+                                qty--;
+                              }
+                            });
+                          },
                         ),
-                        const Text('1'),
+                        Text(qty.toString()),
                         IconButton(
                           icon: const Icon(Icons.add),
-                          onPressed: () {},
+                          onPressed: () {
+                            setState(() {
+                              qty++;
+                            });
+                          },
                         ),
                       ],
                     ),
@@ -112,10 +133,10 @@ class ProductDetail extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () {},
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green, // Example color
+                      backgroundColor: Colors.green,
                     ),
                     child: const Text(
-                      "Add TO Cart",
+                      "Add To Cart",
                       style: TextStyle(color: Colors.white),
                     ),
                   ),

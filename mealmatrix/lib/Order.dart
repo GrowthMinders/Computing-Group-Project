@@ -1,6 +1,9 @@
 // ignore_for_file: file_names, deprecated_member_use
 
 import 'package:flutter/material.dart';
+import 'package:mealmatrix/Favorite.dart';
+import 'package:mealmatrix/Home.dart';
+import 'package:mealmatrix/Setting.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -63,7 +66,7 @@ class Order extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Oder history',
+                  'Order history', // Fixed typo here
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 Text(
@@ -83,19 +86,54 @@ class Order extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Orders'),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
-            label: 'Favorite',
+      bottomNavigationBar: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          _buildBottomNavItem(
+            Icons.home,
+            'Home',
+            const Color.fromARGB(255, 74, 73, 73),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Home()),
+              );
+            },
           ),
-          BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Setting'),
+          _buildBottomNavItem(
+            Icons.list_alt,
+            'Orders',
+            const Color.fromARGB(255, 74, 73, 73),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Order()),
+              );
+            },
+          ),
+          _buildBottomNavItem(
+            Icons.favorite,
+            'Favorite',
+            const Color.fromARGB(255, 74, 73, 73),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Favorite()),
+              );
+            },
+          ),
+          _buildBottomNavItem(
+            Icons.settings,
+            'Settings', // Fixed typo here
+            const Color.fromARGB(255, 74, 73, 73),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Setting()),
+              );
+            },
+          ),
         ],
-        currentIndex: 3,
-        selectedItemColor: Colors.green,
-        unselectedItemColor: Colors.grey,
       ),
     );
   }
@@ -167,4 +205,22 @@ class OrderItem extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget _buildBottomNavItem(
+  IconData icon,
+  String label,
+  Color color, {
+  required VoidCallback onTap,
+}) {
+  return GestureDetector(
+    onTap: onTap,
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(icon, color: color),
+        Text(label, style: TextStyle(fontSize: 12, color: color)),
+      ],
+    ),
+  );
 }

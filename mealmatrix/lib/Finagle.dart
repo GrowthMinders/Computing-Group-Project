@@ -6,6 +6,9 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:mealmatrix/Home.dart';
+import 'package:mealmatrix/OrderHistory.dart';
+import 'package:mealmatrix/Favorite.dart';
+import 'package:mealmatrix/Setting.dart';
 import 'package:mealmatrix/ProductDetails.dart';
 
 class MyApp extends StatelessWidget {
@@ -43,7 +46,7 @@ class FinagleState extends State<Finagle> {
   Future<void> fetchProducts() async {
     try {
       final response = await http.get(
-        Uri.parse('http://192.168.72.67/Firebase/Menus/Finagle.php'),
+        Uri.parse('http://192.168.108.67/Firebase/Menus/Finagle.php'),
       );
 
       if (response.statusCode == 200) {
@@ -196,7 +199,16 @@ class FinagleState extends State<Finagle> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ProductDetail()),
+                  MaterialPageRoute(
+                    builder:
+                        (context) => ProductDetail(
+                          image: product['image'],
+                          name: product['name'],
+                          price: product['price'],
+                          supply: product['supply'],
+                          canteen: product['canteen'],
+                        ),
+                  ),
                 );
               },
               child: Column(
@@ -223,24 +235,37 @@ class FinagleState extends State<Finagle> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        _buildBottomNavItem(Icons.home, 'Home', () => log('Home tapped')),
+        _buildBottomNavItem(
+          Icons.home,
+          'Home',
+          () => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Home()),
+          ),
+        ),
         _buildBottomNavItem(
           Icons.list_alt,
           'Orders',
           () => Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const Home()),
+            MaterialPageRoute(builder: (context) => OrderHistory()),
           ),
         ),
         _buildBottomNavItem(
           Icons.favorite,
           'Favorite',
-          () => log('Favorite tapped'),
+          () => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Favorite()),
+          ),
         ),
         _buildBottomNavItem(
           Icons.settings,
           'Settings',
-          () => log('Settings tapped'),
+          () => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Setting()),
+          ),
         ),
       ],
     );

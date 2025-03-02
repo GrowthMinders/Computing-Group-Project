@@ -1,4 +1,4 @@
-// ignore_for_file: file_names, deprecated_member_use
+// ignore_for_file: file_names, deprecated_member_use, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -6,6 +6,9 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:mealmatrix/Home.dart';
+import 'package:mealmatrix/OrderHistory.dart';
+import 'package:mealmatrix/Favorite.dart';
+import 'package:mealmatrix/Setting.dart';
 import 'package:mealmatrix/ProductDetails.dart';
 
 class MyApp extends StatelessWidget {
@@ -43,7 +46,7 @@ class AudiState extends State<Audi> {
   Future<void> fetchProducts() async {
     try {
       final response = await http.get(
-        Uri.parse('http://192.168.72.67/Firebase/Menus/Audi.php'),
+        Uri.parse('http://192.168.108.67/Firebase/Menus/Audi.php'),
       );
 
       if (response.statusCode == 200) {
@@ -196,9 +199,19 @@ class AudiState extends State<Audi> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ProductDetail()),
+                  MaterialPageRoute(
+                    builder:
+                        (context) => ProductDetail(
+                          image: product['image'],
+                          name: product['name'],
+                          price: product['price'],
+                          supply: product['supply'],
+                          canteen: product['canteen'],
+                        ),
+                  ),
                 );
               },
+
               child: Column(
                 children: [
                   ListTile(
@@ -223,24 +236,37 @@ class AudiState extends State<Audi> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        _buildBottomNavItem(Icons.home, 'Home', () => log('Home tapped')),
+        _buildBottomNavItem(
+          Icons.home,
+          'Home',
+          () => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Home()),
+          ),
+        ),
         _buildBottomNavItem(
           Icons.list_alt,
           'Orders',
           () => Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const Home()),
+            MaterialPageRoute(builder: (context) => OrderHistory()),
           ),
         ),
         _buildBottomNavItem(
           Icons.favorite,
           'Favorite',
-          () => log('Favorite tapped'),
+          () => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Favorite()),
+          ),
         ),
         _buildBottomNavItem(
           Icons.settings,
           'Settings',
-          () => log('Settings tapped'),
+          () => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Setting()),
+          ),
         ),
       ],
     );

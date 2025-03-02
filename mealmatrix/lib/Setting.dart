@@ -3,17 +3,21 @@
 import 'package:flutter/material.dart';
 import 'package:mealmatrix/ChangePassword.dart';
 import 'package:mealmatrix/CustomerSupport.dart';
+import 'package:mealmatrix/Favorite.dart';
 import 'package:mealmatrix/Home.dart';
+import 'package:mealmatrix/Order.dart';
+import 'package:mealmatrix/OrderHistory.dart';
 import 'package:mealmatrix/Profile.dart';
 import 'package:mealmatrix/main.dart';
 import 'package:http/http.dart' as http;
 import 'dart:developer';
 import 'dart:convert';
+import 'dart:typed_data';
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(debugShowCheckedModeBanner: false, home: Setting());
+    return MaterialApp(home: Setting());
   }
 }
 
@@ -26,6 +30,7 @@ class user {
   static String name = "";
   static String email = "";
   static String tel = "";
+  static Uint8List? imageBytes;
 }
 
 class SettingState extends State<Setting> {
@@ -88,7 +93,7 @@ class SettingState extends State<Setting> {
                 onTap: () async {
                   try {
                     var url = Uri.parse(
-                      "http://192.168.72.67/Firebase/profile.php",
+                      "http://192.168.108.67/Firebase/profile.php",
                     );
 
                     var response = await http.post(
@@ -98,6 +103,16 @@ class SettingState extends State<Setting> {
                     if (response.statusCode == 200) {
                       log("Success: Account information loaded");
                       List<dynamic> jsonResponse = json.decode(response.body);
+
+                      // getting image
+                      final Map<String, dynamic> data = json.decode(
+                        response.body,
+                      );
+
+                      setState(() {
+                        user.imageBytes = base64Decode(data['image']);
+                      });
+
                       user.name = jsonResponse[1];
                       user.email = jsonResponse[2];
                       user.tel = jsonResponse[4];
@@ -199,10 +214,17 @@ class SettingState extends State<Setting> {
             'Orders',
             const Color.fromARGB(255, 74, 73, 73),
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Home()),
-              );
+              if (Logdata.userEmail == "ayushcafe2002@gmail.com") {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Order()),
+                );
+              } else {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => OrderHistory()),
+                );
+              }
             },
           ),
           _buildBottomNavItem(
@@ -210,7 +232,10 @@ class SettingState extends State<Setting> {
             'Favorite',
             const Color.fromARGB(255, 74, 73, 73),
             onTap: () {
-              // Placeholder for correct navigation
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Favorite()),
+              );
             },
           ),
           _buildBottomNavItem(
