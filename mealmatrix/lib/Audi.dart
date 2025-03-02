@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:mealmatrix/Cart.dart';
 import 'dart:convert';
 import 'dart:developer';
 
@@ -17,7 +18,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.green,
         scaffoldBackgroundColor: Colors.white,
@@ -171,7 +171,15 @@ class AudiState extends State<Audi> {
             ),
           ),
           const SizedBox(width: 8),
-          const Icon(Icons.shopping_cart_outlined),
+          IconButton(
+            icon: const Icon(Icons.shopping_cart_outlined),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Cart()),
+              );
+            },
+          ),
         ],
       ),
     );

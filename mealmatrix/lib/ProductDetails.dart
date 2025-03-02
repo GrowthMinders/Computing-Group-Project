@@ -1,6 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
+import 'package:mealmatrix/Cart.dart';
 
 class ProductDetail extends StatefulWidget {
   final String name;
@@ -31,7 +32,15 @@ class ProductDetailState extends State<ProductDetail> {
       appBar: AppBar(
         title: const Text("Product Details"),
         actions: [
-          IconButton(icon: const Icon(Icons.shopping_cart), onPressed: () {}),
+          IconButton(
+            icon: const Icon(Icons.shopping_cart),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Cart()),
+              );
+            },
+          ),
         ],
       ),
       body: SingleChildScrollView(
@@ -131,7 +140,13 @@ class ProductDetailState extends State<ProductDetail> {
                   ),
                   const SizedBox(width: 20),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      //further logic to the cart
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Cart()),
+                      );
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green,
                     ),

@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mealmatrix/Audi.dart';
+import 'package:mealmatrix/Cart.dart';
 import 'package:mealmatrix/Edge.dart';
 import 'package:mealmatrix/Favorite.dart';
 import 'package:mealmatrix/Finagle.dart';
@@ -86,7 +87,10 @@ class HomeState extends State<Home> {
                     SizedBox(width: 16),
                     GestureDetector(
                       onTap: () {
-                        print('Shopping cart tapped');
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Cart()),
+                        );
                       },
                       child: Icon(
                         Icons.shopping_cart_outlined,
