@@ -1,9 +1,13 @@
-// ignore_for_file: file_names, use_key_in_widget_constructors
+// ignore_for_file: file_names, use_key_in_widget_constructors, camel_case_types
 
 import 'package:flutter/material.dart';
 import 'package:mealmatrix/OrderHistory.dart';
 import 'package:mealmatrix/Setting.dart';
 import 'package:mealmatrix/Home.dart';
+import 'dart:convert';
+import 'dart:developer';
+import 'package:http/http.dart' as http;
+import 'package:mealmatrix/main.dart';
 
 class MyApp extends StatelessWidget {
   @override
@@ -11,6 +15,47 @@ class MyApp extends StatelessWidget {
     return MaterialApp(home: Favorite());
   }
 }
+
+
+class favrendering {
+  static List<Map<String, dynamic>> favdata = [];
+
+  Future<void> renderfav(String responseBody) async {
+    try {
+      var url = Uri.parse(
+        "http://192.168.108.67/Firebase/favoriterendering.php",
+      );
+
+      var response = await http.post(
+        url,
+        body: {
+          'email': Logdata.userEmail,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        List<List<dynamic>> fav = json.decode(responseBody);
+
+        favdata = fav
+            .map(
+              (record) => {
+                'image': record[0], // image
+                'name': record[1],  // name
+                'email': record[2], // email
+                'price': record[3], // price — make sure this exists!
+                'telephone': record[4], // telephone
+              },
+            )
+            .toList();
+      } else {
+        log("Failed to fetch data: ${response.statusCode}");
+      }
+    } catch (ex) {
+      log("Unexpected error: $ex");
+    }
+  }
+}
+
 
 class Favorite extends StatelessWidget {
   @override

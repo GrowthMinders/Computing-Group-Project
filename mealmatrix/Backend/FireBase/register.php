@@ -6,6 +6,12 @@ $name = $_POST['name'];
 $email = $_POST['email'];
 $tel = $_POST['phone'];
 $pass = $_POST['pass'];
+$imagecontent = "";
+
+if(isset($_FILES['image'])){
+    $image = $_FILES['image']['tmp_name'];
+    $imagecontent = addslashes(file_get_contents($image));
+}
 
 # Checking contact number existence
 $sql1 = "SELECT contact FROM customer WHERE contact = ?";
@@ -31,8 +37,8 @@ if (sqlsrv_fetch_array($result1, SQLSRV_FETCH_ASSOC)) {
         # Inserting data upon checking if contact number and email are not duplicated
         $hash = password_hash($pass, PASSWORD_BCRYPT);
 
-        $sql3 = "INSERT INTO customer (name, email, password, contact) VALUES (?, ?, ?, ?)";
-        $data3 = array($name, $email, $hash, $tel);
+        $sql3 = "INSERT INTO customer (name, email, password, contact, image) VALUES (?, ?, ?, ?, ?)";
+        $data3 = array($name, $email, $hash, $tel, $imagecontent);
         
         $result3 = sqlsrv_query($conn, $sql3, $data3);
     }

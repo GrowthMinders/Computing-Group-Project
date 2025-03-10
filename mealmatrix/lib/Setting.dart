@@ -105,12 +105,13 @@ class SettingState extends State<Setting> {
                       List<dynamic> jsonResponse = json.decode(response.body);
 
                       // getting image
-                      final Map<String, dynamic> data = json.decode(
-                        response.body,
-                      );
+                      var data = jsonDecode(response.body);
 
                       setState(() {
-                        user.imageBytes = base64Decode(data['image']);
+                        user.imageBytes = data['image'];
+                        if (user.imageBytes != null) {
+                          user.imageBytes = base64Decode(data['image']);
+                        }
                       });
 
                       user.name = jsonResponse[1];
