@@ -1,7 +1,12 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:mealmatrix/Cart.dart';
+import 'package:http/http.dart' as http;
+import 'package:mealmatrix/Home.dart';
+import 'dart:developer';
+
+import 'package:mealmatrix/main.dart';
 
 class ProductDetail extends StatefulWidget {
   final String name;
@@ -9,7 +14,6 @@ class ProductDetail extends StatefulWidget {
   final String price;
   final String supply;
   final String canteen;
-
   const ProductDetail({
     super.key,
     required this.name,
@@ -101,7 +105,30 @@ class ProductDetailState extends State<ProductDetail> {
                   ),
                   IconButton(
                     icon: const Icon(Icons.favorite_border),
-                    onPressed: () {},
+                    onPressed: () async {
+                      try {
+                        var url = Uri.parse(
+                          "http://192.168.108.67/Firebase/favorite.php",
+                        );
+
+                        var response = await http.post(
+                          url,
+                          body: {
+                            'name': widget.name,
+                            'price': widget.price,
+                            'supply': widget.supply,
+                            'canteen': widget.canteen,
+                            'user': Logdata.userEmail,
+                          },
+                        );
+
+                        if (response.statusCode == 204) {
+                          
+                        }
+                      } catch (ex) {
+                        log("Unexpected error: $ex");
+                      }
+                    },
                   ),
                 ],
               ),
@@ -140,16 +167,34 @@ class ProductDetailState extends State<ProductDetail> {
                   ),
                   const SizedBox(width: 20),
                   ElevatedButton(
-                    onPressed: () {
-                      //further logic to the cart
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => Cart()),
-                      );
+                    onPressed: () async {
+                      try {
+                        var url = Uri.parse(
+                          "http://192.168.108.67/Firebase/cart.php",
+                        );
+
+                        var response = await http.post(
+                          url,
+                          body: {
+                            'name': widget.name,
+                            'price': widget.price,
+                            'supply': widget.supply,
+                            'canteen': widget.canteen,
+                            'quantity': qty,
+                            'user': Logdata.userEmail,
+                          },
+                        );
+
+                        if (response.statusCode == 200) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => Home()),
+                          );
+                        }
+                      } catch (ex) {
+                        log("Unexpected error: $ex");
+                      }
                     },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
-                    ),
                     child: const Text(
                       "Add To Cart",
                       style: TextStyle(color: Colors.white),

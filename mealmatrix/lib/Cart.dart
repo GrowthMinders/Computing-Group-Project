@@ -7,38 +7,30 @@ import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'package:mealmatrix/main.dart';
 
-
-
 class cartrendering {
-  static List<Map<String, dynamic>> cartdata = [];   
+  static List<Map<String, dynamic>> cartdata = [];
 
   Future<void> rendercart(String responseBody) async {
     try {
-      var url = Uri.parse(
-        "http://192.168.108.67/Firebase/cartrendering.php",
-      );
+      var url = Uri.parse("http://192.168.108.67/Firebase/cartrendering.php");
 
-      var response = await http.post(
-        url,
-        body: {
-          'email': Logdata.userEmail,
-        },
-      );
+      var response = await http.post(url, body: {'email': Logdata.userEmail});
 
       if (response.statusCode == 200) {
         List<List<dynamic>> cart = json.decode(responseBody);
 
-        cartdata = cart
-            .map(
-              (record) => {
-                'image': record[0], // image
-                'name': record[1],  // name
-                'email': record[2], // email
-                'price': record[3], // price — make sure this exists!
-                'telephone': record[4], // telephone
-              },
-            )
-            .toList();
+        cartdata =
+            cart
+                .map(
+                  (record) => {
+                    'image': record[0], // image
+                    'name': record[1], // name
+                    'email': record[2], // email
+                    'price': record[3], // price — make sure this exists!
+                    'telephone': record[4], // telephone
+                  },
+                )
+                .toList();
       } else {
         log("Failed to fetch data: ${response.statusCode}");
       }
@@ -47,7 +39,6 @@ class cartrendering {
     }
   }
 }
-
 
 class Cart extends StatelessWidget {
   @override
@@ -86,8 +77,6 @@ class Cart extends StatelessWidget {
       ),
     );
   }
-
-  
 
   Widget _buildCartItem({
     required String imageUrl,

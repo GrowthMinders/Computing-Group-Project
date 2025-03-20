@@ -16,7 +16,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
-
 class favrendering {
   static List<Map<String, dynamic>> favdata = [];
 
@@ -26,27 +25,23 @@ class favrendering {
         "http://192.168.108.67/Firebase/favoriterendering.php",
       );
 
-      var response = await http.post(
-        url,
-        body: {
-          'email': Logdata.userEmail,
-        },
-      );
+      var response = await http.post(url, body: {'email': Logdata.userEmail});
 
       if (response.statusCode == 200) {
         List<List<dynamic>> fav = json.decode(responseBody);
 
-        favdata = fav
-            .map(
-              (record) => {
-                'image': record[0], // image
-                'name': record[1],  // name
-                'email': record[2], // email
-                'price': record[3], // price — make sure this exists!
-                'telephone': record[4], // telephone
-              },
-            )
-            .toList();
+        favdata =
+            fav
+                .map(
+                  (record) => {
+                    'image': record[0], // image
+                    'name': record[1], // name
+                    'email': record[2], // email
+                    'price': record[3], // price — make sure this exists!
+                    'telephone': record[4], // telephone
+                  },
+                )
+                .toList();
       } else {
         log("Failed to fetch data: ${response.statusCode}");
       }
@@ -55,7 +50,6 @@ class favrendering {
     }
   }
 }
-
 
 class Favorite extends StatelessWidget {
   @override
