@@ -122,9 +122,7 @@ class ProductDetailState extends State<ProductDetail> {
                           },
                         );
 
-                        if (response.statusCode == 204) {
-                          
-                        }
+                        if (response.statusCode == 204) {}
                       } catch (ex) {
                         log("Unexpected error: $ex");
                       }

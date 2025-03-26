@@ -1,7 +1,8 @@
-// ignore_for_file: file_names, use_key_in_widget_constructors, camel_case_types
+// ignore_for_file: file_names, use_key_in_widget_constructors, camel_case_types, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
 import 'package:mealmatrix/OrderHistory.dart';
+import 'package:mealmatrix/ProductDetails.dart';
 import 'package:mealmatrix/Setting.dart';
 import 'package:mealmatrix/Home.dart';
 import 'dart:convert';
@@ -72,10 +73,10 @@ class Favorite extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: ListView(
           children: [
-            FavoriteItem(),
-            FavoriteItem(),
-            FavoriteItem(),
-            FavoriteItem(),
+            FavoriteItem(favrendering.favdata),
+            FavoriteItem(favrendering.favdata),
+            FavoriteItem(favrendering.favdata),
+            FavoriteItem(favrendering.favdata),
           ],
         ),
       ),
@@ -134,27 +135,70 @@ class Favorite extends StatelessWidget {
   }
 }
 
-class FavoriteItem extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.symmetric(vertical: 8.0),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          children: [
-            CircleAvatar(
-              radius: 30,
-              backgroundImage: NetworkImage(
-                'https://storage.googleapis.com/a1aa/image/Rc6YVYZQKB9diw1yRqd9-NiyY60-zzT9JE4Kvp8VP0c.jpg',
-              ),
+Widget FavoriteItem(List<dynamic> favdata) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Padding(padding: const EdgeInsets.symmetric(horizontal: 16)),
+      const SizedBox(height: 8),
+      ListView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: favdata.length,
+        itemBuilder: (context, index) {
+          final product = favdata[index];
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder:
+                      (context) => ProductDetail(
+                        image: product['image'],
+                        name: product['name'],
+                        price: product['price'],
+                        supply: product['supply'],
+                        canteen: product['canteen'],
+                      ),
+                ),
+              );
+            },
+            child: Column(
+              children: [
+                ListTile(
+                  leading: CircleAvatar(
+                    backgroundImage: NetworkImage(product['image']),
+                    radius: 30,
+                  ),
+                  title: Text(product['name']),
+                  subtitle: Column(
+                    children: [
+                      Text('${product['supply']}'),
+                      if ('${product['supply']}' == "Ayush")
+                        Text('Edge')
+                      else if ('${product['supply']}' == "So Cafe")
+                        Text('Edge')
+                      else if ('${product['supply']}' == "Hela Bojun")
+                        Text('Edge')
+                      else if ('${product['supply']}' == "juice")
+                        Text('Edge')
+                      else if ('${product['supply']}' == "Ocean")
+                        Text('Hostel')
+                      else if ('${product['supply']}' == "Leyons")
+                        Text('Audi')
+                      else
+                        Text('Finagle'),
+                    ],
+                  ),
+                ),
+                const Divider(),
+              ],
             ),
-            SizedBox(width: 16.0),
-          ],
-        ),
+          );
+        },
       ),
-    );
-  }
+    ],
+  );
 }
 
 Widget _buildBottomNavItem(

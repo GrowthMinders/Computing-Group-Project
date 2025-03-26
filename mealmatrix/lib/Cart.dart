@@ -23,7 +23,6 @@ class cartrendering {
             cart
                 .map(
                   (record) => {
-                    'image': record[0], // image
                     'name': record[1], // name
                     'email': record[2], // email
                     'price': record[3], // price — make sure this exists!
