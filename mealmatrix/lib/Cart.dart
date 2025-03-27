@@ -23,10 +23,12 @@ class cartrendering {
             cart
                 .map(
                   (record) => {
-                    'name': record[1], // name
-                    'email': record[2], // email
-                    'price': record[3], // price — make sure this exists!
-                    'telephone': record[4], // telephone
+                    'name': record[1],
+                    'supply': record[3],
+                    'qty': record[4],
+                    'canteen': record[5],
+                    'price': record[6],
+                    'image': record[7],
                   },
                 )
                 .toList();
@@ -39,6 +41,7 @@ class cartrendering {
   }
 }
 
+// to be chandewg from here
 class Cart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

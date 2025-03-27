@@ -35,11 +35,11 @@ class favrendering {
             fav
                 .map(
                   (record) => {
-                    'image': record[0], // image
-                    'name': record[1], // name
-                    'email': record[2], // email
-                    'price': record[3], // price — make sure this exists!
-                    'telephone': record[4], // telephone
+                    'name': record[1],
+                    'supply': record[3],
+                    'canteen': record[4],
+                    'image': record[5],
+                    'price': record[6],
                   },
                 )
                 .toList();
@@ -174,20 +174,8 @@ Widget FavoriteItem(List<dynamic> favdata) {
                   subtitle: Column(
                     children: [
                       Text('${product['supply']}'),
-                      if ('${product['supply']}' == "Ayush")
-                        Text('Edge')
-                      else if ('${product['supply']}' == "So Cafe")
-                        Text('Edge')
-                      else if ('${product['supply']}' == "Hela Bojun")
-                        Text('Edge')
-                      else if ('${product['supply']}' == "juice")
-                        Text('Edge')
-                      else if ('${product['supply']}' == "Ocean")
-                        Text('Hostel')
-                      else if ('${product['supply']}' == "Leyons")
-                        Text('Audi')
-                      else
-                        Text('Finagle'),
+                      Text('${product['canteen']}'),
+                      Text('${product['price']}'),
                     ],
                   ),
                 ),

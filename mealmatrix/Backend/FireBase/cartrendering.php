@@ -14,6 +14,7 @@ $products = [];
 
 while($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
     if($row["name"]){
+        
         $pcname = $row["name"];
         $sql1 = "SELECT image FROM product WHERE name = ?";
         $data1 = array($pcname);

@@ -115,7 +115,6 @@ class ProductDetailState extends State<ProductDetail> {
                           url,
                           body: {
                             'name': widget.name,
-                            'price': widget.price,
                             'supply': widget.supply,
                             'canteen': widget.canteen,
                             'user': Logdata.userEmail,
