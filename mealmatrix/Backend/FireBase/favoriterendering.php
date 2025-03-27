@@ -13,10 +13,21 @@ $favorites = [];
 
 
 while($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
-    $favorites[] = $row; 
-} 
+    if($row["name"]){
+        $pname = $row["name"];
+        $sql1 = "SELECT image FROM product WHERE name = ?";
+        $data1 = array($pname);
 
-$favorites["name"];
+        $result1 = sqlsrv_query($conn, $sql1, $data1);
+
+        while($row1 = sqlsrv_fetch_array($result1, SQLSRV_FETCH_ASSOC)) {
+            $row["image"] = $row1["image"];
+        }
+
+        $favorites[] = $row; 
+    }
+    
+} 
 
 echo json_encode($favorites);
 http_response_code(200);

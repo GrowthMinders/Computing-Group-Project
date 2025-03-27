@@ -13,8 +13,20 @@ $products = [];
 
 
 while($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
+    if($row["name"]){
+        $pcname = $row["name"];
+        $sql1 = "SELECT image FROM product WHERE name = ?";
+        $data1 = array($pcname);
 
-    $products[] = $row; 
+        $result1 = sqlsrv_query($conn, $sql1, $data1);
+
+        while($row1 = sqlsrv_fetch_array($result1, SQLSRV_FETCH_ASSOC)) {
+            $row["image"] = $row1["image"];
+        }
+
+        $products[] = $row; 
+    }
+    
 } 
 
 echo json_encode($products);
