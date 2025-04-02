@@ -71,14 +71,7 @@ class Favorite extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: ListView(
-          children: [
-            FavoriteItem(favrendering.favdata),
-            FavoriteItem(favrendering.favdata),
-            FavoriteItem(favrendering.favdata),
-            FavoriteItem(favrendering.favdata),
-          ],
-        ),
+        child: ListView(children: [FavoriteItem(favrendering.favdata)]),
       ),
       bottomNavigationBar: BottomAppBar(
         child: Row(

@@ -1,4 +1,4 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, unused_import, non_constant_identifier_names, camel_case_types
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,9 +10,48 @@ import 'package:mealmatrix/Finagle.dart';
 import 'package:mealmatrix/Hostel.dart';
 import 'package:http/http.dart' as http;
 import 'package:mealmatrix/OrderHistory.dart';
+import 'package:mealmatrix/ProductDetails.dart';
 import 'dart:developer';
+import 'dart:convert';
+import 'package:mealmatrix/Home.dart';
 
 import 'package:mealmatrix/Setting.dart';
+import 'package:mealmatrix/main.dart';
+
+class favrendering {
+  static List<Map<String, dynamic>> favdata = [];
+
+  Future<void> renderfav(String responseBody) async {
+    try {
+      var url = Uri.parse(
+        "http://192.168.108.67/Firebase/favoriterendering.php",
+      );
+
+      var response = await http.post(url, body: {'email': Logdata.userEmail});
+
+      if (response.statusCode == 200) {
+        List<List<dynamic>> fav = json.decode(responseBody);
+
+        favdata =
+            fav
+                .map(
+                  (record) => {
+                    'name': record[1],
+                    'supply': record[3],
+                    'canteen': record[4],
+                    'image': record[5],
+                    'price': record[6],
+                  },
+                )
+                .toList();
+      } else {
+        log("Failed to fetch data: ${response.statusCode}");
+      }
+    } catch (ex) {
+      log("Unexpected error: $ex");
+    }
+  }
+}
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -114,39 +153,38 @@ class HomeState extends State<Home> {
                   ),
                 ),
                 SizedBox(height: 24),
-                Text(
-                  'Favorite Item',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                Row(
+                  children: [
+                    Text(
+                      'Favorite Item',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Spacer(),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Favorite()),
+                        );
+                      },
+                      child: Text(
+                        'See more',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
+
                 SizedBox(height: 16),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    _buildFavoriteItem(
-                      onTap: () {},
-                      title: 'Beverages',
-                      imageUrl:
-                          'https://storage.googleapis.com/a1aa/image/_tbwa4NqyO8JdUHgdtKvE0pi1xaPKznfgqmhJQ_4iw8.jpg',
-                    ),
-                    _buildFavoriteItem(
-                      onTap: () {},
-                      title: 'Snack',
-                      imageUrl:
-                          'https://storage.googleapis.com/a1aa/image/2T064IIpcPmNhH1_AlRCY5itDO2q5O3WwJJAsjmsx2U.jpg',
-                    ),
-                    _buildFavoriteItem(
-                      onTap: () {},
-                      title: 'Seafood',
-                      imageUrl:
-                          'https://storage.googleapis.com/a1aa/image/-_TTB_8AAQeB5a024LOb3RU1Afnl7LuZkY21dcTzV1M.jpg',
-                    ),
-                    _buildFavoriteItem(
-                      onTap: () {},
-                      title: 'Dessert',
-                      imageUrl:
-                          'https://storage.googleapis.com/a1aa/image/aFYxmsVb_Wi-zQM7Ya9vWvfmURQgaQOg2pfE6dEMYG8.jpg',
-                    ),
-                  ],
+                  children: [FavoriteItem(favrendering.favdata)],
                 ),
                 SizedBox(height: 24),
                 Row(
@@ -173,7 +211,7 @@ class HomeState extends State<Home> {
                       title: 'Finagle Canteen',
                       time: '8.0 AM - 5.0 PM',
                       telephone: '0761571745',
-                      location: 'map location',
+                      location: 'map location', // map location
                       imagePath: 'lib/assets/images/Finagle.jpg',
                       onTap: () async {
                         try {
@@ -204,7 +242,7 @@ class HomeState extends State<Home> {
                       title: 'Hostel Canteen',
                       time: '8.0 AM - 5.0 PM',
                       telephone: '0761571744',
-                      location: 'map location',
+                      location: 'map location', // map location
                       imagePath: 'lib/assets/images/Hostel.jpeg',
                       onTap: () async {
                         try {
@@ -233,7 +271,7 @@ class HomeState extends State<Home> {
                       title: 'Edge Canteen',
                       time: '8.0 AM - 5.0 PM',
                       telephone: '0761571743',
-                      location: 'map location',
+                      location: 'map location', // map location
                       imagePath: 'lib/assets/images/Edge.jpeg',
                       onTap: () async {
                         try {
@@ -262,7 +300,7 @@ class HomeState extends State<Home> {
                       title: 'Audi Canteen',
                       time: '8.0 AM - 5.0 PM',
                       telephone: '0761571845',
-                      location: 'map location',
+                      location: 'map location', // map location
                       imagePath: 'lib/assets/images/Audi.jpg',
                       onTap: () async {
                         try {
@@ -352,20 +390,43 @@ class HomeState extends State<Home> {
     );
   }
 
-  Widget _buildFavoriteItem({
-    required String title,
-    required String imageUrl,
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Column(
-        children: [
-          CircleAvatar(radius: 24, backgroundImage: NetworkImage(imageUrl)),
-          SizedBox(height: 4),
-          Text(title, style: TextStyle(fontSize: 12)),
-        ],
-      ),
+  Widget FavoriteItem(List<dynamic> favdata) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          child: SizedBox(height: 8),
+        ),
+        ListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: favdata.length,
+          itemBuilder: (context, index) {
+            final product = favdata[index];
+            return Column(
+              children: [
+                ListTile(
+                  leading: CircleAvatar(
+                    backgroundImage: NetworkImage(product['image']),
+                    radius: 30,
+                  ),
+                  title: Text(product['name']),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('${product['supply']}'),
+                      Text('${product['canteen']}'),
+                      Text('${product['price']}'),
+                    ],
+                  ),
+                ),
+                const Divider(),
+              ],
+            );
+          },
+        ),
+      ],
     );
   }
 

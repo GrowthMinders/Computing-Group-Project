@@ -121,7 +121,16 @@ class ProductDetailState extends State<ProductDetail> {
                           },
                         );
 
-                        if (response.statusCode == 204) {}
+                        if (response.statusCode == 204) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                'This product is already in your favorites',
+                              ),
+                              duration: Duration(seconds: 2),
+                            ),
+                          );
+                        }
                       } catch (ex) {
                         log("Unexpected error: $ex");
                       }
