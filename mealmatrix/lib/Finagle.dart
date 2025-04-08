@@ -213,7 +213,7 @@ class FinagleState extends State<Finagle> {
                         (context) => ProductDetail(
                           image: product['image'],
                           name: product['name'],
-                          price: product['price'],
+                          price: product['price'].toString(),
                           supply: product['supply'],
                           canteen: product['canteen'],
                         ),

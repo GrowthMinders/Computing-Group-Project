@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:mealmatrix/CanteenOwner.dart';
 import 'RegistrationPage.dart';
@@ -87,7 +89,7 @@ class MyAppState extends State<MyApp> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   errors(),
-                  // Logo
+
                   Image.asset(
                     'lib/assets/images/Meal Matrix Logo.png',
                     height: 250,
@@ -107,7 +109,6 @@ class MyAppState extends State<MyApp> {
                     ),
                   ),
 
-                  // Username Field
                   SizedBox(
                     width: 300,
                     child: TextField(
@@ -132,7 +133,6 @@ class MyAppState extends State<MyApp> {
                   ),
                   const SizedBox(height: 20),
 
-                  // Password Field
                   SizedBox(
                     width: 300,
                     child: TextField(
@@ -173,7 +173,6 @@ class MyAppState extends State<MyApp> {
                   ),
                   const SizedBox(height: 20),
 
-                  // Remember Password Checkbox and Forgot Password
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -210,7 +209,6 @@ class MyAppState extends State<MyApp> {
                     ],
                   ),
 
-                  // Login and Register Buttons
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -241,29 +239,31 @@ class MyAppState extends State<MyApp> {
                                     },
                                   );
                                   if (response.statusCode == 200) {
-                                    log("Success: Login Suceeded");
-                                    if (Logdata.canteen) {
-                                      final Map<String, dynamic> responseData =
-                                          jsonDecode(response.body);
-                                      // Access the 'user' value
+                                    log("Success: Login Succeeded");
+
+                                    final Map<String, dynamic> responseData =
+                                        jsonDecode(response.body);
+
+                                    setState(() {
                                       Logdata.userEmail = responseData['user'];
+                                    });
+                                    log(
+                                      "Assigned to Logdata.userEmail: ${Logdata.userEmail}",
+                                    );
+
+                                    if (Logdata.userEmail ==
+                                        "ayush@gmail.com") {
                                       Navigator.push(
-                                        // ignore: use_build_context_synchronously
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => Canteen(),
+                                          builder: (_) => Canteen(),
                                         ),
                                       );
                                     } else {
-                                      final Map<String, dynamic> responseData =
-                                          jsonDecode(response.body);
-                                      // Access the 'user' value
-                                      Logdata.userEmail = responseData['user'];
                                       Navigator.push(
-                                        // ignore: use_build_context_synchronously
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => Home(),
+                                          builder: (_) => Home(),
                                         ),
                                       );
                                     }
@@ -285,11 +285,11 @@ class MyAppState extends State<MyApp> {
                                       Logdata.canteen = false;
                                     });
                                   } else if (response.statusCode == 204) {
-                                    log("Accont does not exist");
+                                    log("Account does not exist");
                                     setState(() {
                                       Logdata.error++;
                                       Logdata.errmessage =
-                                          "Accont does not exist";
+                                          "Account does not exist";
                                       Logdata.canteen = false;
                                     });
                                   }
@@ -297,7 +297,6 @@ class MyAppState extends State<MyApp> {
                                   log("Unexpected error: $ex");
                                 }
                               }
-                              // Login Logic end
                             },
                             style: ButtonStyle(
                               backgroundColor: WidgetStateProperty.all(
@@ -316,7 +315,6 @@ class MyAppState extends State<MyApp> {
                       ),
                       const SizedBox(width: 20),
 
-                      // Register Button
                       MouseRegion(
                         onEnter:
                             (_) => setState(() => isHoveredRegister = true),

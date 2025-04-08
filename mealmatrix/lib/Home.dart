@@ -21,7 +21,7 @@ import 'package:mealmatrix/main.dart';
 class favrendering {
   static List<Map<String, dynamic>> favdata = [];
 
-  Future<void> renderfav(String responseBody) async {
+  Future<void> renderfav() async {
     try {
       var url = Uri.parse(
         "http://10.16.130.245/Firebase/favoriterendering.php",
@@ -30,17 +30,19 @@ class favrendering {
       var response = await http.post(url, body: {'email': Logdata.userEmail});
 
       if (response.statusCode == 200) {
-        List<List<dynamic>> fav = json.decode(responseBody);
+        List<dynamic> fav = json.decode(
+          response.body,
+        ); // Use response.body directly
 
         favdata =
             fav
                 .map(
                   (record) => {
-                    'name': record[1],
-                    'supply': record[3],
-                    'canteen': record[4],
-                    'image': record[5],
-                    'price': record[6],
+                    'name': record['name'],
+                    'supply': record['supply'],
+                    'canteen': record['canteen'],
+                    'image': record['image'],
+                    'price': record['price'],
                   },
                 )
                 .toList();
@@ -65,6 +67,10 @@ class HomeState extends State<Home> {
   void initState() {
     super.initState();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
+
+    favrendering().renderfav().then((_) {
+      setState(() {});
+    });
   }
 
   @override
@@ -152,11 +158,11 @@ class HomeState extends State<Home> {
                     width: MediaQuery.of(context).size.width * 0.8,
                   ),
                 ),
-                SizedBox(height: 24),
+                SizedBox(height: 22),
                 Row(
                   children: [
                     Text(
-                      'Favorite Item',
+                      'Favorite Items',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -180,12 +186,15 @@ class HomeState extends State<Home> {
                     ),
                   ],
                 ),
-
-                SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [FavoriteItem(favrendering.favdata)],
+                FavoriteItem(
+                  favrendering.favdata.sublist(
+                    0,
+                    favrendering.favdata.length < 4
+                        ? favrendering.favdata.length
+                        : 4,
+                  ),
                 ),
+
                 SizedBox(height: 24),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -401,7 +410,7 @@ class HomeState extends State<Home> {
         ListView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          itemCount: favdata.length,
+          itemCount: favdata.length, // Now it's only the first 4 items
           itemBuilder: (context, index) {
             final product = favdata[index];
             return Column(
