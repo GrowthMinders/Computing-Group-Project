@@ -12,7 +12,7 @@ class cartrendering {
 
   Future<void> rendercart(String responseBody) async {
     try {
-      var url = Uri.parse("http://192.168.108.67/Firebase/cartrendering.php");
+      var url = Uri.parse("http://10.16.130.245/Firebase/cartrendering.php");
 
       var response = await http.post(url, body: {'email': Logdata.userEmail});
 
@@ -137,7 +137,7 @@ class Cart extends StatelessWidget {
                         onPressed: () async {
                           try {
                             var url = Uri.parse(
-                              "http://192.168.108.67/Firebase/prodelcart.php",
+                              "http://10.16.130.245/Firebase/prodelcart.php",
                             );
 
                             var response = await http.post(

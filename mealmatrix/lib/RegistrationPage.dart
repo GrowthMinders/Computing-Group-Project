@@ -526,7 +526,7 @@ class RegistrationPageState extends State<RegistrationPage> {
                       if (Regdata.error == 0) {
                         try {
                           var url = Uri.parse(
-                            "http://192.168.108.67/Firebase/register.php",
+                            "http://10.16.130.245/Firebase/register.php",
                           );
 
                           var response = await http.post(

@@ -24,7 +24,7 @@ class favrendering {
   Future<void> renderfav(String responseBody) async {
     try {
       var url = Uri.parse(
-        "http://192.168.108.67/Firebase/favoriterendering.php",
+        "http://10.16.130.245/Firebase/favoriterendering.php",
       );
 
       var response = await http.post(url, body: {'email': Logdata.userEmail});
@@ -217,7 +217,7 @@ class HomeState extends State<Home> {
                         try {
                           final response = await http.get(
                             Uri.parse(
-                              'http://192.168.108.67/Firebase/Menus/Finagle.php',
+                              'http://10.16.130.245/Firebase/Menus/Finagle.php',
                             ),
                           );
 
@@ -248,7 +248,7 @@ class HomeState extends State<Home> {
                         try {
                           final response = await http.get(
                             Uri.parse(
-                              'http://192.168.108.67/Firebase/Menus/Hostel.php',
+                              'http://10.16.130.245/Firebase/Menus/Hostel.php',
                             ),
                           );
 
@@ -277,7 +277,7 @@ class HomeState extends State<Home> {
                         try {
                           final response = await http.get(
                             Uri.parse(
-                              'http://192.168.108.67/Firebase/Menus/Edge.php',
+                              'http://10.16.130.245/Firebase/Menus/Edge.php',
                             ),
                           );
 
@@ -306,7 +306,7 @@ class HomeState extends State<Home> {
                         try {
                           final response = await http.get(
                             Uri.parse(
-                              'http://192.168.108.67/Firebase/Menus/Audi.php',
+                              'http://10.16.130.245/Firebase/Menus/Audi.php',
                             ),
                           );
 

@@ -1,8 +1,8 @@
 <?php
-  $server = "192.168.72.67";
+  $server = "10.16.130.245";
   $database = array(
     "Database" => "MealMatrix",
-    "Uid" => "Supun",
+    "Uid" => "silva",
     "PWD" => "2002"
   );
   

@@ -43,11 +43,11 @@ class Logdata {
     } else if (controller2.text.isEmpty) {
       Logdata.error++;
       Logdata.errmessage = "Please enter your password";
-    } else if (!regexmail.hasMatch(Logdata.email) ||
-        !regexmailcanteen.hasMatch(Logdata.email)) {
+    } else if (!regexmail.hasMatch(controller1.text) &&
+        !regexmailcanteen.hasMatch(controller1.text)) {
       Logdata.error++;
       Logdata.errmessage = "Invalid email address";
-    } else if (regexmailcanteen.hasMatch(Logdata.email)) {
+    } else if (regexmailcanteen.hasMatch(controller1.text)) {
       canteen = true;
     }
   }
@@ -230,7 +230,7 @@ class MyAppState extends State<MyApp> {
                               if (Logdata.error == 0) {
                                 try {
                                   var url = Uri.parse(
-                                    "http://192.168.108.67/Firebase/login.php",
+                                    "http://10.16.130.245/Firebase/login.php",
                                   );
 
                                   var response = await http.post(

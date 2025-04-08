@@ -93,7 +93,7 @@ class SettingState extends State<Setting> {
                 onTap: () async {
                   try {
                     var url = Uri.parse(
-                      "http://192.168.108.67/Firebase/profile.php",
+                      "http://10.16.130.245/Firebase/profile.php",
                     );
 
                     var response = await http.post(

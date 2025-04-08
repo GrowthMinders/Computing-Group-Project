@@ -14,8 +14,8 @@ if (isset($_GET['email'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-      <link rel="stylesheet" href="http://192.168.72.67/Firebase/web/ResetPassword.css" type="text/css" />
-      <script src = "http://192.168.72.67/Firebase/web/validation.js"></script>
+      <link rel="stylesheet" href="http://10.16.130.245/Firebase/web/ResetPassword.css" type="text/css" />
+      <script src = "http://10.16.130.245/Firebase/web/validation.js"></script>
     <title>Reset Password</title>
     
 </head>
@@ -27,7 +27,7 @@ if (isset($_GET['email'])) {
         <div style="margin-bottom: 40px;" id="errdisplay" hidden>
             
         </div>
-        <form name="reset" action="http://192.168.72.67/Firebase/web/updatepassword.php" method="POST">
+        <form name="reset" action="http://10.16.130.245/Firebase/web/updatepassword.php" method="POST">
             <div style="margin-bottom: 50px;">
                 <label class="lab">Enter New Password</label>
             <input type="password" name="pass" id="pass" placeholder="Abcd@123">

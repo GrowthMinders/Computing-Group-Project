@@ -14,9 +14,9 @@ include_once "../connection.php";
   $result3 = sqlsrv_query($conn, $sql3, $data3);
 
   if ($result3) {
-    header("Location: http://10.16.138.149/Firebase/web/passsuccess.php");
+    header("Location: http://10.16.130.245/Firebase/web/passsuccess.php");
   }else{
-    header("Location: http://10.16.138.149/Firebase/web/passunsuccess.php");
+    header("Location: http://10.16.130.245/Firebase/web/passunsuccess.php");
   }
 
 sqlsrv_close($conn);

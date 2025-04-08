@@ -3,13 +3,13 @@
   "packages": [
     {
       "name": "archive",
-      "rootUri": "file:///C:/Users/Supun/AppData/Local/Pub/Cache/hosted/pub.dev/archive-4.0.4",
+      "rootUri": "file:///C:/Users/Supun/AppData/Local/Pub/Cache/hosted/pub.dev/archive-4.0.5",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     },
     {
       "name": "args",
-      "rootUri": "file:///C:/Users/Supun/AppData/Local/Pub/Cache/hosted/pub.dev/args-2.6.0",
+      "rootUri": "file:///C:/Users/Supun/AppData/Local/Pub/Cache/hosted/pub.dev/args-2.7.0",
       "packageUri": "lib/",
       "languageVersion": "3.3"
     },
@@ -87,7 +87,7 @@
     },
     {
       "name": "file_picker",
-      "rootUri": "file:///C:/Users/Supun/AppData/Local/Pub/Cache/hosted/pub.dev/file_picker-9.0.2",
+      "rootUri": "file:///C:/Users/Supun/AppData/Local/Pub/Cache/hosted/pub.dev/file_picker-10.0.0",
       "packageUri": "lib/",
       "languageVersion": "3.4"
     },
@@ -141,7 +141,7 @@
     },
     {
       "name": "image",
-      "rootUri": "file:///C:/Users/Supun/AppData/Local/Pub/Cache/hosted/pub.dev/image-4.5.3",
+      "rootUri": "file:///C:/Users/Supun/AppData/Local/Pub/Cache/hosted/pub.dev/image-4.5.4",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     },
@@ -279,9 +279,9 @@
     },
     {
       "name": "url_launcher_ios",
-      "rootUri": "file:///C:/Users/Supun/AppData/Local/Pub/Cache/hosted/pub.dev/url_launcher_ios-6.3.2",
+      "rootUri": "file:///C:/Users/Supun/AppData/Local/Pub/Cache/hosted/pub.dev/url_launcher_ios-6.3.3",
       "packageUri": "lib/",
-      "languageVersion": "3.3"
+      "languageVersion": "3.4"
     },
     {
       "name": "url_launcher_linux",
@@ -333,7 +333,7 @@
     },
     {
       "name": "win32",
-      "rootUri": "file:///C:/Users/Supun/AppData/Local/Pub/Cache/hosted/pub.dev/win32-5.11.0",
+      "rootUri": "file:///C:/Users/Supun/AppData/Local/Pub/Cache/hosted/pub.dev/win32-5.12.0",
       "packageUri": "lib/",
       "languageVersion": "3.7"
     },
@@ -356,10 +356,10 @@
       "languageVersion": "3.7"
     }
   ],
-  "generated": "2025-03-07T03:22:32.029953Z",
+  "generated": "2025-04-08T04:38:31.173410Z",
   "generator": "pub",
-  "generatorVersion": "3.7.0",
+  "generatorVersion": "3.7.2",
   "flutterRoot": "file:///C:/flutter/src",
-  "flutterVersion": "3.29.0",
+  "flutterVersion": "3.29.2",
   "pubCache": "file:///C:/Users/Supun/AppData/Local/Pub/Cache"
 }
