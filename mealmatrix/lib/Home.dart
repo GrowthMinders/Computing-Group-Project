@@ -429,6 +429,21 @@ class HomeState extends State<Home> {
                       Text('${product['price']}'),
                     ],
                   ),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder:
+                            (context) => ProductDetail(
+                              image: product['image'],
+                              name: product['name'],
+                              price: product['price'].toString(),
+                              supply: product['supply'],
+                              canteen: product['canteen'],
+                            ),
+                      ),
+                    );
+                  },
                 ),
                 const Divider(),
               ],

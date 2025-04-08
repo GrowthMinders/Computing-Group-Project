@@ -247,10 +247,6 @@ class MyAppState extends State<MyApp> {
                                     setState(() {
                                       Logdata.userEmail = responseData['user'];
                                     });
-                                    log(
-                                      "Assigned to Logdata.userEmail: ${Logdata.userEmail}",
-                                    );
-
                                     if (Logdata.userEmail ==
                                         "ayush@gmail.com") {
                                       Navigator.push(

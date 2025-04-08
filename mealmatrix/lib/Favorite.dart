@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class favrendering {
+class Favorite extends StatelessWidget {
   static List<Map<String, dynamic>> favdata = [];
 
   Future<void> renderfav(String responseBody) async {
@@ -50,9 +50,7 @@ class favrendering {
       log("Unexpected error: $ex");
     }
   }
-}
 
-class Favorite extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,7 +62,9 @@ class Favorite extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: CircleAvatar(
-              backgroundImage: AssetImage('assets/Meal Matrix Logo.jpg'),
+              backgroundImage: AssetImage(
+                'lib/assets/images/Meal Matrix Logo.png',
+              ),
             ),
           ),
         ],
@@ -149,7 +149,7 @@ Widget FavoriteItem(List<dynamic> favdata) {
                       (context) => ProductDetail(
                         image: product['image'],
                         name: product['name'],
-                        price: product['price'],
+                        price: product['price'].toString(),
                         supply: product['supply'],
                         canteen: product['canteen'],
                       ),
