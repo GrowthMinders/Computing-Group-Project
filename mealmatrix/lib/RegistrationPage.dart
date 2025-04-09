@@ -246,6 +246,7 @@ class RegistrationPageState extends State<RegistrationPage> {
                     ),
                   ),
                 ),
+                const SizedBox(height: 20),
                 // Phone Field
                 Align(
                   alignment: Alignment.centerLeft,
@@ -264,7 +265,6 @@ class RegistrationPageState extends State<RegistrationPage> {
                   ),
                 ),
 
-                const SizedBox(height: 10),
                 SizedBox(
                   width: 300,
                   height: 45,
@@ -410,48 +410,61 @@ class RegistrationPageState extends State<RegistrationPage> {
                 ),
                 const SizedBox(height: 20),
 
-                //Image Uploading start
-                Row(
-                  children: [
-                    SizedBox(
-                      width: 300,
-                      height: 45,
-                      child: TextField(
-                        readOnly: true, // Make the text field non-editable
-                        onTap: () {
-                          setState(() {
-                            Regdata.error = 0;
-                            Regdata.errmessage = "";
-                          });
-                        },
-                        controller: controller6,
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: const Color(0xffDDDDDD),
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          hintText: 'Choose image file',
-                          hintStyle: const TextStyle(color: Color(0xff888888)),
-                        ),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      left: 45.0,
+                    ), // Correct placement of padding
+                    child: Text(
+                      'Profile Picture',
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Color(0xff6F6F6F),
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(
-                      width: 10,
-                    ), // Add some space between the text field and button
-                    ElevatedButton(
-                      onPressed: pickMedia,
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 12,
-                        ),
-                      ),
-                      child: const Text('Choose File'),
-                    ),
-                  ],
+                  ),
                 ),
+
+                const SizedBox(height: 10),
+                //Image Uploading start
+                SizedBox(
+                  width: 300,
+                  height: 45,
+                  child: TextField(
+                    readOnly: true, // Make the text field non-editable
+                    onTap: () {
+                      setState(() {
+                        Regdata.error = 0;
+                        Regdata.errmessage = "";
+                      });
+                    },
+                    controller: controller6,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: const Color(0xffDDDDDD),
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      hintText: 'Choose profile picture',
+                      hintStyle: const TextStyle(color: Color(0xff888888)),
+                      suffixIcon: IconButton(
+                        // Better to use IconButton for this case
+                        onPressed:
+                            pickMedia, // Correct way to assign the function
+                        icon: const Icon(
+                          Icons.file_upload,
+                          color: Color(0xff888888),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  width: 10,
+                ), // Add some space between the text field and button
 
                 const SizedBox(height: 20),
 

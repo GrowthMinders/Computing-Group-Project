@@ -59,8 +59,26 @@ class Cart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false, // This removes the debug label
       home: Scaffold(
-        appBar: AppBar(backgroundColor: Colors.white, elevation: 0),
+        appBar: AppBar(
+          backgroundColor: Colors.green,
+          title: Text('Cart'),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: CircleAvatar(
+                backgroundImage: AssetImage(
+                  'lib/assets/images/Meal Matrix Logo.png',
+                ),
+              ),
+            ),
+          ],
+        ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -98,6 +116,7 @@ class Cart extends StatelessWidget {
       ),
     );
   }
+  // ... rest of your code remains the same ...
 
   Widget _buildCartItem(List<dynamic> cartdata) {
     return Column(

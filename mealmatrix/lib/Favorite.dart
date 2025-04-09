@@ -19,7 +19,6 @@ class MyApp extends StatelessWidget {
 
 class Favorite extends StatelessWidget {
   static List<Map<String, dynamic>> favdata = [];
-
   Future<void> renderfav(String responseBody) async {
     try {
       var url = Uri.parse(
@@ -56,7 +55,7 @@ class Favorite extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.green,
-        title: Text('Favorite Item'),
+        title: Text('Favorites'),
         centerTitle: true,
         actions: [
           Padding(
