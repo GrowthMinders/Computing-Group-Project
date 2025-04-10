@@ -108,7 +108,7 @@ class ProductDetailState extends State<ProductDetail> {
                     onPressed: () async {
                       try {
                         var url = Uri.parse(
-                          "http://10.16.130.245/Firebase/favorite.php",
+                          "http://10.16.166.111/Firebase/favorite.php",
                         );
 
                         var response = await http.post(
@@ -176,7 +176,7 @@ class ProductDetailState extends State<ProductDetail> {
                     onPressed: () async {
                       try {
                         var url = Uri.parse(
-                          "http://10.16.130.245/Firebase/cart.php",
+                          "http://10.16.166.111/Firebase/cart.php",
                         );
 
                         var response = await http.post(
@@ -201,6 +201,16 @@ class ProductDetailState extends State<ProductDetail> {
                         log("Unexpected error: $ex");
                       }
                     },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 16,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
                     child: const Text(
                       "Add To Cart",
                       style: TextStyle(color: Colors.white),

@@ -47,7 +47,7 @@ class FinagleState extends State<Finagle> {
   Future<void> fetchProducts() async {
     try {
       final response = await http.get(
-        Uri.parse('http://10.16.130.245/Firebase/Menus/Finagle.php'),
+        Uri.parse('http://10.16.166.111/Firebase/Menus/Finagle.php'),
       );
 
       if (response.statusCode == 200) {

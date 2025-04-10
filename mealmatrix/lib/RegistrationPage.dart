@@ -1,5 +1,5 @@
 // ignore: file_names
-// ignore_for_file: file_names, duplicate_ignore, use_build_context_synchronously
+// ignore_for_file: file_names, duplicate_ignore, use_build_context_synchronously, unused_local_variable
 
 import 'package:flutter/material.dart';
 import 'main.dart';
@@ -539,40 +539,36 @@ class RegistrationPageState extends State<RegistrationPage> {
                       if (Regdata.error == 0) {
                         try {
                           var url = Uri.parse(
-                            "http://10.16.130.245/Firebase/register.php",
+                            "http://10.16.166.111/Firebase/register.php",
                           );
+                          var request = http.MultipartRequest('POST', url);
 
-                          var response = await http.post(
-                            url,
-                            body: {
-                              'name': Regdata.name,
-                              'email': Regdata.email,
-                              'phone': Regdata.phone,
-                              'pass': Regdata.pass,
-                              'image': filePath,
-                            },
-                          );
+                          // Add text fields
+                          request.fields['name'] = Regdata.name;
+                          request.fields['email'] = Regdata.email;
+                          request.fields['phone'] = Regdata.phone;
+                          request.fields['pass'] = Regdata.pass;
+
+                          // Add image file
+                          if (filePath != null) {
+                            var file = await http.MultipartFile.fromPath(
+                              'image',
+                              filePath.toString(),
+                            );
+                            request.files.add(file);
+                          }
+
+                          var response = await request.send();
+                          final responseData =
+                              await response.stream.bytesToString();
+
                           if (response.statusCode == 200) {
-                            log("Success: Registartion Suceeded");
+                            log("Success: Registration Succeeded");
                             Navigator.push(
                               context,
                               MaterialPageRoute(builder: (context) => MyApp()),
                             );
-                            setState(() {
-                              controller1.text = "";
-                              controller2.text = "";
-                              controller3.text = "";
-                              controller4.text = "";
-                              controller5.text = "";
-                              Regdata.name = "";
-                              Regdata.email = "";
-                              Regdata.phone = "";
-                              Regdata.pass = "";
-                              Regdata.cpass = "";
-                              Regdata.error = 0;
-                              Regdata.errmessage = "";
-                              Regdata.isChecked = false;
-                            });
+                            // Reset fields...
                           } else if (response.statusCode == 409) {
                             log("Contact number already registered");
                             setState(() {

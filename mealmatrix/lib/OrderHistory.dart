@@ -45,44 +45,6 @@ class OrderHistoryPage extends StatelessWidget {
               price: 'Rs.380.00',
               isFavorite: true,
             ),
-            OrderItem(
-              imageUrl:
-                  'https://storage.googleapis.com/a1aa/image/lTtJeRlyHKJONe74FV1NSLovhEe8dK1sPQqCRyxv9-0.jpg',
-              title: 'Chicken',
-              subtitle: 'Kottu',
-              price: 'Rs.670.00',
-              isFavorite: false,
-            ),
-            SizedBox(height: 24),
-            Text(
-              'yesterday',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 16),
-            OrderItem(
-              imageUrl:
-                  'https://storage.googleapis.com/a1aa/image/zhIfacXD70Afiu-oAMc6kEs--AvnHl-a73-gyRQMvYI.jpg',
-              title: 'Fish',
-              subtitle: 'Rice & Curry',
-              price: 'Rs.380.00',
-              isFavorite: true,
-            ),
-            OrderItem(
-              imageUrl:
-                  'https://storage.googleapis.com/a1aa/image/9n8ySu4_HLhfe1vwzb8846uExXvw-LZEExz0ivEoPwA.jpg',
-              title: 'Sausage Delight',
-              subtitle: 'Pizza',
-              price: 'Rs.1500.00',
-              isFavorite: false,
-            ),
-            OrderItem(
-              imageUrl:
-                  'https://storage.googleapis.com/a1aa/image/lTtJeRlyHKJONe74FV1NSLovhEe8dK1sPQqCRyxv9-0.jpg',
-              title: 'Chicken',
-              subtitle: 'Kottu',
-              price: 'Rs.670.00',
-              isFavorite: false,
-            ),
           ],
         ),
       ),

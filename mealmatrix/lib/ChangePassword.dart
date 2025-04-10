@@ -177,7 +177,7 @@ class _ChangePasswordState extends State<ChangePassword> {
 
                         try {
                           var url = Uri.parse(
-                            "http://10.16.130.245/Firebase/passwordchange.php",
+                            "http://10.16.166.111/Firebase/passwordchange.php",
                           );
 
                           var response = await http.post(
