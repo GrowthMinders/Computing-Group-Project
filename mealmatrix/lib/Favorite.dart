@@ -22,7 +22,7 @@ class Favorite extends StatelessWidget {
   Future<void> renderfav(String responseBody) async {
     try {
       var url = Uri.parse(
-        "http://10.16.166.111/Firebase/favoriterendering.php",
+        "http://10.16.130.245/Firebase/favoriterendering.php",
       );
 
       var response = await http.post(url, body: {'email': Logdata.userEmail});
@@ -163,12 +163,8 @@ Widget FavoriteItem(List<dynamic> favdata) {
                     radius: 30,
                   ),
                   title: Text(product['name']),
-                  subtitle: Column(
-                    children: [
-                      Text('${product['supply']}'),
-                      Text('${product['canteen']}'),
-                      Text('${product['price']}'),
-                    ],
+                  subtitle: Text(
+                    'Rs.${product['price']}\n${product['supply']}\n${product['canteen']}',
                   ),
                 ),
                 const Divider(),

@@ -17,7 +17,7 @@ class _CartState extends State<Cart> {
 
   Future<void> rendercart() async {
     try {
-      var url = Uri.parse("http://10.16.166.111/Firebase/cartrendering.php");
+      var url = Uri.parse("http://10.16.130.245/Firebase/cartrendering.php");
 
       var response = await http.post(url, body: {'email': Logdata.userEmail});
 
@@ -157,7 +157,7 @@ class _CartState extends State<Cart> {
                     onPressed: () async {
                       try {
                         var url = Uri.parse(
-                          "http://10.16.166.111/Firebase/prodelcart.php",
+                          "http://10.16.130.245/Firebase/prodelcart.php",
                         );
 
                         var response = await http.post(

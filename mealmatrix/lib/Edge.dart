@@ -47,7 +47,7 @@ class EdgeState extends State<Edge> {
   Future<void> fetchProducts() async {
     try {
       final response = await http.get(
-        Uri.parse('http://10.16.166.111/Firebase/Menus/Edge.php'),
+        Uri.parse('http://10.16.130.245/Firebase/Menus/Edge.php'),
       );
 
       if (response.statusCode == 200) {
@@ -228,7 +228,9 @@ class EdgeState extends State<Edge> {
                       radius: 30,
                     ),
                     title: Text(product['name']),
-                    subtitle: Text('Rs.${product['price']}'),
+                    subtitle: Text(
+                      'Rs.${product['price']}\n${product['supply']}\n${product['canteen']}',
+                    ),
                   ),
                   const Divider(),
                 ],

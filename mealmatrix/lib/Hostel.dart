@@ -47,7 +47,7 @@ class HostelState extends State<Hostel> {
   Future<void> fetchProducts() async {
     try {
       final response = await http.get(
-        Uri.parse('http://10.16.166.111/Firebase/Menus/Hostel.php'),
+        Uri.parse('http://10.16.130.245/Firebase/Menus/Hostel.php'),
       );
 
       if (response.statusCode == 200) {
@@ -63,6 +63,8 @@ class HostelState extends State<Hostel> {
           teacoffee = products.where((p) => p['category'] == 'Drink').toList();
           snack = products.where((p) => p['category'] == 'Snack').toList();
           desert = products.where((p) => p['category'] == 'Desert').toList();
+          log('Fried rice count: ${friedrice.length}');
+          log('Rice and curry count: ${ricecurry.length}');
         });
       } else {
         log('Failed to load products: ${response.statusCode}');
@@ -124,7 +126,7 @@ class HostelState extends State<Hostel> {
             },
           ),
           const Text(
-            'Audi Canteen',
+            'Hostel Canteen',
             style: TextStyle(
               color: Colors.white,
               fontSize: 24,
@@ -228,7 +230,9 @@ class HostelState extends State<Hostel> {
                       radius: 30,
                     ),
                     title: Text(product['name']),
-                    subtitle: Text('Rs.${product['price']}'),
+                    subtitle: Text(
+                      'Rs.${product['price']}\n${product['supply']}\n${product['canteen']}',
+                    ),
                   ),
                   const Divider(),
                 ],

@@ -13,4 +13,3 @@ $result1 = sqlsrv_query($conn, $sql1, $data1);
 
 sqlsrv_close($conn);
 ?>
-
