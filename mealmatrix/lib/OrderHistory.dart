@@ -10,14 +10,8 @@ import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'package:mealmatrix/main.dart';
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(home: OrderHistory());
-  }
-}
+// Remove the first OrderHistory class completely and keep only the second one
 
-//change
 class OrderHistory extends StatelessWidget {
   static List<Map<String, dynamic>> favdata = [];
   Future<void> renderfav(String responseBody) async {
@@ -164,12 +158,8 @@ Widget FavoriteItem(List<dynamic> favdata) {
                     radius: 30,
                   ),
                   title: Text(product['name']),
-                  subtitle: Column(
-                    children: [
-                      Text('${product['supply']}'),
-                      Text('${product['canteen']}'),
-                      Text('${product['price']}'),
-                    ],
+                  subtitle: Text(
+                    'Rs.${product['price']}\n${product['supply']}\n${product['canteen']}',
                   ),
                 ),
                 const Divider(),

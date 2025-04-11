@@ -8,12 +8,7 @@ import 'package:mealmatrix/OrderHistory.dart';
 import 'package:mealmatrix/Setting.dart';
 import 'package:mealmatrix/main.dart';
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(home: Profile());
-  }
-}
+// Remove the StatelessWidget version completely and keep only the StatefulWidget
 
 class Profile extends StatefulWidget {
   @override

@@ -10,13 +10,6 @@ import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'package:mealmatrix/main.dart';
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(home: Favorite());
-  }
-}
-
 class Favorite extends StatelessWidget {
   static List<Map<String, dynamic>> favdata = [];
   Future<void> renderfav(String responseBody) async {

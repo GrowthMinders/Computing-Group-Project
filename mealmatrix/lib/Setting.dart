@@ -1,4 +1,4 @@
-// ignore_for_file: file_names, use_key_in_widget_constructors, camel_case_types
+// ignore_for_file: file_names, use_key_in_widget_constructors, camel_case_types, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:mealmatrix/ChangePassword.dart';
@@ -14,10 +14,11 @@ import 'dart:developer';
 import 'dart:convert';
 import 'dart:typed_data';
 
-class MyApp extends StatelessWidget {
+// Rename Stateless Setting class to avoid conflict
+class SettingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: Setting());
+    return MaterialApp(debugShowCheckedModeBanner: false, home: Setting());
   }
 }
 
@@ -35,7 +36,7 @@ class user {
 
 class SettingState extends State<Setting> {
   bool isDarkMode = false;
-  int currentIndex = 3; // Default to Settings
+  int currentIndex = 3;
 
   @override
   Widget build(BuildContext context) {
@@ -95,30 +96,26 @@ class SettingState extends State<Setting> {
                     var url = Uri.parse(
                       "http://10.16.130.245/Firebase/profile.php",
                     );
-
                     var response = await http.post(
                       url,
                       body: {'email': Logdata.userEmail},
                     );
+
                     if (response.statusCode == 200) {
                       log("Success: Account information loaded");
-                      List<dynamic> jsonResponse = json.decode(response.body);
 
-                      // getting image
                       var data = jsonDecode(response.body);
-
                       setState(() {
-                        user.imageBytes = data['image'];
-                        if (user.imageBytes != null) {
+                        if (data['image'] != null) {
                           user.imageBytes = base64Decode(data['image']);
                         }
                       });
 
-                      user.name = jsonResponse[1];
-                      user.email = jsonResponse[2];
-                      user.tel = jsonResponse[4];
+                      user.name = data['name'];
+                      user.email = data['email'];
+                      user.tel = data['tel'].toString();
+
                       Navigator.push(
-                        // ignore: use_build_context_synchronously
                         context,
                         MaterialPageRoute(builder: (context) => Profile()),
                       );
@@ -185,9 +182,11 @@ class SettingState extends State<Setting> {
                   user.name = "";
                   user.tel = "";
                   Logdata.canteen = false;
-                  Navigator.push(
+
+                  Navigator.pushAndRemoveUntil(
                     context,
-                    MaterialPageRoute(builder: (context) => MyApp()),
+                    MaterialPageRoute(builder: (context) => const MyApp()),
+                    (route) => false,
                   );
                 },
               ),

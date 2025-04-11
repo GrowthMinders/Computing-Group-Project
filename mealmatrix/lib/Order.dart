@@ -5,14 +5,7 @@ import 'package:mealmatrix/Favorite.dart';
 import 'package:mealmatrix/Home.dart';
 import 'package:mealmatrix/Setting.dart';
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(home: Order());
-  }
-}
+// Remove the first Order class completely and keep only the second one
 
 class Order extends StatelessWidget {
   const Order({super.key});
@@ -66,7 +59,7 @@ class Order extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Order history', // Fixed typo here
+                  'Order history',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 Text(
@@ -124,7 +117,7 @@ class Order extends StatelessWidget {
           ),
           _buildBottomNavItem(
             Icons.settings,
-            'Settings', // Fixed typo here
+            'Settings',
             const Color.fromARGB(255, 74, 73, 73),
             onTap: () {
               Navigator.push(
