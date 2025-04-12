@@ -15,7 +15,7 @@
             <h1>Register New Canteen</h1>
         </div>
         
-        <form action="" method="POST" enctype="multipart/form-data">
+        <form action="backend/insertcanteen.php" method="POST" enctype="multipart/form-data">
             <div class="form-grid">
                 <div class="form-group full-width">
                     <label for="name">Canteen Name</label>
@@ -24,13 +24,13 @@
                 </div>
                 
                 <div class="form-group full-width">
-                    <label for="image">Canteen Image/Logo</label>
+                    <label for="image">Profile Picture</label>
                     <div class="file-input-wrapper">
                         <div class="file-input-text">
                             <i class="fas fa-image"></i>
                             <span>Choose an image file...</span>
                         </div>
-                        <input type="file" name="image" id="image" required>
+                        <input type="file" name="image" id="image">
                     </div>
                 </div>
                 
