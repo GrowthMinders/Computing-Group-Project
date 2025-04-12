@@ -12,7 +12,7 @@
     <div class="main">
         <img src="Meal Matrix Logo.png" alt="Meal Matrix Logo">
         <h1>New Product</h1> 
-        <form action="" method="POST">
+        <form action="backend/insertproduct.php" method="POST">
             <div class="input-group">
                 <i class="fas fa-tag input-icon"></i>
                 <input type="text" name="name" id="name" placeholder="Name">
