@@ -1,0 +1,113 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  body {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .main {
+    width: 100%;
+    max-width: 480px;
+    border-radius: 24px;
+    background-color: white;
+    padding: 60px 40px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .main:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  }
+  
+  .logo-container {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  
+  img {
+    height: 80px;
+    width: auto;
+    margin-bottom: 20px;
+  }
+  
+  h1 {
+    color: #2c3e50;
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  
+  .subtitle {
+    color: #7f8c8d;
+    font-size: 14px;
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  
+  .form-group {
+    margin-bottom: 25px;
+    position: relative;
+  }
+  
+  input {
+    width: 100%;
+    padding: 15px 20px 15px 45px;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    background-color: #f9f9f9;
+  }
+  
+  input:focus {
+    border-color: #27ae60;
+    box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.2);
+    outline: none;
+    background-color: white;
+  }
+  
+  input::placeholder {
+    color: #95a5a6;
+  }
+  
+  .icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #95a5a6;
+  }
+  
+  button {
+    width: 100%;
+    padding: 16px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+    box-shadow: 0 4px 6px rgba(39, 174, 96, 0.2);
+  }
+  
+  button:hover {
+    background: linear-gradient(135deg, #219653 0%, #27ae60 100%);
+    box-shadow: 0 6px 8px rgba(39, 174, 96, 0.3);
+    transform: translateY(-2px);
+  }
+
+  
