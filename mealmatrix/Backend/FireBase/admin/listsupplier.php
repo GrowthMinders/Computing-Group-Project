@@ -34,7 +34,7 @@
                             <td>" . $row['contact'] . "</td>
                             <td>
                                <form action='backend/supplierdelete.php' method='POST'>
-                                  <input type='hidden' name='name' value='" . $row['email'] . "'>
+                                  <input type='text' name='email' value='" . $row['email'] . "' hidden>
                                   <button type='submit' class='action-btn delete-btn'>Delete</button>
                                </form>
                             </td>
