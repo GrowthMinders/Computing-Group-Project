@@ -38,7 +38,7 @@
                             <td>". $row['supply'] ."</td>
                             <td>
                               <div style='display: flex;'>
-                                <form action='backend/productupdate.php' method='POST'>
+                                <form action='editproduct.php' method='POST'>
                                     <input type='text' name='pid' id='pid' value='". $row['pid'] ."' hidden>
                                     <button type = 'submit' class='action-btn edit-btn'>Edit</button>
                                 </form>

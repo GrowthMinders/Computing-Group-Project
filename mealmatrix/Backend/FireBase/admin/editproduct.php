@@ -12,35 +12,51 @@
     <div class="main">
         <img src="Meal Matrix Logo.png" alt="Meal Matrix Logo">
         <h1>Edit Product</h1> 
-        <form action="" method="POST">
-            <div class="form-group">
-                <i class="fas fa-tag input-icon"></i>
-                <input type="text" name="name" id="name" placeholder="Name" value="Product Name">
-            </div>
-            
-            <div class="form-group">
-                <i class="fas fa-list input-icon"></i>
-                <input type="text" name="category" id="category" placeholder="Category" value="Beverage">
-            </div>
-            
-            <div class="form-group">
-                <i class="fas fa-rupee-sign input-icon"></i>
-                <input type="text" name="price" id="price" placeholder="Price" value="50.00">
-            </div>
-            
-            <div class="form-group">
-                <i class="fas fa-store input-icon"></i>
-                <input type="text" name="canteen" id="canteen" placeholder="Canteen" value="Main Canteen">
-            </div>
-            
-            <div class="form-group">
-                <i class="fas fa-truck input-icon"></i>
-                <input type="text" name="supply" id="supply" placeholder="Supplier" value="Beverage Suppliers Inc.">
-            </div>
-            
-            <button type="submit">
-                <i class="fas fa-sync-alt"></i> Update Product
-            </button>
+        <form action="backend/productupdate.php" method="POST">
+            <?php
+                include_once "../connection.php";
+
+                $id = $_POST['pid'];
+
+                $sql = "SELECT * FROM product WHERE pid = ?";
+
+                $data = array($id);
+
+                $result = sqlsrv_query($conn, $sql, $data);
+     
+                while($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
+                    echo "<div class='form-group'>
+                             <i class='fas fa-pencil-alt input-icon'></i>
+                             <input type='text' name='name' id='name' value='". $row['name'] ."'>
+                          </div>
+
+                          <div class='form-group'>
+                             <i class='fas fa-tags input-icon'></i>
+                             <input type='text' name='category' id='category' value='". $row['category'] ."'>
+                          </div>
+
+                          <div class='form-group'>
+                             <i class='fas fa-money-bill-wave input-icon'></i>
+                             <input type='text' name='price' id='price' value='". $row['price'] ."'>
+                          </div>
+
+                          <div class='form-group'>
+                             <i class='fas fa-utensils input-icon'></i>
+                             <input type='text' name='canteen' id='canteen' value='". $row['canteen'] ."'>
+                          </div>
+
+                          <div class='form-group'>
+                             <i class='fas fa-boxes input-icon'></i>
+                             <input type='text' name='supply' id='supply' value='". $row['supply'] ."'>
+                          </div>
+
+                          <input type='text' name='pid' id='pid' value='". $row['pid'] ."' hidden>
+                          
+                          <button type='submit'><i class='fas fa-save'></i> Update Product </button>";
+                } 
+                sqlsrv_free_stmt($result);
+                sqlsrv_close($conn);
+                ?>
         </form>
     </div>
 </body>
