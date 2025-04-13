@@ -36,7 +36,7 @@
         
        
         <div class="logout-container">
-            <a href="admin-login.html" class="logout-btn">
+            <a href="backend/logout.php" class="logout-btn">
                 <i class="fas fa-sign-out-alt"></i>
                 <span>Log Out</span>
             </a>
@@ -45,38 +45,110 @@
     
 
     <div class="main-content">
-        <div class="header">
-            <h1 class="page-title">Dashboard</h1>
-            <div class="user-profile">
-                <img src="https://randomuser.me/api/portraits/women/45.jpg" alt="User">
-                <span>Admin</span>
-            </div>
-        </div>
+    <div class="header">
+    <h1 class="page-title">Dashboard</h1>
+    <div class="user-profile">
+        <?php 
+        session_start();
+        include_once "../connection.php";
 
+        $sql = "SELECT image FROM customer WHERE email = ?";
+        $data = array($_SESSION["admin"]);
+
+        $result = sqlsrv_query($conn, $sql, $data);
+
+        if($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
+            echo "<img src='https://randomuser.me/api/portraits/women/45.jpg' alt='admin'>";
+        } else {
+            echo "<img src='https://randomuser.me/api/portraits/women/45.jpg' alt='admin'>";//change
+        }
+        ?>
         
-        <div class="dashboard-cards">
-            <div class="card card-1">
-                <div class="card-icon">
-                    <i class="fas fa-store"></i>
-                </div>
-                <p class="card-title">Total Canteens</p>
-                <p class="card-value">12</p>
-            </div>
-            <div class="card card-2">
-                <div class="card-icon">
-                    <i class="fas fa-utensils"></i>
-                </div>
-                <p class="card-title">Total Products</p>
-                <p class="card-value">87</p>
-            </div>
-            <div class="card card-3">
-                <div class="card-icon">
-                    <i class="fas fa-users"></i>
-                </div>
-                <p class="card-title">Registered Users</p>
-                <p class="card-value">256</p>
-            </div>
+        <span><?php echo($_SESSION["admin"])?></span>
+    </div>
+</div>
+        
+<div class="dashboard-cards">
+    <a href="listcanteen.php" class="next"><div class="card card-1">
+        <div class="card-icon">
+            <i class="fas fa-store"></i>
         </div>
+        <p class="card-title">Total Canteens</p>
+        <?php 
+           include_once "../connection.php";
+           $sql = "SELECT COUNT(*) AS count FROM canteen";
+           $result = sqlsrv_query($conn, $sql);
+
+           if($result && $row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
+               echo "<p class='card-value'>".$row['count']."</p>";
+           } else {
+               echo "<p class='card-value'>0</p>";
+           }
+           sqlsrv_free_stmt($result);
+        ?>
+        
+    </div></a>
+
+    <a href="listsupplier.php" class="next"><div class="card card-3">
+        <div class="card-icon">
+            <i class="fas fa-users"></i>
+        </div>
+        <p class="card-title">Suppliers</p>
+        <?php 
+           include_once "../connection.php";
+           $sql1 = "SELECT COUNT(*) AS count FROM customer WHERE email LIKE '%@gmail.com'";
+           $result1 = sqlsrv_query($conn, $sql1);
+
+           if($result1 && $row1 = sqlsrv_fetch_array($result1, SQLSRV_FETCH_ASSOC)) {
+               echo "<p class='card-value'>".$row1['count']."</p>";
+           } else {
+               echo "<p class='card-value'>0</p>";
+           }
+           sqlsrv_free_stmt($result1);
+        ?>
+        
+    </div></a>
+
+    <a href="listproduct.php" class="next"><div class="card card-2">
+        <div class="card-icon">
+            <i class="fas fa-utensils"></i>
+        </div>
+        <p class="card-title">Total Products</p>
+        <?php 
+           include_once "../connection.php";
+           $sql2 = "SELECT COUNT(*) AS count FROM product";
+           $result2 = sqlsrv_query($conn, $sql2);
+
+           if($result2 && $row2 = sqlsrv_fetch_array($result2, SQLSRV_FETCH_ASSOC)) {
+               echo "<p class='card-value'>".$row2['count']."</p>";
+           } else {
+               echo "<p class='card-value'>0</p>";
+           }
+           sqlsrv_free_stmt($result2);
+        ?>
+        
+    </div></a>
+
+    <div class="card card-3">
+        <div class="card-icon">
+            <i class="fas fa-users"></i>
+        </div>
+        <p class="card-title">Registered Users</p>
+        <?php 
+           include_once "../connection.php";
+           $sql3 = "SELECT COUNT(*) AS count FROM customer";
+           $result3 = sqlsrv_query($conn, $sql3);
+
+           if($result3 && $row3 = sqlsrv_fetch_array($result3, SQLSRV_FETCH_ASSOC)) {
+               echo "<p class='card-value'>".$row3['count']."</p>";
+           } else {
+               echo "<p class='card-value'>0</p>";
+           }
+           sqlsrv_free_stmt($result3);
+           sqlsrv_close($conn);
+        ?>
+    </div>
+</div>
     </div>
 </body>
 </html>
