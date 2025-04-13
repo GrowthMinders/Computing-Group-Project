@@ -15,7 +15,7 @@
             <p class="subtitle">Please enter your credentials to continue</p>
         </div>
         
-        <form action="" method="POST">
+        <form action="backend/log.php" method="POST">
             <div class="form-group">
                 <i class="icon">📧</i>
                 <input type="email" name="email" id="email" placeholder="Email Address" required>
