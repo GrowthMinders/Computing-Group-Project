@@ -39,11 +39,11 @@
                             <td>
                               <div style='display: flex;'>
                                 <form action='backend/productupdate.php' method='POST'>
-                                    <input type='text' name='name' id='name' value='". $row['pid'] ."' hidden>
+                                    <input type='text' name='pid' id='pid' value='". $row['pid'] ."' hidden>
                                     <button type = 'submit' class='action-btn edit-btn'>Edit</button>
                                 </form>
                                 <form action='backend/productdelete.php' method='POST'>
-                                    <input type='text' name='name' id='name' value='". $row['pid'] ."' hidden>
+                                    <input type='text' name='pid' id='pid' value='". $row['pid'] ."' hidden>
                                     <button type = 'submit' class='action-btn delete-btn'>Delete</button>
                                 </form>
                               </div> 
