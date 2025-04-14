@@ -81,22 +81,6 @@
                     <i class="fas fa-lock input-icon"></i>
                     <input type="password" name="cpass" id="cpass" placeholder="Confirm your password" required>
                 </div>
-
-                <?php
-                $mac = shell_exec('getmac /FO CSV /NH 2>&1');
-                if ($mac) {
-                    $mac = explode(',', $mac)[0] ?? '';
-                    $mac = trim($mac, ' "');
-                    $mac = preg_replace('/[^0-9A-Fa-f]/', '', $mac);
-                    
-                    if (strlen($mac) === 12) {
-                        $mac = implode(':', str_split($mac, 2));
-                        $mac = strtoupper($mac);
-                        $hashmac = password_hash($mac, PASSWORD_BCRYPT);
-                        echo "<input type='hidden' name='mac' value='".htmlspecialchars($hashmac, ENT_QUOTES)."'>";
-                    }
-                }
-                ?>
             </div>
             
             <button type="submit">

@@ -14,7 +14,6 @@ $name = $_POST['name'];
 $contact = $_POST['contact'];
 $email = $_POST['email'];
 $pass = $_POST['pass']; 
-$mac = $_POST['mac'];
 
 $sql3 = "INSERT INTO canteen (name, otime, ctime, location, contact) VALUES (?, ?, ?, ?, ?)";
 $data3 = array($cname, $open, $close, $location, $contact);
@@ -28,8 +27,8 @@ $result3 = sqlsrv_query($conn, $sql3, $data3);
         $imagecontent = file_get_contents($image);
     
         $hash = password_hash($pass, PASSWORD_BCRYPT);
-        $sql2 = "INSERT INTO customer (name, email, password, image, contact, mac) VALUES (?, ?, ?, ?, ?, ?)";
-        $data2 = array($name, $email, $hash, $imagecontent, $contact, $mac);
+        $sql2 = "INSERT INTO customer (name, email, password, image, contact) VALUES (?, ?, ?, ?, ?)";
+        $data2 = array($name, $email, $hash, $imagecontent, $contact);
         
         $result2 = sqlsrv_query($conn, $sql2, $data2);
 
@@ -41,8 +40,8 @@ $result3 = sqlsrv_query($conn, $sql3, $data3);
 
     }else{
         $hash = password_hash($pass, PASSWORD_BCRYPT);
-        $sql = "INSERT INTO customer (name, email, password, contact, mac) VALUES (?, ?, ?, ?, ?)";
-        $data = array($name, $email, $hash, $contact, $mac);
+        $sql = "INSERT INTO customer (name, email, password, contact) VALUES (?, ?, ?, ?)";
+        $data = array($name, $email, $hash, $contact);
     
         $result = sqlsrv_query($conn, $sql, $data);
 

@@ -22,10 +22,12 @@ class Fpdata {
 
   static void validate() {
     RegExp regexmail = RegExp('^[A-Za-z0-9]{3,50}@(students.nsbm.ac.lk)\$');
+    RegExp regexmailcanteen = RegExp('^[A-Za-z]{3,50}@(gmail.com)\$');
     if (controller1.text.isEmpty) {
       Fpdata.error++;
       Fpdata.errmessage = "Please enter email address";
-    } else if (!regexmail.hasMatch(Fpdata.email)) {
+    } else if (!regexmail.hasMatch(controller1.text) &&
+        !regexmailcanteen.hasMatch(controller1.text)) {
       Fpdata.error++;
       Fpdata.errmessage = "Invalid email address";
     }
