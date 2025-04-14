@@ -108,7 +108,7 @@ class ProductDetailState extends State<ProductDetail> {
                     onPressed: () async {
                       try {
                         var url = Uri.parse(
-                          "http://10.16.130.245/Firebase/favorite.php",
+                          "http://192.168.177.67/Firebase/favorite.php",
                         );
 
                         var response = await http.post(
@@ -176,7 +176,7 @@ class ProductDetailState extends State<ProductDetail> {
                     onPressed: () async {
                       try {
                         var url = Uri.parse(
-                          "http://10.16.130.245/Firebase/cart.php",
+                          "http://192.168.177.67/Firebase/cart.php",
                         );
 
                         var response = await http.post(

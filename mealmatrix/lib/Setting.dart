@@ -30,7 +30,7 @@ class Setting extends StatefulWidget {
 class user {
   static String name = "";
   static String email = "";
-  static String tel = "";
+  static String tel = ""; // check
   static Uint8List? imageBytes;
 }
 
@@ -94,7 +94,7 @@ class SettingState extends State<Setting> {
                 onTap: () async {
                   try {
                     var url = Uri.parse(
-                      "http://10.16.130.245/Firebase/profile.php",
+                      "http://192.168.177.67/Firebase/profile.php",
                     );
                     var response = await http.post(
                       url,
@@ -102,26 +102,28 @@ class SettingState extends State<Setting> {
                     );
 
                     if (response.statusCode == 200) {
-                      log("Success: Account information loaded");
-
+                      log("Data loaded");
                       var data = jsonDecode(response.body);
-                      setState(() {
-                        if (data['image'] != null) {
-                          user.imageBytes = base64Decode(data['image']);
-                        }
-                      });
 
-                      user.name = data['name'];
-                      user.email = data['email'];
-                      user.tel = data['tel'].toString();
-
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => Profile()),
-                      );
+                      if (data is Map<String, dynamic>) {
+                        setState(() {
+                          user.name = data['name'].toString();
+                          user.email = data['email'].toString();
+                          user.tel = data['contact'].toString();
+                          if (data['image'] != null) {
+                            user.imageBytes = base64Decode(data['image']);
+                          }
+                        });
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Profile()),
+                        );
+                      } else {
+                        log("Blank");
+                      }
                     }
                   } catch (ex) {
-                    log("Unexpected error: $ex");
+                    log("Error fetching profile: $ex");
                   }
                 },
               ),

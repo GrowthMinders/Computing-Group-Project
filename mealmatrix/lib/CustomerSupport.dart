@@ -8,12 +8,9 @@ class CustomerSupport extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.grey[100],
       appBar: AppBar(
-        backgroundColor: Colors.green[700],
-        leading: Icon(Icons.arrow_back, color: Colors.white),
-        title: Text(
-          'Customer Support',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        ),
+        backgroundColor: Colors.green,
+        title: Text('Customer Support'),
+        centerTitle: true,
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),

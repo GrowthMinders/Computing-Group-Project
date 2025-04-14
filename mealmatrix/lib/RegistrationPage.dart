@@ -539,7 +539,7 @@ class RegistrationPageState extends State<RegistrationPage> {
                       if (Regdata.error == 0) {
                         try {
                           var url = Uri.parse(
-                            "http://10.16.130.245/Firebase/register.php",
+                            "http://192.168.177.67/Firebase/register.php",
                           );
                           var request = http.MultipartRequest('POST', url);
 

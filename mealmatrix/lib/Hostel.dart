@@ -47,7 +47,7 @@ class HostelState extends State<Hostel> {
   Future<void> fetchProducts() async {
     try {
       final response = await http.get(
-        Uri.parse('http://10.16.130.245/Firebase/Menus/Hostel.php'),
+        Uri.parse('http://192.168.177.67/Firebase/Menus/Hostel.php'),
       );
 
       if (response.statusCode == 200) {

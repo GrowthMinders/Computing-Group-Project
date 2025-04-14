@@ -228,7 +228,7 @@ class MyAppState extends State<MyApp> {
                               if (Logdata.error == 0) {
                                 try {
                                   var url = Uri.parse(
-                                    "http://10.16.130.245/Firebase/login.php",
+                                    "http://192.168.177.67/Firebase/login.php",
                                   );
 
                                   var response = await http.post(
@@ -248,7 +248,7 @@ class MyAppState extends State<MyApp> {
                                       Logdata.userEmail = responseData['user'];
                                     });
                                     if (Logdata.userEmail ==
-                                        "ayush@gmail.com") {
+                                        "Ayush@gmail.com") {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(

@@ -120,7 +120,7 @@ class forgot_passwordState extends State<forgot_password> {
                   if (Fpdata.error == 0) {
                     try {
                       var url = Uri.parse(
-                        "http://10.16.130.245/Firebase/forgotgetmail.php",
+                        "http://192.168.177.67/Firebase/forgotgetmail.php",
                       );
 
                       var response = await http.post(
