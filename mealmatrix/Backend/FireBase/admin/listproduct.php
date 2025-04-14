@@ -5,7 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meal-Matrix</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="css/tables.css" rel="stylesheet"> 
+    <script>
+        function confirm(){
+            Swal.fire({
+              title: 'Are you sure?',
+              text: "The canteen will be deleted permenantly",
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Proceed'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                   Swal.fire(
+                      'Deleted!',
+                      'Your file has been deleted.',
+                      'success'
+                   )
+                   document.forms["product"].submit();
+                }
+            });
+        }
+    </script>   
 </head>
 <body>
     <div class="container">
@@ -42,9 +66,9 @@
                                     <input type='text' name='pid' id='pid' value='". $row['pid'] ."' hidden>
                                     <button type = 'submit' class='action-btn edit-btn'>Edit</button>
                                 </form>
-                                <form action='backend/productdelete.php' method='POST'>
+                                <form name='product' action='backend/productdelete.php' method='POST'>
                                     <input type='text' name='pid' id='pid' value='". $row['pid'] ."' hidden>
-                                    <button type = 'submit' class='action-btn delete-btn'>Delete</button>
+                                    <button type = 'button' class='action-btn delete-btn' onclick='confirm();'>Delete</button>
                                 </form>
                               </div> 
                             </td>

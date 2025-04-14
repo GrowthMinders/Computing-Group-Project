@@ -17,8 +17,17 @@ if ($row && $row["email"] == "MealMatrixCGP@outlook.com") {
     $dbpass = $row['password'];
     $dbmac = $row['mac'];
 
-    $mac = shell_exec("python MAC_Address.py");  
-    $mac = trim($mac);
+        $mac = shell_exec('getmac /FO CSV /NH 2>&1');
+        if ($mac) {
+          $mac = explode(',', $mac)[0] ?? '';
+          $mac = trim($mac, ' "');
+          $mac = preg_replace('/[^0-9A-Fa-f]/', '', $mac);
+                    
+          if (strlen($mac) === 12) {
+            $mac = implode(':', str_split($mac, 2));
+            $mac = strtoupper($mac);
+          }
+        }    
 
     if(password_verify($mac, $dbmac)) {
 
