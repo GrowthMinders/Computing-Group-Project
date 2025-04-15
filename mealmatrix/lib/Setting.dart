@@ -8,6 +8,7 @@ import 'package:mealmatrix/Home.dart';
 import 'package:mealmatrix/Order.dart';
 import 'package:mealmatrix/OrderHistory.dart';
 import 'package:mealmatrix/Profile.dart';
+import 'package:mealmatrix/deleterequest.dart';
 import 'package:mealmatrix/main.dart';
 import 'package:http/http.dart' as http;
 import 'dart:developer';
@@ -189,6 +190,30 @@ class SettingState extends State<Setting> {
                     context,
                     MaterialPageRoute(builder: (context) => const MyApp()),
                     (route) => false,
+                  );
+                },
+              ),
+            ),
+            SizedBox(height: 10),
+            Card(
+              elevation: 4,
+              margin: EdgeInsets.symmetric(vertical: 8),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: ListTile(
+                leading: Icon(Icons.delete_forever, color: Colors.red),
+                title: Text(
+                  'Delete Account',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.red,
+                  ),
+                ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => DeleteRequest()),
                   );
                 },
               ),

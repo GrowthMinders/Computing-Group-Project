@@ -12,20 +12,16 @@ import 'package:mealmatrix/Favorite.dart';
 import 'package:mealmatrix/Setting.dart';
 import 'package:mealmatrix/ProductDetails.dart';
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.green,
-        scaffoldBackgroundColor: Colors.white,
-      ),
-      home: const Hostel(),
-    );
-  }
+@override
+Widget build(BuildContext context) {
+  return MaterialApp(
+    debugShowCheckedModeBanner: false,
+    theme: ThemeData(
+      primarySwatch: Colors.green,
+      scaffoldBackgroundColor: Colors.white,
+    ),
+    home: const Hostel(),
+  );
 }
 
 class Hostel extends StatefulWidget {

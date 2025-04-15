@@ -400,6 +400,18 @@ class HomeState extends State<Home> {
   }
 
   Widget FavoriteItem(List<dynamic> favdata) {
+    if (favdata.isEmpty) {
+      return const Center(
+        child: Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Text(
+            'No favorites yet!',
+            style: TextStyle(fontSize: 16, color: Colors.grey),
+          ),
+        ),
+      );
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -410,7 +422,7 @@ class HomeState extends State<Home> {
         ListView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          itemCount: favdata.length, // Now it's only the first 4 items
+          itemCount: favdata.length,
           itemBuilder: (context, index) {
             final product = favdata[index];
             return Column(
@@ -424,9 +436,9 @@ class HomeState extends State<Home> {
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('${product['supply']}'),
-                      Text('${product['canteen']}'),
-                      Text('${product['price']}'),
+                      Text(product['supply']),
+                      Text(product['canteen']),
+                      Text(product['price']),
                     ],
                   ),
                   onTap: () {

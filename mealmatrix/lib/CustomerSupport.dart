@@ -44,12 +44,12 @@ class CustomerSupport extends StatelessWidget {
             FAQItem(
               title: 'How to reset your password',
               description:
-                  'To reset your password, go to settings and click on "Reset Password".',
+                  ' Go to settings\n Click on "Reset Password" option.',
             ),
             FAQItem(
               title: 'How to contact support',
               description:
-                  'You can contact support via the "Contact Us" section in the app.',
+                  ' Email address "MealMatrixCGP@outlook.com"\n Telephone  "0761571745"',
             ),
           ],
         ),

@@ -121,6 +121,18 @@ class Favorite extends StatelessWidget {
 }
 
 Widget FavoriteItem(List<dynamic> favdata) {
+  if (favdata.isEmpty) {
+    return const Center(
+      child: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Text(
+          'No favorites yet!',
+          style: TextStyle(fontSize: 16, color: Colors.grey),
+        ),
+      ),
+    );
+  }
+
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
