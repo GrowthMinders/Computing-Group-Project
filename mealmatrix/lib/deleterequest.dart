@@ -68,18 +68,24 @@ class DeleteRequestState extends State<DeleteRequest> {
             Card(
               elevation: 4,
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(16.0),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     ListTile(
                       title: Text(
                         'Are you sure you want to delete this account?',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       subtitle: Text(
                         'This will permanently delete the account',
-                        style: TextStyle(color: Colors.red),
+                        style: TextStyle(color: Colors.red, fontSize: 14),
                       ),
                     ),
+                    SizedBox(height: 8),
                     Container(
                       padding: EdgeInsets.symmetric(vertical: 8),
                       child: Row(
@@ -88,11 +94,20 @@ class DeleteRequestState extends State<DeleteRequest> {
                           OutlinedButton(
                             style: OutlinedButton.styleFrom(
                               side: BorderSide(color: Colors.grey.shade300),
-                              padding: EdgeInsets.symmetric(horizontal: 24),
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 32,
+                                vertical: 12,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
                             ),
                             child: Text(
                               'DELETE',
-                              style: TextStyle(color: Colors.red),
+                              style: TextStyle(
+                                color: Colors.red,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                             onPressed: () {
                               Navigator.push(
@@ -107,9 +122,18 @@ class DeleteRequestState extends State<DeleteRequest> {
                           OutlinedButton(
                             style: OutlinedButton.styleFrom(
                               side: BorderSide(color: Colors.grey.shade300),
-                              padding: EdgeInsets.symmetric(horizontal: 24),
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 32,
+                                vertical: 12,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
                             ),
-                            child: Text('CANCEL'),
+                            child: Text(
+                              'CANCEL',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
                             onPressed: () {
                               Navigator.pop(context);
                             },
