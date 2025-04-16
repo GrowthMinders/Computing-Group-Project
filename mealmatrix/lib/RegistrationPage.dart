@@ -197,7 +197,7 @@ class RegistrationPageState extends State<RegistrationPage> {
                         borderSide: BorderSide.none,
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      hintText: 'ex: john smith',
+                      hintText: 'ex: AAA Silva ',
                       hintStyle: TextStyle(color: Color(0xff888888)),
                     ),
                   ),

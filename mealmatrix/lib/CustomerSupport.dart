@@ -39,7 +39,7 @@ class CustomerSupport extends StatelessWidget {
             FAQItem(
               title: 'How to remove your account',
               description:
-                  'To remove your account, please follow these steps...',
+                  ' Go to Settings\n Click on Delete Account\n Select delete\n Enter the words given with in "" as given\n Click CONFIRM button\n Enter your password\n Click CONFIRM button',
             ),
             FAQItem(
               title: 'How to reset your password',

@@ -1,6 +1,11 @@
-// ignore_for_file: file_names, use_key_in_widget_constructors
+// ignore_for_file: file_names, use_key_in_widget_constructors, prefer_const_constructors, library_private_types_in_public_api, prefer_const_constructors_in_immutables
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'dart:developer';
+
+import 'package:mealmatrix/main.dart';
 
 class MyApp extends StatelessWidget {
   @override
@@ -9,14 +14,67 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class Checkout extends StatelessWidget {
+class Checkout extends StatefulWidget {
+  @override
+  _CheckoutState createState() => _CheckoutState();
+}
+
+class _CheckoutState extends State<Checkout> {
+  List<Map<String, dynamic>> checkoutdata = [];
+
+  Future<void> rendercheckout() async {
+    try {
+      var url = Uri.parse("http://192.168.177.67/Firebase/cartrendering.php");
+
+      var response = await http.post(url, body: {'email': Logdata.userEmail});
+
+      if (response.statusCode == 200) {
+        var decoded = json.decode(response.body);
+        checkoutdata =
+            (decoded as List)
+                .map(
+                  (record) => {
+                    'name': record['name'],
+                    'supply': record['supply'],
+                    'qty': record['qty'],
+                    'canteen': record['canteen'],
+                    'price': double.parse(record['price'].toString()),
+                    'image': record['image'],
+                  },
+                )
+                .toList();
+        setState(() {});
+      } else {
+        log("Failed to fetch data: ${response.statusCode}");
+      }
+    } catch (ex) {
+      log("Unexpected error: $ex");
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    rendercheckout();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Icon(Icons.arrow_back),
-        backgroundColor: Colors.white,
-        elevation: 0,
+        backgroundColor: Colors.green,
+        title: Text('checkout'),
+        centerTitle: true,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: CircleAvatar(
+              backgroundImage: AssetImage(
+                'lib/assets/images/Meal Matrix Logo.png',
+              ),
+            ),
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -28,8 +86,14 @@ class Checkout extends StatelessWidget {
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 16),
-            OrderItem(),
-            OrderItem(),
+            ...checkoutdata.map(
+              (item) => OrderItem(
+                imageUrl: item['image'],
+                canteen: item['canteen'],
+                name: item['name'],
+                qty: item['qty'].toString(),
+              ),
+            ),
             SizedBox(height: 16),
             SummarySection(),
             SizedBox(height: 16),
@@ -44,6 +108,18 @@ class Checkout extends StatelessWidget {
 }
 
 class OrderItem extends StatelessWidget {
+  final String imageUrl;
+  final String canteen;
+  final String name;
+  final String qty;
+
+  OrderItem({
+    required this.imageUrl,
+    required this.canteen,
+    required this.name,
+    required this.qty,
+  });
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -55,21 +131,13 @@ class OrderItem extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Image.network(
-            'https://storage.googleapis.com/a1aa/image/L5StbaDthtSx8aT7ftVIGCUMdq1jyriXcNuXsREkydU.jpg',
-            width: 80,
-            height: 80,
-            fit: BoxFit.cover,
-          ),
+          Image.network(imageUrl, width: 80, height: 80, fit: BoxFit.cover),
           SizedBox(width: 16),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Audi Canteen',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              Text('1 Item'),
+              Text(canteen, style: TextStyle(fontWeight: FontWeight.bold)),
+              Text('$qty Item(s)'),
               SizedBox(height: 8),
               Row(
                 children: [
@@ -82,13 +150,13 @@ class OrderItem extends StatelessWidget {
                     ),
                     child: Center(
                       child: Text(
-                        '1',
+                        qty,
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ),
                   ),
                   SizedBox(width: 8),
-                  Text('Sausage Delight Pizza'),
+                  Text(name),
                 ],
               ),
             ],
@@ -112,7 +180,7 @@ class SummarySection extends StatelessWidget {
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [Text('Items (2)'), Text('Rs.2170.00')],
+            children: [Text('Items (2)'), Text('Rs.2170.00')], //start from here
           ),
           SizedBox(height: 8),
           Row(
@@ -162,16 +230,18 @@ class PlaceOrderButton extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: () {
+          // You can define place order logic here
+        },
         style: ElevatedButton.styleFrom(
-          foregroundColor: Colors.green,
+          foregroundColor: Colors.white,
           backgroundColor: Colors.green,
           padding: EdgeInsets.symmetric(vertical: 14),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         ),
         child: Text(
           'Place Order',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
     );

@@ -42,7 +42,7 @@ class favrendering {
                     'supply': record['supply'],
                     'canteen': record['canteen'],
                     'image': record['image'],
-                    'price': record['price'],
+                    'price': record['price'].toString(),
                   },
                 )
                 .toList();
