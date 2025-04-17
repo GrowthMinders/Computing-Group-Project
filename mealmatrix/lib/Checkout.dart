@@ -1,4 +1,4 @@
-// ignore_for_file: file_names, use_key_in_widget_constructors, prefer_const_constructors, library_private_types_in_public_api, prefer_const_constructors_in_immutables
+// ignore_for_file: file_names, use_key_in_widget_constructors, prefer_const_constructors, library_private_types_in_public_api, prefer_const_constructors_in_immutables, camel_case_types
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -19,9 +19,9 @@ class Checkout extends StatefulWidget {
   _CheckoutState createState() => _CheckoutState();
 }
 
-class _CheckoutState extends State<Checkout> {
-  List<Map<String, dynamic>> checkoutdata = [];
+List<Map<String, dynamic>> checkoutdata = [];
 
+class _CheckoutState extends State<Checkout> {
   Future<void> rendercheckout() async {
     try {
       var url = Uri.parse("http://192.168.177.67/Firebase/cartrendering.php");
@@ -63,7 +63,7 @@ class _CheckoutState extends State<Checkout> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.green,
-        title: Text('checkout'),
+        title: Text('Checkout'),
         centerTitle: true,
         actions: [
           Padding(
@@ -92,6 +92,7 @@ class _CheckoutState extends State<Checkout> {
                 canteen: item['canteen'],
                 name: item['name'],
                 qty: item['qty'].toString(),
+                price: item['price'],
               ),
             ),
             SizedBox(height: 16),
@@ -112,12 +113,14 @@ class OrderItem extends StatelessWidget {
   final String canteen;
   final String name;
   final String qty;
+  final double price;
 
   OrderItem({
     required this.imageUrl,
     required this.canteen,
     required this.name,
     required this.qty,
+    required this.price,
   });
 
   @override
@@ -137,7 +140,7 @@ class OrderItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(canteen, style: TextStyle(fontWeight: FontWeight.bold)),
-              Text('$qty Item(s)'),
+              Text('Rs. ${price.toStringAsFixed(2)}'),
               SizedBox(height: 8),
               Row(
                 children: [
@@ -167,7 +170,23 @@ class OrderItem extends StatelessWidget {
   }
 }
 
+class calculate {
+  static double caltotal() {
+    return checkoutdata.fold(
+      0,
+      (sum, item) => sum + (item['price'] * item['qty']),
+    );
+  }
+
+  static double calitems() {
+    return checkoutdata.fold(0, (sum, item) => sum + item['qty']);
+  }
+}
+
 class SummarySection extends StatelessWidget {
+  final total = calculate.caltotal();
+  final items = calculate.calitems();
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -180,7 +199,7 @@ class SummarySection extends StatelessWidget {
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [Text('Items (2)'), Text('Rs.2170.00')], //start from here
+            children: [Text('Items'), Text('${items.toInt()}')],
           ),
           SizedBox(height: 8),
           Row(
@@ -190,7 +209,10 @@ class SummarySection extends StatelessWidget {
                 'Total Price',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
-              Text('Rs.2170.00', style: TextStyle(fontWeight: FontWeight.bold)),
+              Text(
+                'Rs. ${total.toInt()}',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
             ],
           ),
         ],

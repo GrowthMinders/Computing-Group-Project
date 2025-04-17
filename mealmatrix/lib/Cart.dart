@@ -92,8 +92,8 @@ class _CartState extends State<Cart> {
                   children: [
                     Expanded(child: _buildCartItem(cartdata)),
                     SizedBox(height: 16),
-                    Text('Items: $items'),
-                    Text('Total: Rs. $total'),
+                    Text('Items: ${items.toInt()}'),
+                    Text('Total: Rs. ${total.toInt()}'),
                     SizedBox(height: 16),
                     ElevatedButton(
                       onPressed: () {
@@ -151,7 +151,7 @@ class _CartState extends State<Cart> {
                 children: [
                   Text('Supply: ${product['supply']}'),
                   Text('Canteen: ${product['canteen']}'),
-                  Text('Price: Rs. ${product['price']}'),
+                  Text('Price: Rs. ${product['price'].toInt()}'),
                   Text('Qty: ${product['qty']}'),
                   ElevatedButton(
                     onPressed: () async {

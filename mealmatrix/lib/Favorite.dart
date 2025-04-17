@@ -1,4 +1,4 @@
-// ignore_for_file: file_names, use_key_in_widget_constructors, camel_case_types, non_constant_identifier_names
+// ignore_for_file: file_names, use_key_in_widget_constructors, camel_case_types, non_constant_identifier_names, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:mealmatrix/OrderHistory.dart';
@@ -12,7 +12,8 @@ import 'package:mealmatrix/main.dart';
 
 class Favorite extends StatelessWidget {
   static List<Map<String, dynamic>> favdata = [];
-  Future<void> renderfav(String responseBody) async {
+
+  static Future<void> renderfav() async {
     try {
       var url = Uri.parse(
         "http://192.168.177.67/Firebase/favoriterendering.php",
@@ -21,7 +22,7 @@ class Favorite extends StatelessWidget {
       var response = await http.post(url, body: {'email': Logdata.userEmail});
 
       if (response.statusCode == 200) {
-        List<List<dynamic>> fav = json.decode(responseBody);
+        List<List<dynamic>> fav = json.decode(response.body);
 
         favdata =
             fav
@@ -170,6 +171,44 @@ Widget FavoriteItem(List<dynamic> favdata) {
                   title: Text(product['name']),
                   subtitle: Text(
                     'Rs.${product['price']}\n${product['supply']}\n${product['canteen']}',
+                  ),
+                  trailing: GestureDetector(
+                    onTap: () async {
+                      try {
+                        var url = Uri.parse(
+                          "http://192.168.177.67/Firebase/favdelete.php",
+                        );
+
+                        var response = await http.post(
+                          url,
+                          body: {
+                            'name': product['name'],
+                            'supply': product['supply'],
+                            'canteen': product['canteen'],
+                            'email': Logdata.userEmail,
+                          },
+                        );
+                        if (response.statusCode == 200) {
+                          log("Success: Favorite product removed");
+                          favdata.removeWhere(
+                            (item) =>
+                                item['name'] == product['name'] &&
+                                item['supply'] == product['supply'] &&
+                                item['canteen'] == product['canteen'],
+                          );
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (_) => Home()),
+                          );
+                        }
+                      } catch (ex) {
+                        log("Unexpected error: $ex");
+                      }
+                    },
+                    child: IconTheme(
+                      data: IconThemeData(size: 28, color: Colors.red),
+                      child: Icon(Icons.delete_forever),
+                    ),
                   ),
                 ),
                 const Divider(),

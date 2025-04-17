@@ -1,8 +1,7 @@
-// ignore_for_file: file_names, use_key_in_widget_constructors, camel_case_types, non_constant_identifier_names
+// ignore_for_file: file_names, use_key_in_widget_constructors, camel_case_types, non_constant_identifier_names, body_might_complete_normally_nullable, library_private_types_in_public_api, use_super_parameters
 
 import 'package:flutter/material.dart';
 import 'package:mealmatrix/Favorite.dart';
-import 'package:mealmatrix/ProductDetails.dart';
 import 'package:mealmatrix/Setting.dart';
 import 'package:mealmatrix/Home.dart';
 import 'dart:convert';
@@ -12,33 +11,48 @@ import 'package:mealmatrix/main.dart';
 
 // Remove the first OrderHistory class completely and keep only the second one
 
-class OrderHistory extends StatelessWidget {
-  static List<Map<String, dynamic>> favdata = [];
-  Future<void> renderfav(String responseBody) async {
+class OrderHistory extends StatefulWidget {
+  @override
+  _OrderHistoryState createState() => _OrderHistoryState();
+}
+
+class _OrderHistoryState extends State<OrderHistory> {
+  List<Map<String, dynamic>> oderhist = [];
+  bool isLoading = true;
+  String errorMessage = '';
+
+  @override
+  void initState() {
+    super.initState();
+    fetchOrderHistory();
+  }
+
+  Future<void> fetchOrderHistory() async {
     try {
       var url = Uri.parse(
-        "http://192.168.177.67/Firebase/favoriterendering.php",
+        "http://192.168.177.67/Firebase/orderhistoryrendering.php",
       );
-
       var response = await http.post(url, body: {'email': Logdata.userEmail});
 
       if (response.statusCode == 200) {
-        List<List<dynamic>> fav = json.decode(responseBody);
+        List<dynamic> responseData = json.decode(response.body);
 
-        favdata =
-            fav
-                .map(
-                  (record) => {
-                    'name': record[1],
-                    'supply': record[3],
-                    'canteen': record[4],
-                    'image': record[5],
-                    'price': record[6],
-                  },
-                )
-                .toList();
-      } else {
-        log("Failed to fetch data: ${response.statusCode}");
+        setState(() {
+          oderhist =
+              responseData
+                  .map(
+                    (record) => {
+                      'name': record['name'],
+                      'supply': record['supply'],
+                      'canteen': record['canteen'],
+                      'price': record['price'],
+                      'image': record['image'],
+                      'date': record['date'],
+                      'qty': record['qty'],
+                    },
+                  )
+                  .toList();
+        });
       }
     } catch (ex) {
       log("Unexpected error: $ex");
@@ -65,7 +79,7 @@ class OrderHistory extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: ListView(children: [FavoriteItem(favrendering.favdata)]),
+        child: HistoryItem(oderhist),
       ),
       bottomNavigationBar: BottomAppBar(
         child: Row(
@@ -85,7 +99,7 @@ class OrderHistory extends StatelessWidget {
             _buildBottomNavItem(
               Icons.list_alt,
               'Orders',
-              const Color.fromARGB(255, 74, 73, 73),
+              Colors.green,
               onTap: () {
                 Navigator.push(
                   context,
@@ -122,35 +136,24 @@ class OrderHistory extends StatelessWidget {
   }
 }
 
-Widget FavoriteItem(List<dynamic> favdata) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Padding(padding: const EdgeInsets.symmetric(horizontal: 16)),
-      const SizedBox(height: 8),
-      ListView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: favdata.length,
-        itemBuilder: (context, index) {
-          final product = favdata[index];
-          return GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder:
-                      (context) => ProductDetail(
-                        image: product['image'],
-                        name: product['name'],
-                        price: product['price'].toString(),
-                        supply: product['supply'],
-                        canteen: product['canteen'],
-                      ),
-                ),
-              );
-            },
-            child: Column(
+class HistoryItem extends StatelessWidget {
+  final List<Map<String, dynamic>> oderhist;
+
+  const HistoryItem(this.oderhist, {Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: 8),
+        ListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: oderhist.length,
+          itemBuilder: (context, index) {
+            final product = oderhist[index];
+            return Column(
               children: [
                 ListTile(
                   leading: CircleAvatar(
@@ -159,17 +162,17 @@ Widget FavoriteItem(List<dynamic> favdata) {
                   ),
                   title: Text(product['name']),
                   subtitle: Text(
-                    'Rs.${product['price']}\n${product['supply']}\n${product['canteen']}',
+                    'Rs.${product['price']}\n${product['supply']}\n${product['canteen']}\n${product['date']}\n${product['qty']}',
                   ),
                 ),
                 const Divider(),
               ],
-            ),
-          );
-        },
-      ),
-    ],
-  );
+            );
+          },
+        ),
+      ],
+    );
+  }
 }
 
 Widget _buildBottomNavItem(

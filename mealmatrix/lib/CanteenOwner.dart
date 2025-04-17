@@ -1,10 +1,13 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, deprecated_member_use, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mealmatrix/Order.dart';
-
+import 'package:http/http.dart' as http;
 import 'package:mealmatrix/Setting.dart';
+import 'package:mealmatrix/main.dart';
+import 'dart:convert';
+import 'dart:developer';
 
 class Canteen extends StatefulWidget {
   const Canteen({super.key});
@@ -14,10 +17,45 @@ class Canteen extends StatefulWidget {
 }
 
 class CanteenState extends State<Canteen> {
+  List<Map<String, dynamic>> orderData = [];
+  bool isLoading = true;
+
   @override
   void initState() {
     super.initState();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
+    fetchOrderData();
+  }
+
+  Future<void> fetchOrderData() async {
+    try {
+      var url = Uri.parse("http://192.168.177.67/Firebase/canteenowner1.php");
+      var response = await http.post(
+        url,
+        body: {'supply': "Ayush", 'canteen': "Edge"},
+      );
+
+      if (response.statusCode == 200) {
+        List<dynamic> responseData = json.decode(response.body);
+        setState(() {
+          orderData =
+              responseData.map<Map<String, dynamic>>((record) {
+                return {
+                  'name': record['name'],
+                  'qty': record['qty'],
+                  'image': record['image'],
+                  'price': record['price'],
+                  'stime': record['stime'],
+                  'email': record['email'],
+                };
+              }).toList();
+        });
+      } else {
+        log("Failed to fetch data: ${response.statusCode}");
+      }
+    } catch (ex) {
+      log("Unexpected error: $ex");
+    }
   }
 
   @override
@@ -26,22 +64,22 @@ class CanteenState extends State<Canteen> {
       backgroundColor: Colors.white,
       body: Center(
         child: Container(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 24),
+                const SizedBox(height: 24),
                 Stack(
                   children: [
-                    Align(
+                    const Align(
                       alignment: Alignment.center,
                       child: Text(
                         'Meal Matrix',
                         style: TextStyle(fontSize: 40, fontFamily: 'Lobster'),
                       ),
                     ),
-                    Align(
+                    const Align(
                       alignment: Alignment.centerRight,
                       child: CircleAvatar(
                         radius: 24,
@@ -52,8 +90,61 @@ class CanteenState extends State<Canteen> {
                     ),
                   ],
                 ),
-                SizedBox(height: 3),
-                Divider(),
+                const SizedBox(height: 3),
+                const SizedBox(height: 16),
+                Column(
+                  children:
+                      orderData.map((order) {
+                        String hiddenStime = order['stime'];
+                        String hiddenEmail = order['email'];
+                        return Column(
+                          children: [
+                            Orders(
+                              imageUrl: order['image'],
+                              title: order['name'] + " (${order['qty']})",
+                              price: 'Rs.${order['price']}',
+                              onIconPressed: () async {
+                                try {
+                                  var url = Uri.parse(
+                                    "http://192.168.177.67/Firebase/updatestate.php",
+                                  );
+
+                                  Map<String, String> body = {};
+
+                                  if (Logdata.userEmail == "Ayush@gmail.com") {
+                                    body = {
+                                      'name': order['name'],
+                                      'supply': "Ayush",
+                                      'canteen': "Edge",
+                                      'stime': hiddenStime,
+                                      'email': hiddenEmail,
+                                    };
+                                  }
+
+                                  var response = await http.post(
+                                    url,
+                                    body: body,
+                                  );
+
+                                  if (response.statusCode == 200) {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => const Canteen(),
+                                      ),
+                                    );
+                                  }
+                                } catch (ex) {
+                                  log("Error updating state: $ex");
+                                }
+                              },
+                            ),
+
+                            const Divider(),
+                          ],
+                        );
+                      }).toList(),
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
@@ -64,7 +155,9 @@ class CanteenState extends State<Canteen> {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => Canteen()),
+                          MaterialPageRoute(
+                            builder: (context) => const Canteen(),
+                          ),
                         );
                       },
                     ),
@@ -75,7 +168,9 @@ class CanteenState extends State<Canteen> {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => Order()),
+                          MaterialPageRoute(
+                            builder: (context) => const Order(),
+                          ),
                         );
                       },
                     ),
@@ -87,7 +182,6 @@ class CanteenState extends State<Canteen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => Setting()),
-                          //change Audi name
                         );
                       },
                     ),
@@ -114,6 +208,66 @@ class CanteenState extends State<Canteen> {
         children: [
           Icon(icon, color: color),
           Text(label, style: TextStyle(fontSize: 12, color: color)),
+        ],
+      ),
+    );
+  }
+}
+
+class Orders extends StatelessWidget {
+  final String imageUrl;
+  final String title;
+  final String price;
+  final int? quantity;
+  final VoidCallback? onIconPressed;
+
+  const Orders({
+    super.key,
+    required this.imageUrl,
+    required this.title,
+    required this.price,
+    this.quantity,
+    this.onIconPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.2),
+            spreadRadius: 2,
+            blurRadius: 5,
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Image.network(imageUrl, width: 80, height: 80, fit: BoxFit.cover),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(price, style: const TextStyle(color: Colors.grey)),
+              ],
+            ),
+          ),
+          IconButton(
+            icon: const Icon(Icons.done_all),
+            onPressed: onIconPressed,
+          ),
         ],
       ),
     );

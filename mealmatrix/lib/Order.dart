@@ -1,14 +1,58 @@
-// ignore_for_file: file_names, deprecated_member_use
+// ignore_for_file: file_names, deprecated_member_use, use_key_in_widget_constructors, camel_case_types
 
 import 'package:flutter/material.dart';
-import 'package:mealmatrix/Favorite.dart';
-import 'package:mealmatrix/Home.dart';
+import 'package:mealmatrix/CanteenOwner.dart';
 import 'package:mealmatrix/Setting.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'dart:developer';
 
 // Remove the first Order class completely and keep only the second one
 
-class Order extends StatelessWidget {
+class Order extends StatefulWidget {
   const Order({super.key});
+
+  @override
+  State<Order> createState() => _OrderState();
+}
+
+List<Map<String, dynamic>> orderData = [];
+
+class _OrderState extends State<Order> {
+  @override
+  void initState() {
+    super.initState();
+    fetchOrderData();
+  }
+
+  Future<void> fetchOrderData() async {
+    try {
+      var url = Uri.parse("http://192.168.177.67/Firebase/canteenowner2.php");
+      var response = await http.post(
+        url,
+        body: {'supply': "Ayush", 'canteen': "Edge"},
+      );
+
+      if (response.statusCode == 200) {
+        List<dynamic> responseData = json.decode(response.body);
+        setState(() {
+          orderData =
+              responseData.map<Map<String, dynamic>>((record) {
+                return {
+                  'name': record['name'],
+                  'qty': record['qty'],
+                  'image': record['image'],
+                  'price': record['price'],
+                };
+              }).toList();
+        });
+      } else {
+        log("Failed to fetch data: ${response.statusCode}");
+      }
+    } catch (ex) {
+      log("Unexpected error: $ex");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +64,7 @@ class Order extends StatelessWidget {
           borderRadius: BorderRadius.vertical(bottom: Radius.circular(50)),
         ),
         title: Text(
-          'Order',
+          'Today Sales',
           style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
         ),
         actions: [
@@ -40,42 +84,25 @@ class Order extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Current Order',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ListView.builder(
+              shrinkWrap: true,
+              physics: const ClampingScrollPhysics(),
+              itemCount: orderData.length,
+              itemBuilder: (context, index) {
+                final order = orderData[index];
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 16.0),
+                  child: OrderItem(
+                    imageUrl: order['image'],
+                    title: '${order['name']} (${order['qty']})',
+                    price: 'Rs.${order['price']}',
+                  ),
+                );
+              },
             ),
-            SizedBox(height: 16),
-            OrderItem(
-              imageUrl:
-                  'https://storage.googleapis.com/a1aa/image/zZWBNy-ZMrLFpDvmrw0I_HFbQ8SRu0qDhdZcgKf28-4.jpg',
-              title: 'Sausage Delight Pizza',
-              price: 'Rs.1500.00',
-              quantity: 1,
-            ),
-            SizedBox(height: 32),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Order history',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  'See more',
-                  style: TextStyle(fontSize: 14, color: Colors.grey),
-                ),
-              ],
-            ),
-            SizedBox(height: 16),
-            OrderItem(
-              imageUrl:
-                  'https://storage.googleapis.com/a1aa/image/EbS6s6nw25NeyVlP9UAqOLDb6AObI_-lB2Ws4S1gF2o.jpg',
-              title: 'Fish Rice & Curry',
-              price: 'Rs.380.00',
-              quantity: null,
-            ),
+            const SizedBox(height: 20),
+            Summary(),
           ],
         ),
       ),
@@ -89,7 +116,7 @@ class Order extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => Home()),
+                MaterialPageRoute(builder: (context) => Canteen()),
               );
             },
           ),
@@ -101,17 +128,6 @@ class Order extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => Order()),
-              );
-            },
-          ),
-          _buildBottomNavItem(
-            Icons.favorite,
-            'Favorite',
-            const Color.fromARGB(255, 74, 73, 73),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Favorite()),
               );
             },
           ),
@@ -177,22 +193,56 @@ class OrderItem extends StatelessWidget {
               ],
             ),
           ),
-          if (quantity != null) ...[
-            IconButton(
-              icon: Icon(Icons.favorite, color: Colors.red),
-              onPressed: () {},
-            ),
-            Row(
-              children: [
-                IconButton(icon: Icon(Icons.remove), onPressed: () {}),
-                Text('$quantity'),
-                IconButton(icon: Icon(Icons.add), onPressed: () {}),
-              ],
-            ),
-          ],
-          IconButton(
-            icon: Icon(Icons.delete, color: Colors.grey),
-            onPressed: () {},
+        ],
+      ),
+    );
+  }
+}
+
+class calculate {
+  static double caltotal() {
+    return orderData.fold(
+      0,
+      (sum, item) => sum + (item['price'] * item['qty']),
+    );
+  }
+
+  static double calitems() {
+    return orderData.fold(0, (sum, item) => sum + item['qty']);
+  }
+}
+
+class Summary extends StatelessWidget {
+  final total = calculate.caltotal();
+  final items = calculate.calitems();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey[300]!),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [Text('Items'), Text('${items.toInt()}')],
+          ),
+          SizedBox(height: 8),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Total Price',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              Text(
+                'Rs. ${total.toInt()}',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ],
           ),
         ],
       ),
