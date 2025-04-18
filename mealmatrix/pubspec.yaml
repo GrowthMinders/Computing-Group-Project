@@ -35,7 +35,6 @@ flutter:
   uses-material-design: true
   assets:
     - lib/assets/images/Meal Matrix Logo.png
-    - lib/assets/images/1.png
     - lib/assets/images/kottu.jpg
     - lib/assets/images/Audi.jpg
     - lib/assets/images/Edge.jpeg

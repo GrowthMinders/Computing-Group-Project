@@ -23,19 +23,18 @@ class _CartState extends State<Cart> {
 
       if (response.statusCode == 200) {
         var decoded = json.decode(response.body);
-        cartdata =
-            (decoded as List)
-                .map(
-                  (record) => {
-                    'name': record['name'],
-                    'supply': record['supply'],
-                    'qty': record['qty'],
-                    'canteen': record['canteen'],
-                    'price': record['price'].toDouble(),
-                    'image': record['image'],
-                  },
-                )
-                .toList();
+        cartdata = (decoded as List)
+            .map(
+              (record) => {
+                'name': record['name'],
+                'supply': record['supply'],
+                'qty': record['qty'],
+                'canteen': record['canteen'],
+                'price': record['price'].toDouble(),
+                'image': record['image'],
+              },
+            )
+            .toList();
         setState(() {});
       } else {
         log("Failed to fetch data: ${response.statusCode}");
@@ -219,7 +218,7 @@ class Summa extends StatelessWidget {
   final double items;
 
   const Summa({required this.total, required this.items, Key? key})
-    : super(key: key);
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

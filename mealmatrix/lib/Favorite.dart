@@ -24,18 +24,17 @@ class Favorite extends StatelessWidget {
       if (response.statusCode == 200) {
         List<List<dynamic>> fav = json.decode(response.body);
 
-        favdata =
-            fav
-                .map(
-                  (record) => {
-                    'name': record[1],
-                    'supply': record[3],
-                    'canteen': record[4],
-                    'image': record[5],
-                    'price': record[6],
-                  },
-                )
-                .toList();
+        favdata = fav
+            .map(
+              (record) => {
+                'name': record[1],
+                'supply': record[3],
+                'canteen': record[4],
+                'image': record[5],
+                'price': record[6],
+              },
+            )
+            .toList();
       } else {
         log("Failed to fetch data: ${response.statusCode}");
       }
@@ -150,14 +149,13 @@ Widget FavoriteItem(List<dynamic> favdata) {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder:
-                      (context) => ProductDetail(
-                        image: product['image'],
-                        name: product['name'],
-                        price: product['price'].toString(),
-                        supply: product['supply'],
-                        canteen: product['canteen'],
-                      ),
+                  builder: (context) => ProductDetail(
+                    image: product['image'],
+                    name: product['name'],
+                    price: product['price'].toString(),
+                    supply: product['supply'],
+                    canteen: product['canteen'],
+                  ),
                 ),
               );
             },
