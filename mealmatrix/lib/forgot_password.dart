@@ -7,7 +7,7 @@ import 'main.dart';
 
 // ignore: camel_case_types
 class forgot_password extends StatefulWidget {
-  const forgot_password({super.key});
+  const forgot_password({Key? key}) : super(key: key);
 
   @override
   forgot_passwordState createState() => forgot_passwordState();

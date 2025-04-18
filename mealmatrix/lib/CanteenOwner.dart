@@ -10,7 +10,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 class Canteen extends StatefulWidget {
-  const Canteen({super.key});
+  const Canteen({Key? key}) : super(key: key);
 
   @override
   CanteenState createState() => CanteenState();
@@ -38,17 +38,16 @@ class CanteenState extends State<Canteen> {
       if (response.statusCode == 200) {
         List<dynamic> responseData = json.decode(response.body);
         setState(() {
-          orderData =
-              responseData.map<Map<String, dynamic>>((record) {
-                return {
-                  'name': record['name'],
-                  'qty': record['qty'],
-                  'image': record['image'],
-                  'price': record['price'],
-                  'stime': record['stime'],
-                  'email': record['email'],
-                };
-              }).toList();
+          orderData = responseData.map<Map<String, dynamic>>((record) {
+            return {
+              'name': record['name'],
+              'qty': record['qty'],
+              'image': record['image'],
+              'price': record['price'],
+              'stime': record['stime'],
+              'email': record['email'],
+            };
+          }).toList();
         });
       } else {
         log("Failed to fetch data: ${response.statusCode}");
@@ -93,57 +92,55 @@ class CanteenState extends State<Canteen> {
                 const SizedBox(height: 3),
                 const SizedBox(height: 16),
                 Column(
-                  children:
-                      orderData.map((order) {
-                        String hiddenStime = order['stime'];
-                        String hiddenEmail = order['email'];
-                        return Column(
-                          children: [
-                            Orders(
-                              imageUrl: order['image'],
-                              title: order['name'] + " (${order['qty']})",
-                              price: 'Rs.${order['price']}',
-                              onIconPressed: () async {
-                                try {
-                                  var url = Uri.parse(
-                                    "http://192.168.177.67/Firebase/updatestate.php",
-                                  );
+                  children: orderData.map((order) {
+                    String hiddenStime = order['stime'];
+                    String hiddenEmail = order['email'];
+                    return Column(
+                      children: [
+                        Orders(
+                          imageUrl: order['image'],
+                          title: order['name'] + " (${order['qty']})",
+                          price: 'Rs.${order['price']}',
+                          onIconPressed: () async {
+                            try {
+                              var url = Uri.parse(
+                                "http://192.168.177.67/Firebase/updatestate.php",
+                              );
 
-                                  Map<String, String> body = {};
+                              Map<String, String> body = {};
 
-                                  if (Logdata.userEmail == "Ayush@gmail.com") {
-                                    body = {
-                                      'name': order['name'],
-                                      'supply': "Ayush",
-                                      'canteen': "Edge",
-                                      'stime': hiddenStime,
-                                      'email': hiddenEmail,
-                                    };
-                                  }
+                              if (Logdata.userEmail == "Ayush@gmail.com") {
+                                body = {
+                                  'name': order['name'],
+                                  'supply': "Ayush",
+                                  'canteen': "Edge",
+                                  'stime': hiddenStime,
+                                  'email': hiddenEmail,
+                                };
+                              }
 
-                                  var response = await http.post(
-                                    url,
-                                    body: body,
-                                  );
+                              var response = await http.post(
+                                url,
+                                body: body,
+                              );
 
-                                  if (response.statusCode == 200) {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => const Canteen(),
-                                      ),
-                                    );
-                                  }
-                                } catch (ex) {
-                                  log("Error updating state: $ex");
-                                }
-                              },
-                            ),
-
-                            const Divider(),
-                          ],
-                        );
-                      }).toList(),
+                              if (response.statusCode == 200) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const Canteen(),
+                                  ),
+                                );
+                              }
+                            } catch (ex) {
+                              log("Error updating state: $ex");
+                            }
+                          },
+                        ),
+                        const Divider(),
+                      ],
+                    );
+                  }).toList(),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -222,13 +219,13 @@ class Orders extends StatelessWidget {
   final VoidCallback? onIconPressed;
 
   const Orders({
-    super.key,
+    Key? key,
     required this.imageUrl,
     required this.title,
     required this.price,
     this.quantity,
     this.onIconPressed,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

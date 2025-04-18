@@ -25,7 +25,7 @@ Widget build(BuildContext context) {
 }
 
 class Hostel extends StatefulWidget {
-  const Hostel({super.key});
+  const Hostel({Key? key}) : super(key: key);
 
   @override
   HostelState createState() => HostelState();
@@ -207,14 +207,13 @@ class HostelState extends State<Hostel> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder:
-                        (context) => ProductDetail(
-                          image: product['image'],
-                          name: product['name'],
-                          price: product['price'].toString(),
-                          supply: product['supply'],
-                          canteen: product['canteen'],
-                        ),
+                    builder: (context) => ProductDetail(
+                      image: product['image'],
+                      name: product['name'],
+                      price: product['price'].toString(),
+                      supply: product['supply'],
+                      canteen: product['canteen'],
+                    ),
                   ),
                 );
               },

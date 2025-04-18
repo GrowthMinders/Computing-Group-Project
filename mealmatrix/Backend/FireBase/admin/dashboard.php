@@ -48,24 +48,13 @@
     <div class="header">
     <h1 class="page-title">Dashboard</h1>
     <div class="user-profile">
-        <?php 
-        session_start();
-        include_once "../connection.php";
-
-        $sql = "SELECT image FROM customer WHERE email = ?";
-        $data = array($_SESSION["admin"]);
-
-        $result = sqlsrv_query($conn, $sql, $data);
-
-        if($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
-            echo "<img src='https://randomuser.me/api/portraits/women/45.jpg' alt='admin'>";
-        } else {
-            echo "<img src='https://randomuser.me/api/portraits/women/45.jpg' alt='admin'>";//change
-        }
-        ?>
-        
-        <span><?php echo($_SESSION["admin"])?></span>
-    </div>
+    <?php 
+    session_start();
+        echo "<img src='https://randomuser.me/api/portraits/women/45.jpg' alt='admin'>"; 
+    ?>
+    
+    <span><?php echo htmlspecialchars($_SESSION["admin"]) ?></span>
+</div>
 </div>
         
 <div class="dashboard-cards">

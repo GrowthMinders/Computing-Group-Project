@@ -2,8 +2,14 @@
   "configVersion": 2,
   "packages": [
     {
+      "name": "app_links",
+      "rootUri": "file:///C:/Users/Supun/AppData/Local/Pub/Cache/hosted/pub.dev/app_links-3.5.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
       "name": "archive",
-      "rootUri": "file:///C:/Users/Supun/AppData/Local/Pub/Cache/hosted/pub.dev/archive-4.0.5",
+      "rootUri": "file:///C:/Users/Supun/AppData/Local/Pub/Cache/hosted/pub.dev/archive-4.0.6",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     },
@@ -87,7 +93,7 @@
     },
     {
       "name": "file_picker",
-      "rootUri": "file:///C:/Users/Supun/AppData/Local/Pub/Cache/hosted/pub.dev/file_picker-10.0.0",
+      "rootUri": "file:///C:/Users/Supun/AppData/Local/Pub/Cache/hosted/pub.dev/file_picker-10.1.2",
       "packageUri": "lib/",
       "languageVersion": "3.4"
     },
@@ -126,6 +132,12 @@
       "rootUri": "file:///C:/flutter/src/packages/flutter_web_plugins",
       "packageUri": "lib/",
       "languageVersion": "3.7"
+    },
+    {
+      "name": "gtk",
+      "rootUri": "file:///C:/Users/Supun/AppData/Local/Pub/Cache/hosted/pub.dev/gtk-2.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
     },
     {
       "name": "http",
@@ -213,7 +225,7 @@
     },
     {
       "name": "posix",
-      "rootUri": "file:///C:/Users/Supun/AppData/Local/Pub/Cache/hosted/pub.dev/posix-6.0.1",
+      "rootUri": "file:///C:/Users/Supun/AppData/Local/Pub/Cache/hosted/pub.dev/posix-6.0.2",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     },
@@ -353,10 +365,10 @@
       "name": "mealmatrix",
       "rootUri": "../",
       "packageUri": "lib/",
-      "languageVersion": "3.7"
+      "languageVersion": "2.12"
     }
   ],
-  "generated": "2025-04-08T07:40:49.675211Z",
+  "generated": "2025-04-18T08:07:59.993960Z",
   "generator": "pub",
   "generatorVersion": "3.7.2",
   "flutterRoot": "file:///C:/flutter/src",

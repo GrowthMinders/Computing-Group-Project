@@ -10,7 +10,7 @@ import 'dart:developer';
 // Remove the first Order class completely and keep only the second one
 
 class Order extends StatefulWidget {
-  const Order({super.key});
+  const Order({Key? key}) : super(key: key);
 
   @override
   State<Order> createState() => _OrderState();
@@ -36,15 +36,14 @@ class _OrderState extends State<Order> {
       if (response.statusCode == 200) {
         List<dynamic> responseData = json.decode(response.body);
         setState(() {
-          orderData =
-              responseData.map<Map<String, dynamic>>((record) {
-                return {
-                  'name': record['name'],
-                  'qty': record['qty'],
-                  'image': record['image'],
-                  'price': record['price'],
-                };
-              }).toList();
+          orderData = responseData.map<Map<String, dynamic>>((record) {
+            return {
+              'name': record['name'],
+              'qty': record['qty'],
+              'image': record['image'],
+              'price': record['price'],
+            };
+          }).toList();
         });
       } else {
         log("Failed to fetch data: ${response.statusCode}");
@@ -155,12 +154,12 @@ class OrderItem extends StatelessWidget {
   final int? quantity;
 
   const OrderItem({
-    super.key,
+    Key? key,
     required this.imageUrl,
     required this.title,
     required this.price,
     this.quantity,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

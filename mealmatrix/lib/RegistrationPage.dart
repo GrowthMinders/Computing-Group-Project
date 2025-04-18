@@ -9,7 +9,7 @@ import 'dart:developer';
 import 'package:file_picker/file_picker.dart';
 
 class RegistrationPage extends StatefulWidget {
-  const RegistrationPage({super.key});
+  const RegistrationPage({Key? key}) : super(key: key);
 
   @override
   RegistrationPageState createState() => RegistrationPageState();

@@ -13,7 +13,7 @@ import 'package:mealmatrix/Setting.dart';
 import 'package:mealmatrix/ProductDetails.dart';
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
 }
 
 class Edge extends StatefulWidget {
-  const Edge({super.key});
+  const Edge({Key? key}) : super(key: key);
 
   @override
   EdgeState createState() => EdgeState();
@@ -209,14 +209,13 @@ class EdgeState extends State<Edge> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder:
-                        (context) => ProductDetail(
-                          image: product['image'],
-                          name: product['name'],
-                          price: product['price'].toString(),
-                          supply: product['supply'],
-                          canteen: product['canteen'],
-                        ),
+                    builder: (context) => ProductDetail(
+                      image: product['image'],
+                      name: product['name'],
+                      price: product['price'].toString(),
+                      supply: product['supply'],
+                      canteen: product['canteen'],
+                    ),
                   ),
                 );
               },

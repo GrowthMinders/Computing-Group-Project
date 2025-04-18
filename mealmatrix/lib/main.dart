@@ -15,7 +15,7 @@ void main() {
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   MyAppState createState() => MyAppState();
@@ -312,10 +312,10 @@ class MyAppState extends State<MyApp> {
                       const SizedBox(width: 20),
 
                       MouseRegion(
-                        onEnter:
-                            (_) => setState(() => isHoveredRegister = true),
-                        onExit:
-                            (_) => setState(() => isHoveredRegister = false),
+                        onEnter: (_) =>
+                            setState(() => isHoveredRegister = true),
+                        onExit: (_) =>
+                            setState(() => isHoveredRegister = false),
                         child: SizedBox(
                           width: 130,
                           child: ElevatedButton(

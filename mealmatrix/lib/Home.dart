@@ -34,18 +34,17 @@ class favrendering {
           response.body,
         ); // Use response.body directly
 
-        favdata =
-            fav
-                .map(
-                  (record) => {
-                    'name': record['name'],
-                    'supply': record['supply'],
-                    'canteen': record['canteen'],
-                    'image': record['image'],
-                    'price': record['price'].toString(),
-                  },
-                )
-                .toList();
+        favdata = fav
+            .map(
+              (record) => {
+                'name': record['name'],
+                'supply': record['supply'],
+                'canteen': record['canteen'],
+                'image': record['image'],
+                'price': record['price'].toString(),
+              },
+            )
+            .toList();
       } else {
         log("Failed to fetch data: ${response.statusCode}");
       }
@@ -56,7 +55,7 @@ class favrendering {
 }
 
 class Home extends StatefulWidget {
-  const Home({super.key});
+  const Home({Key? key}) : super(key: key);
 
   @override
   HomeState createState() => HomeState();
@@ -194,7 +193,6 @@ class HomeState extends State<Home> {
                         : 4,
                   ),
                 ),
-
                 SizedBox(height: 24),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -445,14 +443,13 @@ class HomeState extends State<Home> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder:
-                            (context) => ProductDetail(
-                              image: product['image'],
-                              name: product['name'],
-                              price: product['price'].toString(),
-                              supply: product['supply'],
-                              canteen: product['canteen'],
-                            ),
+                        builder: (context) => ProductDetail(
+                          image: product['image'],
+                          name: product['name'],
+                          price: product['price'].toString(),
+                          supply: product['supply'],
+                          canteen: product['canteen'],
+                        ),
                       ),
                     );
                   },

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:mealmatrix/main.dart';
 
 class PCSucess extends StatelessWidget {
-  const PCSucess({super.key});
+  const PCSucess({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

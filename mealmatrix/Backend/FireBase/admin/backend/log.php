@@ -6,14 +6,14 @@ $email = $_POST['email'];
 $pass = $_POST['pass'];
 
 
-$sql = "SELECT email, password, mac FROM customer WHERE email = ?";
+$sql = "SELECT email, password, mac FROM admin WHERE email = ?";
 $data = array($email);
 
 $result = sqlsrv_query($conn, $sql, $data);
 
 $row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC);
 
-if ($row && $row["email"] == "MealMatrixCGP@outlook.com") {
+if ($row) {
     $dbpass = $row['password'];
     $dbmac = $row['mac'];
 

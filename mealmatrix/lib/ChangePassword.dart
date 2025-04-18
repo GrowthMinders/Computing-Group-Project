@@ -8,7 +8,7 @@ import 'dart:developer';
 import 'package:mealmatrix/main.dart';
 
 class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+  const MainApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ TextEditingController controller1 = TextEditingController();
 TextEditingController controller2 = TextEditingController();
 
 class ChangePassword extends StatefulWidget {
-  const ChangePassword({super.key});
+  const ChangePassword({Key? key}) : super(key: key);
 
   @override
   State<ChangePassword> createState() => _ChangePasswordState();
