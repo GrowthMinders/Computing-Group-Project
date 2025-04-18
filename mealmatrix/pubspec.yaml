@@ -22,22 +22,4 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
-  flutter_launcher_icons: any
-
-flutter_launcher_icons:
-  android: true
-  ios: true
-  image_path: "lib/assets/images/Meal Matrix Logo.png"
-  adaptive_icon_background: "#FFFFFF"
-  adaptive_icon_foreground: "lib/assets/images/Meal Matrix Logo.png"
-
-flutter:
-  uses-material-design: true
-  assets:
-    - lib/assets/images/Meal Matrix Logo.png
-    - lib/assets/images/kottu.jpg
-    - lib/assets/images/Audi.jpg
-    - lib/assets/images/Edge.jpeg
-    - lib/assets/images/Hostel.jpeg
-    - lib/assets/images/Finagle.jpg
-    - lib/assets/images/DefaultProfile.png
+ 
