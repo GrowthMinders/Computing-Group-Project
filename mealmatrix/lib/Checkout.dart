@@ -298,13 +298,7 @@ class PlaceOrderButton extends StatelessWidget {
             user.tel = "";
             Logdata.canteen = false;
             checkoutdata.clear();
-
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (context) => MyApp()),
-              (route) => false,
-            );
-            SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+            SystemNavigator.pop(); //closing the app
           } catch (e) {
             ScaffoldMessenger.of(
               context,
