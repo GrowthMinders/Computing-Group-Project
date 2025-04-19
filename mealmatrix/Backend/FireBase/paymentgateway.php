@@ -33,8 +33,8 @@ try {
                 ->setDescription("Meal Matrix Bill Settlement");
     
     $redirectUrls = new RedirectUrls();
-    $redirectUrls->setReturnUrl("https://localhost:8080/success")//change
-                 ->setCancelUrl("https://localhost:8080/cancel");//change
+    $redirectUrls->setReturnUrl("http://192.168.177.67/FireBase/state/paymentsuccess.php")
+                 ->setCancelUrl("http://192.168.177.67/FireBase/state/paymentunsuccess.php");
     
     $payment = new Payment();
     $payment->setIntent("sale")
