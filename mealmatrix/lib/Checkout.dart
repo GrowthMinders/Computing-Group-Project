@@ -298,7 +298,7 @@ class PlaceOrderButton extends StatelessWidget {
             user.tel = "";
             Logdata.canteen = false;
             checkoutdata.clear();
-            SystemNavigator.pop(); //closing the app
+            SystemNavigator.pop();
           } catch (e) {
             ScaffoldMessenger.of(
               context,

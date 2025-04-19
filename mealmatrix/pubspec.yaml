@@ -40,11 +40,14 @@ flutter:
 flutter_launcher_icons:
   android: true
   ios: true
-  image_path: "lib/assests/images/Meal Matrix Logo.png"
+  image_path: "lib/assets/images/Meal Matrix Logo.png"
   adaptive_icon_background: "#FFFFFF"
-  adaptive_icon_foreground: "lib/assests/images/Meal Matrix Logo.png"
+  adaptive_icon_foreground: "lib/assets/images/Meal Matrix Logo.png"
 
 flutter_native_splash:
-  color: "#42a5f5" 
-  branding: "lib/assests/images/branding.png"
+  color: "#42a5f5"
+  image: "lib/assets/images/splash_logo.png"
+  branding: "lib/assets/images/branding.png"
   branding_mode: "bottom"
+  android: true
+  ios: true                  
