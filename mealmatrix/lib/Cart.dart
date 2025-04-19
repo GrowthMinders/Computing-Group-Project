@@ -9,12 +9,12 @@ import 'package:mealmatrix/main.dart';
 
 class Cart extends StatefulWidget {
   @override
-  _CartState createState() => _CartState();
+  CartState createState() => CartState();
 }
 
-class _CartState extends State<Cart> {
-  List<Map<String, dynamic>> cartdata = [];
+List<Map<String, dynamic>> cartdata = [];
 
+class CartState extends State<Cart> {
   Future<void> rendercart() async {
     try {
       var url = Uri.parse("http://192.168.177.67/Firebase/cartrendering.php");

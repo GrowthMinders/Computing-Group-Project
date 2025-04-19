@@ -104,23 +104,28 @@
         </div>
         <h1>Payment Successful!</h1>
         <p>Thank you for your purchase. Your payment has been processed successfully. A confirmation email has been sent to your registered email address.</p>
-        
+        <?php 
+           $total = urldecode($_GET['total']); 
+           $inv = urldecode($_GET['invoice']); 
+           date_default_timezone_set('Asia/Colombo');
+           $today = date('d/m/Y');       
+        ?>
         <div class="order-details">
             <div class="detail-row">
-                <span class="detail-label">Order ID:</span>
-                <span class="detail-value">#ORD-123456</span>
+                <span class="detail-label">Invoice ID:</span>
+                <span class="detail-value"><?php echo $inv ?></span>
             </div>
             <div class="detail-row">
                 <span class="detail-label">Date:</span>
-                <span class="detail-value">May 15, 2023</span>
+                <span class="detail-value"><?php echo $today ?></span>
             </div>
             <div class="detail-row">
                 <span class="detail-label">Amount Paid:</span>
-                <span class="detail-value">$99.00</span>
+                <span class="detail-value">Rs.<?php echo $total ?></span>
             </div>
             <div class="detail-row">
                 <span class="detail-label">Payment Method:</span>
-                <span class="detail-value">Credit Card (VISA ****4242)</span>
+                <span class="detail-value">Card (VISA ****4242)</span>
             </div>
         </div>
     </div>

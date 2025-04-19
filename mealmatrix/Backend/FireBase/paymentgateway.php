@@ -1,8 +1,42 @@
 <?php
 require __DIR__ . '/vendor/autoload.php';
 
-$price = $_GET['amount'];
+$price = urldecode($_GET['amount']);
+//Payment Unsucess data setting
+include_once "connection.php";
+$conid = "";
+$sql2 = "SELECT MAX(iid) AS lastid FROM invoice";
+$result2 = sqlsrv_query($conn, $sql2);
+if($row2 = sqlsrv_fetch_array($result2, SQLSRV_FETCH_ASSOC)) {
+    $conid = $row2["lastid"]+1;
+}
 
+date_default_timezone_set('Asia/Colombo');
+$today = date('d/m/Y');  
+
+$value = (int)($price/296);
+
+$cancelUrl = "http://192.168.177.67/FireBase/state/paymentunsuccess.php?" . http_build_query([
+    'oid' => $conid,
+    'date' => $today,
+    'price' => $price
+]);
+
+
+//Payment sucess data setting
+$products = urldecode($_GET['data']);
+$email = urldecode($_GET['email']); 
+$qty = urldecode($_GET['qdata']);
+
+$returnUrl = "http://192.168.177.67/FireBase/state/cashpayment.php?" . http_build_query([
+    'pid' => $products,
+    'email' => $email,
+    'price' => $value,
+    'qty' => $qty
+]);
+
+
+//Payment Proceedure
 use PayPal\Api\Amount;
 use PayPal\Api\Payer;
 use PayPal\Api\Payment;
@@ -26,15 +60,15 @@ try {
     
     $amount = new Amount();
     $amount->setCurrency("USD")
-           ->setTotal((int)($price/296));
+           ->setTotal($value);
     
     $transaction = new Transaction();
     $transaction->setAmount($amount)
                 ->setDescription("Meal Matrix Bill Settlement");
     
     $redirectUrls = new RedirectUrls();
-    $redirectUrls->setReturnUrl("http://192.168.177.67/FireBase/state/paymentsuccess.php")
-                 ->setCancelUrl("http://192.168.177.67/FireBase/state/paymentunsuccess.php");
+    $redirectUrls->setReturnUrl($returnUrl)
+                 ->setCancelUrl($cancelUrl);
     
     $payment = new Payment();
     $payment->setIntent("sale")

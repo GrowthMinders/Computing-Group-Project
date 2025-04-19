@@ -104,19 +104,23 @@
         </div>
         <h1>Payment Unsuccessful</h1>
         <p>We're sorry, but your payment could not be processed. Please try again or use a different payment method.</p>
-        
+        <?php 
+           $inv = urldecode($_GET['oid']);
+           $date = urldecode($_GET['date']);
+           $total = urldecode($_GET['price']);
+        ?>
         <div class="order-details">
             <div class="detail-row">
-                <span class="detail-label">Order ID:</span>
-                <span class="detail-value">#ORD-123456</span>
+                <span class="detail-label">Invoice ID:</span>
+                <span class="detail-value"><?php echo $inv ?></span>
             </div>
             <div class="detail-row">
                 <span class="detail-label">Date:</span>
-                <span class="detail-value">May 15, 2023</span>
+                <span class="detail-value"><?php echo $date ?></span>
             </div>
             <div class="detail-row">
                 <span class="detail-label">Amount:</span>
-                <span class="detail-value">$99.00</span>
+                <span class="detail-value">Rs.<?php echo $total ?></span>
             </div>
             <div class="detail-row">
                 <span class="detail-label">Error:</span>

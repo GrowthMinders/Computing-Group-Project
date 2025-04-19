@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:mealmatrix/Cart.dart';
 import 'dart:convert';
 import 'dart:developer';
 import 'package:mealmatrix/main.dart';
@@ -36,6 +37,7 @@ class _CheckoutState extends State<Checkout> {
         checkoutdata = (decoded as List)
             .map(
               (record) => {
+                'id': record['pid'],
                 'name': record['name'],
                 'supply': record['supply'],
                 'qty': record['qty'],
@@ -282,9 +284,19 @@ class PlaceOrderButton extends StatelessWidget {
       width: double.infinity,
       child: ElevatedButton(
         onPressed: () async {
+          List<int> proceedIds =
+              checkoutdata.map((item) => item["id"] as int).toList();
+
+          List<int> proceedQty =
+              checkoutdata.map((item) => item["qty"] as int).toList();
+
           final String totalValue = total.toStringAsFixed(2);
           final String url =
-              "http://192.168.177.67/Firebase/paymentgateway.php?amount=$totalValue";
+              "http://192.168.177.67/Firebase/paymentgateway.php?"
+              "amount=${totalValue.toString()}"
+              "&email=${Uri.encodeComponent(Logdata.userEmail)}"
+              "&data=${Uri.encodeComponent(json.encode(proceedIds))}"
+              "&qdata=${Uri.encodeComponent(json.encode(proceedQty))}";
 
           try {
             await launchUrl(
@@ -298,6 +310,7 @@ class PlaceOrderButton extends StatelessWidget {
             user.tel = "";
             Logdata.canteen = false;
             checkoutdata.clear();
+            cartdata.clear();
             SystemNavigator.pop();
           } catch (e) {
             ScaffoldMessenger.of(
