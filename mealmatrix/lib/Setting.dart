@@ -271,18 +271,33 @@ class SettingState extends State<Setting> {
               child: ListTile(
                 leading: Icon(Icons.logout, color: Colors.green),
                 title: Text('Log Out'),
-                onTap: () {
+                onTap: () async {
                   Logdata.userEmail = "";
                   user.email = "";
                   user.name = "";
                   user.tel = "";
                   Logdata.canteen = false;
 
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (context) => const MyApp()),
-                    (route) => false,
-                  );
+                  try {
+                    var url = Uri.parse(
+                      "http://192.168.177.67/Firebase/emptycart.php",
+                    );
+                    var response = await http.post(
+                      url,
+                      body: {'email': Logdata.userEmail},
+                    );
+
+                    if (response.statusCode == 200) {
+                      log("Cart Cleaned");
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (context) => const MyApp()),
+                        (route) => false,
+                      );
+                    }
+                  } catch (ex) {
+                    log("Error fetching profile: $ex");
+                  }
                 },
               ),
             ),

@@ -125,12 +125,28 @@ class CanteenState extends State<Canteen> {
                               );
 
                               if (response.statusCode == 200) {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const Canteen(),
-                                  ),
-                                );
+                                //Mailing user to tell order is ready
+                                try {
+                                  var url = Uri.parse(
+                                    "http://192.168.177.67/Firebase/userordernotify.php", //change
+                                  );
+                                  var response = await http.post(
+                                    url,
+                                    body: {'email': Logdata.userEmail},
+                                  );
+
+                                  if (response.statusCode == 200) {
+                                    log("Mail Sent");
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => const Canteen(),
+                                      ),
+                                    );
+                                  }
+                                } catch (ex) {
+                                  log("Error fetching profile: $ex");
+                                }
                               }
                             } catch (ex) {
                               log("Error updating state: $ex");
