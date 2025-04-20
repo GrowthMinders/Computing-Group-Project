@@ -37,7 +37,7 @@ class _CheckoutState extends State<Checkout> {
         checkoutdata = (decoded as List)
             .map(
               (record) => {
-                'id': record['pid'],
+                'id': record['id'],
                 'name': record['name'],
                 'supply': record['supply'],
                 'qty': record['qty'],
@@ -284,8 +284,9 @@ class PlaceOrderButton extends StatelessWidget {
       width: double.infinity,
       child: ElevatedButton(
         onPressed: () async {
-          List<int> proceedIds =
-              checkoutdata.map((item) => item["id"] as int).toList();
+          List<int> proceedIds = checkoutdata
+              .map((item) => item["id"] as int)
+              .toList(); //change to name and supplu
 
           List<int> proceedQty =
               checkoutdata.map((item) => item["qty"] as int).toList();

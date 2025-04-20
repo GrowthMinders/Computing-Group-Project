@@ -240,35 +240,37 @@ class MyAppState extends State<MyApp> {
                                   );
                                   if (response.statusCode == 200) {
                                     log("Success: Login Succeeded");
-                                    //Cart empting
-                                    try {
-                                      var url = Uri.parse(
-                                        "http://192.168.177.67/Firebase/emptycart.php",
-                                      );
-                                      var response = await http.post(
-                                        url,
-                                        body: {'email': Logdata.userEmail},
-                                      );
-
-                                      if (response.statusCode == 200) {
-                                        log("Cart Cleaned");
-                                        Navigator.pushAndRemoveUntil(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const MyApp()),
-                                          (route) => false,
-                                        );
-                                      }
-                                    } catch (ex) {
-                                      log("Error fetching profile: $ex");
-                                    }
                                     final Map<String, dynamic> responseData =
                                         jsonDecode(response.body);
 
                                     setState(() {
                                       Logdata.userEmail = responseData['user'];
                                     });
+                                    //Cart empting
+                                    try {
+                                      var url1 = Uri.parse(
+                                        "http://192.168.177.67/Firebase/emptycart.php",
+                                      );
+                                      var response1 = await http.post(
+                                        url1,
+                                        body: {'email': Logdata.userEmail},
+                                      );
+
+                                      if (response1.statusCode == 200) {
+                                        log("Cart Cleaned");
+                                        Navigator.pushAndRemoveUntil(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => Home()),
+                                          (route) => false,
+                                        );
+                                      } else {
+                                        log("cart not cleaned");
+                                      }
+                                    } catch (ex) {
+                                      log("Error fetching profile: $ex");
+                                    }
+
                                     if (Logdata.userEmail ==
                                         "Ayush@gmail.com") {
                                       Navigator.push(

@@ -28,7 +28,7 @@ $products = urldecode($_GET['data']);
 $email = urldecode($_GET['email']); 
 $qty = urldecode($_GET['qdata']);
 
-$returnUrl = "http://192.168.177.67/FireBase/state/cashpayment.php?" . http_build_query([
+$returnUrl = "http://192.168.177.67/FireBase/cashpayment.php?" . http_build_query([
     'pid' => $products,
     'email' => $email,
     'price' => $value,

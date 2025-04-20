@@ -272,7 +272,6 @@ class SettingState extends State<Setting> {
                 leading: Icon(Icons.logout, color: Colors.green),
                 title: Text('Log Out'),
                 onTap: () async {
-                  Logdata.userEmail = "";
                   user.email = "";
                   user.name = "";
                   user.tel = "";
@@ -294,6 +293,7 @@ class SettingState extends State<Setting> {
                         MaterialPageRoute(builder: (context) => const MyApp()),
                         (route) => false,
                       );
+                      Logdata.userEmail = "";
                     }
                   } catch (ex) {
                     log("Error fetching profile: $ex");

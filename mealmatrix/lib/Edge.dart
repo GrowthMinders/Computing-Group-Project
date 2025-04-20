@@ -124,7 +124,7 @@ class EdgeState extends State<Edge> {
             },
           ),
           const Text(
-            'Audi Canteen',
+            'Edge Canteen',
             style: TextStyle(
               color: Colors.white,
               fontSize: 24,

@@ -24,7 +24,7 @@ if($result){
     $sql1 = "SELECT MAX(iid) AS lastid FROM invoice";
     $result1 = sqlsrv_query($conn, $sql1);
     if($row1 = sqlsrv_fetch_array($result1, SQLSRV_FETCH_ASSOC)) {
-       $conid = $row1["lastid"]+1;
+       $conid = $row1["lastid"];
 
        //Creating the order table entries
        $productsArray = json_decode($products, true);

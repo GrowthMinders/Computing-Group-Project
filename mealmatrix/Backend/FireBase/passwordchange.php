@@ -1,6 +1,6 @@
 <?php
 
-include_once "../connection.php";
+include_once "connection.php";
 
   $pass = $_POST["pass"];
   $email = $_POST["email"];
