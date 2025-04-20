@@ -24,6 +24,8 @@ class MyApp extends StatefulWidget {
 TextEditingController controller1 = TextEditingController();
 TextEditingController controller2 = TextEditingController();
 
+RegExp regexmailcanteen = RegExp('^[A-Za-z]{3,50}@(gmail.com)\$');
+
 class Logdata {
   static String email = "";
   static String pass = "";
@@ -37,7 +39,6 @@ class Logdata {
     errmessage = "";
 
     RegExp regexmail = RegExp('^[A-Za-z]{3,50}@(students.nsbm.ac.lk)\$');
-    RegExp regexmailcanteen = RegExp('^[A-Za-z]{3,50}@(gmail.com)\$');
 
     if (controller1.text.isEmpty) {
       Logdata.error++;
@@ -271,8 +272,8 @@ class MyAppState extends State<MyApp> {
                                       log("Error fetching profile: $ex");
                                     }
 
-                                    if (Logdata.userEmail ==
-                                        "Ayush@gmail.com") {
+                                    if (regexmailcanteen
+                                        .hasMatch(Logdata.userEmail)) {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
