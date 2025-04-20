@@ -50,7 +50,7 @@
                 $sql = "SELECT name, email, contact, image FROM customer WHERE email LIKE '%@gmail.com'";
                 $result = sqlsrv_query($conn, $sql);
      
-                if($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
+                while($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
                     echo "<tr>
                             <td><img src='data:image/png;base64," . base64_encode($row['image']) . "' style='height:90px; width:90px; border-radius:20px;'></td>
                             <td>" . $row['name'] . "</td>

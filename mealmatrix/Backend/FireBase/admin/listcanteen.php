@@ -51,7 +51,7 @@
                 $sql = "SELECT name, otime, ctime, location, contact FROM canteen";
                 $result = sqlsrv_query($conn, $sql);
      
-                if($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
+                while($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)) {
                     echo "<tr>
                             <td>". $row['name'] ."</td>
                             <td>". $row['otime'] ."</td>
