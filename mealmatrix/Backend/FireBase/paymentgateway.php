@@ -24,12 +24,14 @@ $cancelUrl = "http://192.168.177.67/FireBase/state/paymentunsuccess.php?" . http
 
 
 //Payment sucess data setting
-$products = urldecode($_GET['data']);
+$products = urldecode($_GET['names']);
+$supply = urldecode($_GET['suppliers']);
 $email = urldecode($_GET['email']); 
 $qty = urldecode($_GET['qdata']);
 
 $returnUrl = "http://192.168.177.67/FireBase/cashpayment.php?" . http_build_query([
-    'pid' => $products,
+    'names' => $products,
+    'supply' => $supply,
     'email' => $email,
     'price' => $value,
     'qty' => $qty

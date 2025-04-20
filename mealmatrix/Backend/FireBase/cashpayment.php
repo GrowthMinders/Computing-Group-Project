@@ -1,7 +1,8 @@
 <?php
 include_once "connection.php";
 
-$products = urldecode($_GET['pid']);
+$products = urldecode($_GET['names']);
+$supply = urldecode($_GET['supply']);
 $email = urldecode($_GET['email']); 
 $price = urldecode($_GET['price']);
 $qty = urldecode($_GET['qty']);
@@ -28,19 +29,19 @@ if($result){
 
        //Creating the order table entries
        $productsArray = json_decode($products, true);
+       $currentsupply = json_decode($supply, true);
        $qtyArray = json_decode($qty, true); 
        
        for($i = 0; $i < count($productsArray); $i++){
-           $currentid = $productsArray[$i];
+           $currentname = $productsArray[$i];
+           $currentsupply = $supplyArray[$i];
 
-           //retrieveing product data using the id
-           $sql2 = "SELECT name, supply, canteen FROM product WHERE pid = ?";
-           $data2 = array($currentid);
+           //retrieveing product data using product name and supplier name
+           $sql2 = "SELECT canteen FROM product WHERE name = ? AND supply=? ";
+           $data2 = array($currentname, $currentsupply);
         
            $result2 = sqlsrv_query($conn, $sql2, $data2);
            while($row2 = sqlsrv_fetch_array($result2, SQLSRV_FETCH_ASSOC)){
-               $pname = $row2["name"];
-               $psupply = $row2["supply"];
                $pcanteen = $row2["canteen"];
            }
 
@@ -49,7 +50,7 @@ if($result){
 
            //Inserting data to orders table
            $sql3 = "INSERT INTO orders (stime, date, qty, email, name, supply, canteen, state, iino) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-           $data3 = array($time, $today, $currentqty, $email, $pname, $psupply, $pcanteen, "Not Done", $conid);
+           $data3 = array($time, $today, $currentqty, $email, $currentname, $currentsupply, $pcanteen, "Not Done", $conid);
 
            $result3 = sqlsrv_query($conn, $sql3, $data3);
        }

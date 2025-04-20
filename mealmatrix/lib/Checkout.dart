@@ -284,9 +284,11 @@ class PlaceOrderButton extends StatelessWidget {
       width: double.infinity,
       child: ElevatedButton(
         onPressed: () async {
-          List<int> proceedIds = checkoutdata
-              .map((item) => item["id"] as int)
-              .toList(); //change to name and supplu
+          List<String> proceedNames =
+              checkoutdata.map((item) => item["name"] as String).toList();
+
+          List<String> proceedSupply =
+              checkoutdata.map((item) => item["supply"] as String).toList();
 
           List<int> proceedQty =
               checkoutdata.map((item) => item["qty"] as int).toList();
@@ -296,7 +298,8 @@ class PlaceOrderButton extends StatelessWidget {
               "http://192.168.177.67/Firebase/paymentgateway.php?"
               "amount=${totalValue.toString()}"
               "&email=${Uri.encodeComponent(Logdata.userEmail)}"
-              "&data=${Uri.encodeComponent(json.encode(proceedIds))}"
+              "&names=${Uri.encodeComponent(json.encode(proceedNames))}"
+              "&supplies=${Uri.encodeComponent(json.encode(proceedSupply))}"
               "&qdata=${Uri.encodeComponent(json.encode(proceedQty))}";
 
           try {
