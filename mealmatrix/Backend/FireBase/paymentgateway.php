@@ -25,7 +25,7 @@ $cancelUrl = "http://192.168.177.67/FireBase/state/paymentunsuccess.php?" . http
 
 //Payment sucess data setting
 $products = urldecode($_GET['names']);
-$supply = urldecode($_GET['suppliers']);
+$supply = urldecode($_GET['supplies']);
 $email = urldecode($_GET['email']); 
 $qty = urldecode($_GET['qdata']);
 
