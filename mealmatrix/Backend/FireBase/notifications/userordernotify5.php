@@ -7,9 +7,9 @@ error_reporting(E_ALL);
 // Include PHPMailer autoload
 require 'C:/xampp/htdocs/FireBase/vendor/autoload.php';
 
-require 'PHPMailer/src/Exception.php';
-require 'PHPMailer/src/PHPMailer.php';
-require 'PHPMailer/src/SMTP.php';
+require '../PHPMailer/src/Exception.php';
+require '../PHPMailer/src/PHPMailer.php';
+require '../PHPMailer/src/SMTP.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -217,7 +217,7 @@ $invoiceHTML = <<<HTML
             <tbody>
 HTML;
 
-include_once "connection.php";
+include_once "../connection.php";
 
 $sql2 = "SELECT oid,name,supply,qty FROM orders WHERE oid = ?";
 $data2 = array($id);

@@ -24,7 +24,7 @@ class MyApp extends StatefulWidget {
 TextEditingController controller1 = TextEditingController();
 TextEditingController controller2 = TextEditingController();
 
-RegExp regexmailcanteen = RegExp('^[A-Za-z]{3,50}@(gmail.com)\$');
+RegExp regexmailcanteen = RegExp('^[A-Za-z]{2,50}@(gmail.com)\$');
 
 class Logdata {
   static String email = "";

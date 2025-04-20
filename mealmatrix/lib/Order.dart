@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:mealmatrix/CanteenOwner.dart';
 import 'package:mealmatrix/Setting.dart';
 import 'package:http/http.dart' as http;
+import 'package:mealmatrix/main.dart';
 import 'dart:convert';
 import 'dart:developer';
 
@@ -28,11 +29,26 @@ class _OrderState extends State<Order> {
   Future<void> fetchOrderData() async {
     try {
       var url = Uri.parse("http://192.168.177.67/Firebase/canteenowner2.php");
+      Map<String, String> body = {};
+
+      if (Logdata.userEmail == "Ayush@gmail.com") {
+        body = {'supply': "Ayush", 'canteen': "Edge"};
+      } else if (Logdata.userEmail == "So@gmail.com") {
+        body = {'supply': "So Cafe", 'canteen': "Edge"};
+      } else if (Logdata.userEmail == "Leyons@gmail.com") {
+        body = {'supply': "Leyons", 'canteen': "Audi"};
+      } else if (Logdata.userEmail == "Ocean@gmail.com") {
+        body = {'supply': "Ocean", 'canteen': "Hostel"};
+      } else if (Logdata.userEmail == "Hela@gmail.com") {
+        body = {'supply': "Hela Bojun", 'canteen': "Edge"};
+      } else if (Logdata.userEmail == "Finagle@gmail.com") {
+        body = {'supply': "Finagle", 'canteen': "Finagle"};
+      }
+
       var response = await http.post(
         url,
-        body: {'supply': "Ayush", 'canteen': "Edge"},
+        body: body,
       );
-
       if (response.statusCode == 200) {
         List<dynamic> responseData = json.decode(response.body);
         setState(() {

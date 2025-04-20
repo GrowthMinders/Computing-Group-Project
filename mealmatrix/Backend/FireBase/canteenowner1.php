@@ -8,7 +8,7 @@ date_default_timezone_set('Asia/Colombo');
 $today = date('d/m/Y');
 
 
-$sql = "SELECT name, qty, stime, email FROM orders WHERE supply = ? AND state = ? AND canteen = ? AND date = ?";
+$sql = "SELECT oid, name, qty, stime, email FROM orders WHERE supply = ? AND state = ? AND canteen = ? AND date = ?";
 $data = array($supply, "Not Done", $canteen, $today);
 
 $result = sqlsrv_query($conn, $sql, $data);
