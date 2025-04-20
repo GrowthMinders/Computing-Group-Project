@@ -7,31 +7,25 @@ error_reporting(E_ALL);
 // Include PHPMailer autoload
 require 'C:/xampp/htdocs/FireBase/vendor/autoload.php';
 
-require 'PHPMailer/src/Exception.php';
-require 'PHPMailer/src/PHPMailer.php';
-require 'PHPMailer/src/SMTP.php';
+
+// Load PHPMailer files manually
+require '../PHPMailer/src/Exception.php';
+require '../PHPMailer/src/PHPMailer.php';
+require '../PHPMailer/src/SMTP.php'; 
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 // Get the email from the POST request
-$email = urldecode($_GET['email']);
-$invoiceno = urldecode($_GET['iid']);
+$id = $_POST['oid'];
 $total = 0;
+$email = "";
 
 date_default_timezone_set('Asia/Colombo');
 $today = date('d/m/Y');
 
 date_default_timezone_set('Asia/Colombo');
 $time = date('H:i');
-
-// Check if the email is empty
-if (empty($email)) {
-    error_log('Email Empty'); // Log the error
-    http_response_code(400); // Bad request
-    log(2);
-    exit(); // Stop further execution
-}
 
 // HTML content for the invoice
 $invoiceHTML = <<<HTML
@@ -189,23 +183,8 @@ $invoiceHTML = <<<HTML
 <body>
     <div class="invoice-container">
         <div class="invoice-header">
-            <h1 class="restaurant-name">Meal Matrix</h1>
-            <h2 class="invoice-title">INVOICE</h2>
-        </div>
-        
-        <div class="invoice-info">
-            <div class="info-section">
-                <div class="info-label">INVOICE</div>
-                <div class="info-value">$invoiceno</div>
-            </div>
-            <div class="info-section">
-                <div class="info-label">DATE</div>
-                <div class="info-value">$today</div>
-            </div>
-            <div class="info-section">
-                <div class="info-label">Time</div>
-                <div class="info-value">$time</div>
-            </div>
+            <h1 class="restaurant-name">Ayush Cafe</h1>
+            <h2 class="invoice-title">Order Ready</h2>
         </div>
         
         <table class="items-table">
@@ -213,7 +192,6 @@ $invoiceHTML = <<<HTML
                 <tr>
                     <th>Order ID</th>
                     <th>Name</th>
-                    <th>Canteen</th>
                     <th>Qty</th>
                     <th>Price</th>
                 </tr>
@@ -221,20 +199,20 @@ $invoiceHTML = <<<HTML
             <tbody>
 HTML;
 
-include_once "connection.php";
+include_once "../connection.php";
 
-$sql2 = "SELECT oid,name,supply,qty FROM orders WHERE inno = ?";
-$data2 = array($invoiceno);
+$sql2 = "SELECT name,supply,qty,email FROM orders WHERE oid = ?";
+$data2 = array($id);
 
 $result2 = sqlsrv_query($conn, $sql2, $data2);
 while($row2 = sqlsrv_fetch_array($result2, SQLSRV_FETCH_ASSOC)){
+       $email = $row2['email'];
     $invoiceHTML .= <<<HTML
                 <tr>
                     <td>{$row2['oid']}</td>
                     <td>
                         <div class="item-name">{$row2['name']}</div>
                     </td>
-                    <td>{$row2['supply']}</td>
                     <td>{$row2['qty']}</td>
     HTML;
 
@@ -264,9 +242,9 @@ while($row2 = sqlsrv_fetch_array($result2, SQLSRV_FETCH_ASSOC)){
 $invoiceHTML .= <<<HTML
             
         <div class="footer">
-            <div class="thank-you">Thank you for using Meal Matrix</div>
+            <div class="thank-you">Thank you, come again Ayush Cafe</div>
             <p>Meal Matrix • Pitipana, Homagama</p>
-            <p>Phone: +(94) 76 157 1745 • Email: MealMatrixCGP@outlook.com</p>
+            <p>Phone: +(94) 76 157 1745 • Email: Ayush@gmail.com</p>
         </div>
     </div>
 </body>
@@ -289,17 +267,17 @@ try {
     $mail->SMTPDebug = 2; // Enable debugging
 
     // Recipients
-    $mail->setFrom('MealMatrixCGP@outlook.com', 'Meal-Matrix');
+    $mail->setFrom('Ayush@gmail.com', 'Ayush Cafe');
     $mail->addAddress($email);
 
     // Content
     $mail->isHTML(true);
-    $mail->Subject = 'Purchase Invoice';
+    $mail->Subject = 'Order ready nofitication';
     $mail->Body = $invoiceHTML;
 
     // Send the email
     if ($mail->send()) {
-        header("Location: http://192.168.177.67/FireBase/state/paymentsuccess.php?total=$total&invoice=$invoiceno");
+        http_response_code(200);
     } else {
         echo json_encode(array("status" => "error", "message" => "Mail not sent"));
         http_response_code(500);

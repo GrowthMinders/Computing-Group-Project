@@ -40,6 +40,7 @@ class CanteenState extends State<Canteen> {
         setState(() {
           orderData = responseData.map<Map<String, dynamic>>((record) {
             return {
+              'oid': record['oid'],
               'name': record['name'],
               'qty': record['qty'],
               'image': record['image'],
@@ -108,12 +109,56 @@ class CanteenState extends State<Canteen> {
                               );
 
                               Map<String, String> body = {};
-
+                              //Sending required data to update the product state as per logged-in account
                               if (Logdata.userEmail == "Ayush@gmail.com") {
                                 body = {
                                   'name': order['name'],
                                   'supply': "Ayush",
                                   'canteen': "Edge",
+                                  'stime': hiddenStime,
+                                  'email': hiddenEmail,
+                                };
+                              } else if (Logdata.userEmail == "So@gmail.com") {
+                                body = {
+                                  'name': order['name'],
+                                  'supply': "So Cafe",
+                                  'canteen': "Edge",
+                                  'stime': hiddenStime,
+                                  'email': hiddenEmail,
+                                };
+                              } else if (Logdata.userEmail ==
+                                  "Hela@gmail.com") {
+                                body = {
+                                  'name': order['name'],
+                                  'supply': "Hela Bojun",
+                                  'canteen': "Edge",
+                                  'stime': hiddenStime,
+                                  'email': hiddenEmail,
+                                };
+                              } else if (Logdata.userEmail ==
+                                  "Leyons@gmail.com") {
+                                body = {
+                                  'name': order['name'],
+                                  'supply': "Leyons",
+                                  'canteen': "Audi",
+                                  'stime': hiddenStime,
+                                  'email': hiddenEmail,
+                                };
+                              } else if (Logdata.userEmail ==
+                                  "Finagle@gmail.com") {
+                                body = {
+                                  'name': order['name'],
+                                  'supply': "Finagle",
+                                  'canteen': "Finagle",
+                                  'stime': hiddenStime,
+                                  'email': hiddenEmail,
+                                };
+                              } else if (Logdata.userEmail ==
+                                  "Ocean@gmail.com") {
+                                body = {
+                                  'name': order['name'],
+                                  'supply': "Ocean",
+                                  'canteen': "Hostel",
                                   'stime': hiddenStime,
                                   'email': hiddenEmail,
                                 };
@@ -127,12 +172,45 @@ class CanteenState extends State<Canteen> {
                               if (response.statusCode == 200) {
                                 //Mailing user to tell order is ready
                                 try {
-                                  var url = Uri.parse(
-                                    "http://192.168.177.67/Firebase/userordernotify.php", //change
-                                  );
+                                  var url;
+                                  //Sending relavant mail scripts according to logged in account
+                                  if (Logdata.userEmail == "Ayush@gmail.com") {
+                                    url = Uri.parse(
+                                      "http://192.168.177.67/Firebase/notifications/userordernotify1.php",
+                                    );
+                                  } else if (Logdata.userEmail ==
+                                      "So@gmail.com") {
+                                    url = Uri.parse(
+                                      "http://192.168.177.67/Firebase/notifications/userordernotify2.php",
+                                    );
+                                  } else if (Logdata.userEmail ==
+                                      "Hela@gmail.com") {
+                                    url = Uri.parse(
+                                      "http://192.168.177.67/Firebase/notifications/userordernotify3.php",
+                                    );
+                                  } else if (Logdata.userEmail ==
+                                      "Leyons@gmail.com") {
+                                    url = Uri.parse(
+                                      "http://192.168.177.67/Firebase/notifications/userordernotify4.php",
+                                    );
+                                  } else if (Logdata.userEmail ==
+                                      "Finagle@gmail.com") {
+                                    url = Uri.parse(
+                                      "http://192.168.177.67/Firebase/notifications/userordernotify5.php",
+                                    );
+                                  } else if (Logdata.userEmail ==
+                                      "Ocean@gmail.com") {
+                                    url = Uri.parse(
+                                      "http://192.168.177.67/Firebase/notifications/userordernotify6.php",
+                                    );
+                                  }
+
                                   var response = await http.post(
                                     url,
-                                    body: {'email': Logdata.userEmail},
+                                    body: {
+                                      'email': Logdata.userEmail,
+                                      'oid': order['oid'],
+                                    },
                                   );
 
                                   if (response.statusCode == 200) {
