@@ -86,11 +86,6 @@ $invoiceHTML = <<<HTML
             margin-top: 20px;
         }
 
-        .invoice-logo img {
-            width: 80px;
-            height: auto;
-        }
-
         .invoice-info {
             display: flex;
             flex-direction: center;
@@ -201,7 +196,7 @@ $invoiceHTML = <<<HTML
 <body>
     <div class="invoice-container">
         <div class="invoice-header">
-            <center><img src="https://1drv.ms/i/c/d1ec707daa45f29c/IQTVJEqUhp5jSLF7gBPCe32BARImmENCfq56ctcVULn79pc?width=1024" alt="Meal Matrix Logo"><h1 class="restaurant-name">Finagle</h1></center>
+            <center><img src="https://1drv.ms/i/c/d1ec707daa45f29c/IQTVJEqUhp5jSLF7gBPCe32BARImmENCfq56ctcVULn79pc?width=1024" stylele="displya:flex; width: 80px; height: auto;" alt="Meal Matrix Logo"><h1 class="restaurant-name">Finagle</h1></center>
         </div>
 
         

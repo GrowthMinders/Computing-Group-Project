@@ -40,13 +40,11 @@ class ProfileState extends State<Profile> {
           Center(
             child: CircleAvatar(
               radius: 75,
-              backgroundImage:
-                  user.imageBytes != null
-                      ? Image.memory(user.imageBytes!).image
-                      : AssetImage('lib/assets/images/DefaultProfile.png'),
+              backgroundImage: user.imageBytes != null
+                  ? Image.memory(user.imageBytes!).image
+                  : AssetImage('lib/assets/images/DefaultProfile.png'),
             ),
           ),
-
           SizedBox(height: 40),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
