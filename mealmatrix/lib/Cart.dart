@@ -1,4 +1,4 @@
-// ignore_for_file: file_names, use_key_in_widget_constructors, camel_case_types, unnecessary_brace_in_string_interps, use_build_context_synchronously, library_private_types_in_public_api, use_super_parameters
+// ignore_for_file: file_names, use_key_in_widget_constructors, camel_case_types, unnecessary_brace_in_string_interps, use_build_context_synchronously, library_private_types_in_public_api, use_super_parameters, deprecated_member_use
 
 import 'package:flutter/material.dart';
 import 'package:mealmatrix/Checkout.dart';
@@ -17,7 +17,7 @@ List<Map<String, dynamic>> cartdata = [];
 class CartState extends State<Cart> {
   Future<void> rendercart() async {
     try {
-      var url = Uri.parse("http://192.168.177.67/Firebase/cartrendering.php");
+      var url = Uri.parse("http://192.168.8.101/Firebase/cartrendering.php");
 
       var response = await http.post(url, body: {'email': Logdata.userEmail});
 
@@ -65,148 +65,222 @@ class CartState extends State<Cart> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.green,
-        title: Text('Cart'),
+        backgroundColor: Colors.teal,
+        title: const Text(
+          'Cart',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+        centerTitle: true,
+        elevation: 4,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.of(context).pop(),
         ),
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: CircleAvatar(
-              backgroundImage: AssetImage(
-                'lib/assets/images/Meal Matrix Logo.png',
-              ),
+              backgroundImage:
+                  AssetImage('lib/assets/images/Meal Matrix Logo.png'),
+              radius: 20,
             ),
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Expanded(child: _buildCartItem(cartdata)),
-            SizedBox(height: 8),
-            Summa(
-              total: total,
-              items: items,
-            ), // Replaced "summa" with SummarySection
-            SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Checkout()),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.green,
-                padding: EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xFFFFE082), Color(0xFFFFB300)],
+            begin: Alignment.bottomRight,
+            end: Alignment.topLeft,
+          ),
+        ),
+        child: SafeArea(
+          child: Column(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        '',
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.teal,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      Expanded(
+                        child: _buildCartItem(cartdata),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              child: Center(
-                child: Text(
-                  'Check Out',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Summa(
+                  total: total,
+                  items: items,
                 ),
               ),
-            ),
-            SizedBox(height: 30),
-          ],
+              const SizedBox(height: 16),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Checkout()),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.teal,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    elevation: 4,
+                  ),
+                  child: const Center(
+                    child: Text(
+                      'Check Out',
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+            ],
+          ),
         ),
       ),
     );
   }
 
   Widget _buildCartItem(List<dynamic> cartdata) {
+    if (cartdata.isEmpty) {
+      return const Center(
+        child: Text(
+          'Your cart is empty!',
+          style: TextStyle(fontSize: 16, color: Colors.teal),
+        ),
+      );
+    }
+
     return ListView.builder(
       shrinkWrap: true,
       itemCount: cartdata.length,
       itemBuilder: (context, index) {
         final product = cartdata[index];
-        return Column(
-          children: [
-            ListTile(
-              leading: Container(
-                width: 100,
-                height: 100,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  image: DecorationImage(
-                    image: NetworkImage(product['image']),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-              title: Text(product['name']),
-              subtitle: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Supply: ${product['supply']}'),
-                  Text('Canteen: ${product['canteen']}'),
-                  Text('Price: Rs. ${product['price'].toInt()}'),
-                  Text('Qty: ${product['qty']}'),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: InkWell(
-                      onTap: () async {
-                        try {
-                          var url = Uri.parse(
-                            "http://192.168.177.67/Firebase/prodelcart.php",
-                          );
-
-                          var response = await http.post(
-                            url,
-                            body: {
-                              'name': product['name'],
-                              'supply': product['supply'],
-                              'canteen': product['canteen'],
-                              'email': Logdata.userEmail,
-                            },
-                          );
-
-                          if (response.statusCode == 200) {
-                            rendercart();
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('Item deleted successfully'),
-                              ),
-                            );
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Failed to delete item')),
-                            );
-                          }
-                        } catch (ex) {
-                          log("Unexpected error: $ex");
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('An error occurred while deleting'),
-                            ),
-                          );
-                        }
-                      },
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            Icons.delete_forever,
-                            size: 26,
-                            color: Colors.red,
-                          ),
-                          SizedBox(width: 4),
-                        ],
-                      ),
+        return Card(
+          elevation: 2,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          color: Colors.white.withOpacity(0.9),
+          margin: const EdgeInsets.symmetric(vertical: 8),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Container(
+                  width: 80,
+                  height: 80,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    image: DecorationImage(
+                      image: NetworkImage(product['image']),
+                      fit: BoxFit.cover,
                     ),
                   ),
-                ],
-              ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        product['name'],
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.teal,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        'Supply: ${product['supply']}',
+                        style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+                      ),
+                      Text(
+                        'Canteen: ${product['canteen']}',
+                        style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+                      ),
+                      Text(
+                        'Price: Rs. ${product['price'].toInt()}',
+                        style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+                      ),
+                      Text(
+                        'Qty: ${product['qty']}',
+                        style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+                      ),
+                    ],
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(
+                    Icons.delete_forever,
+                    size: 26,
+                    color: Colors.teal,
+                  ),
+                  onPressed: () async {
+                    try {
+                      var url = Uri.parse(
+                        "http://192.168.8.101/Firebase/prodelcart.php",
+                      );
+
+                      var response = await http.post(
+                        url,
+                        body: {
+                          'name': product['name'],
+                          'supply': product['supply'],
+                          'canteen': product['canteen'],
+                          'email': Logdata.userEmail,
+                        },
+                      );
+
+                      if (response.statusCode == 200) {
+                        rendercart();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Item deleted successfully'),
+                          ),
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                              content: Text('Failed to delete item')),
+                        );
+                      }
+                    } catch (ex) {
+                      log("Unexpected error: $ex");
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('An error occurred while deleting'),
+                        ),
+                      );
+                    }
+                  },
+                ),
+              ],
             ),
-            const Divider(),
-          ],
+          ),
         );
       },
     );
@@ -222,33 +296,53 @@ class Summa extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey[300]!),
-        borderRadius: BorderRadius.circular(8),
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
       ),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [Text('Items'), Text('${items.toInt()}')],
-          ),
-          SizedBox(height: 8),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Total Price',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              Text(
-                'Rs. ${total.toInt()}',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-        ],
+      color: Colors.white.withOpacity(0.9),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Items',
+                  style: TextStyle(fontSize: 16, color: Colors.teal),
+                ),
+                Text(
+                  '${items.toInt()}',
+                  style: const TextStyle(fontSize: 16, color: Colors.teal),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Total Price',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.teal,
+                  ),
+                ),
+                Text(
+                  'Rs. ${total.toInt()}',
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.teal,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

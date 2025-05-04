@@ -1,16 +1,25 @@
-// ignore_for_file: file_names, use_key_in_widget_constructors, use_super_parameters
+// ignore_for_file: file_names, use_key_in_widget_constructors, use_super_parameters, deprecated_member_use
 
 import 'package:flutter/material.dart';
+import 'package:mealmatrix/Favorite.dart';
+import 'package:mealmatrix/Home.dart';
+import 'package:mealmatrix/Order.dart';
+import 'package:mealmatrix/OrderHistory.dart';
+import 'package:mealmatrix/Setting.dart';
+import 'package:mealmatrix/main.dart';
 
 class CustomerSupport extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[100],
       appBar: AppBar(
-        backgroundColor: Colors.green,
-        title: Text('Customer Support'),
+        backgroundColor: Colors.teal,
+        title: const Text(
+          'Customer Support',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
         centerTitle: true,
+        elevation: 4,
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -18,41 +27,133 @@ class CustomerSupport extends StatelessWidget {
               backgroundImage: AssetImage(
                 'lib/assets/images/Meal Matrix Logo.png',
               ),
+              radius: 20,
             ),
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'FAQ',
-              style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-                color: Colors.green[800],
-              ),
-            ),
-            SizedBox(height: 16),
-            FAQItem(
-              title: 'How to remove your account',
-              description:
-                  ' Go to Settings\n Click on Delete Account\n Select delete\n Enter the words given with in "" as given\n Click CONFIRM button\n Enter your password\n Click CONFIRM button',
-            ),
-            FAQItem(
-              title: 'How to reset your password',
-              description:
-                  ' Go to settings\n Click on "Reset Password" option.',
-            ),
-            FAQItem(
-              title: 'How to contact support',
-              description:
-                  ' Email address "MealMatrixCGP@outlook.com"\n Telephone  "0761571745"',
-            ),
-          ],
+      bottomNavigationBar: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          _buildBottomNavItem(
+            Icons.home,
+            'Home',
+            Colors.grey[600]!,
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Home()),
+              );
+            },
+          ),
+          _buildBottomNavItem(
+            Icons.list_alt,
+            'Orders',
+            Colors.grey[600]!,
+            onTap: () {
+              if (Logdata.userEmail == "ayushcafe2002@gmail.com") {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Order()),
+                );
+              } else {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => OrderHistory()),
+                );
+              }
+            },
+          ),
+          _buildBottomNavItem(
+            Icons.favorite,
+            'Favorite',
+            Colors.grey[600]!,
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Favorite()),
+              );
+            },
+          ),
+          _buildBottomNavItem(
+            Icons.settings,
+            'Setting',
+            Colors.grey[600]!,
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Setting()),
+              );
+            },
+          ),
+        ],
+      ),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xFFFFE082), Color(0xFFFFB300)],
+            begin: Alignment.bottomRight,
+            end: Alignment.topLeft,
+          ),
         ),
+        child: SafeArea(
+          child: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'FAQ',
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.teal,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      FAQItem(
+                        title: 'How to remove your account',
+                        description:
+                            'Go to Settings\nClick on Delete Account\nSelect delete\nEnter the words given with in "" as given\nClick CONFIRM button\nEnter your password\nClick CONFIRM button',
+                      ),
+                      FAQItem(
+                        title: 'How to reset your password',
+                        description:
+                            'Go to settings\nClick on "Reset Password" option.',
+                      ),
+                      FAQItem(
+                        title: 'How to contact support',
+                        description:
+                            'Email address "MealMatrixCGP@outlook.com"\nTelephone  "0761571745"',
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBottomNavItem(
+    IconData icon,
+    String label,
+    Color color, {
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, color: color),
+          Text(label, style: TextStyle(fontSize: 12, color: color)),
+        ],
       ),
     );
   }
@@ -63,7 +164,7 @@ class FAQItem extends StatefulWidget {
   final String description;
 
   const FAQItem({Key? key, required this.title, required this.description})
-    : super(key: key);
+      : super(key: key);
 
   @override
   FAQItemState createState() => FAQItemState();
@@ -75,8 +176,12 @@ class FAQItemState extends State<FAQItem> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 4,
-      margin: EdgeInsets.symmetric(vertical: 8.0),
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      color: Colors.white.withOpacity(0.9),
+      margin: const EdgeInsets.symmetric(vertical: 8.0),
       child: InkWell(
         onTap: () {
           setState(() {
@@ -94,23 +199,24 @@ class FAQItemState extends State<FAQItem> {
                   Expanded(
                     child: Text(
                       widget.title,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
+                        color: Colors.teal,
                       ),
                     ),
                   ),
                   Icon(
                     _isExpanded ? Icons.expand_less : Icons.expand_more,
-                    color: Colors.green[700],
+                    color: Colors.teal,
                   ),
                 ],
               ),
               if (_isExpanded) ...[
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 Text(
                   widget.description,
-                  style: TextStyle(fontSize: 14, color: Colors.grey[700]),
+                  style: TextStyle(fontSize: 14, color: Colors.grey[600]),
                 ),
               ],
             ],

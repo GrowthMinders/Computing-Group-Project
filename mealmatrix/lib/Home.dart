@@ -1,20 +1,19 @@
-// ignore_for_file: file_names, unused_import, non_constant_identifier_names, camel_case_types
+// ignore_for_file: file_names, unused_import, non_constant_identifier_names, camel_case_types, use_build_context_synchronously, deprecated_member_use
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
+import 'dart:developer';
+import 'dart:convert';
 import 'package:mealmatrix/Audi.dart';
 import 'package:mealmatrix/Cart.dart';
 import 'package:mealmatrix/Edge.dart';
 import 'package:mealmatrix/Favorite.dart';
 import 'package:mealmatrix/Finagle.dart';
 import 'package:mealmatrix/Hostel.dart';
-import 'package:http/http.dart' as http;
 import 'package:mealmatrix/OrderHistory.dart';
 import 'package:mealmatrix/ProductDetails.dart';
-import 'dart:developer';
-import 'dart:convert';
-import 'package:mealmatrix/Home.dart';
-
+import 'package:mealmatrix/Profile.dart';
 import 'package:mealmatrix/Setting.dart';
 import 'package:mealmatrix/main.dart';
 
@@ -23,27 +22,20 @@ class favrendering {
 
   Future<void> renderfav() async {
     try {
-      var url = Uri.parse(
-        "http://192.168.177.67/Firebase/favoriterendering.php",
-      );
-
+      var url =
+          Uri.parse("http://192.168.8.101/Firebase/favoriterendering.php");
       var response = await http.post(url, body: {'email': Logdata.userEmail});
 
       if (response.statusCode == 200) {
-        List<dynamic> fav = json.decode(
-          response.body,
-        ); // Use response.body directly
-
+        List<dynamic> fav = json.decode(response.body);
         favdata = fav
-            .map(
-              (record) => {
-                'name': record['name'],
-                'supply': record['supply'],
-                'canteen': record['canteen'],
-                'image': record['image'],
-                'price': record['price'].toString(),
-              },
-            )
+            .map((record) => {
+                  'name': record['name'],
+                  'supply': record['supply'],
+                  'canteen': record['canteen'],
+                  'image': record['image'],
+                  'price': record['price'].toString(),
+                })
             .toList();
       } else {
         log("Failed to fetch data: ${response.statusCode}");
@@ -66,7 +58,6 @@ class HomeState extends State<Home> {
   void initState() {
     super.initState();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
-
     favrendering().renderfav().then((_) {
       setState(() {});
     });
@@ -75,321 +66,336 @@ class HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: Center(
-        child: Container(
-          padding: EdgeInsets.all(16),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 24),
-                Stack(
-                  children: [
-                    Align(
-                      alignment: Alignment.center,
-                      child: Text(
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        selectedItemColor: Colors.green,
+        unselectedItemColor: Colors.grey[600],
+        currentIndex: 0, // Highlight "Home"
+        onTap: (index) {
+          switch (index) {
+            case 0:
+              // Already on Home, do nothing
+              break;
+            case 1:
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => OrderHistory()),
+              );
+              break;
+            case 2:
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => Favorite()),
+              );
+              break;
+            case 3:
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => Setting()),
+              );
+              break;
+          }
+        },
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.list_alt), label: 'Orders'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.favorite), label: 'Favorite'),
+          BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Setting'),
+        ],
+      ),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xFFFFE082), Color(0xFFFFB300)], // Amber gradient
+            begin: Alignment.bottomRight,
+            end: Alignment.topLeft,
+          ),
+        ),
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
                         'Meal Matrix',
-                        style: TextStyle(fontSize: 40, fontFamily: 'Lobster'),
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: CircleAvatar(
-                        radius: 24,
-                        backgroundImage: AssetImage(
-                          'lib/assets/images/Meal Matrix Logo.png',
+                        style: TextStyle(
+                          fontSize: 32,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.teal,
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 8),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Order your favourite food!',
-                      style: TextStyle(color: Colors.grey, fontSize: 18),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 24),
-                Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        decoration: InputDecoration(
-                          hintText: 'Search food',
-                          prefixIcon: Icon(Icons.search),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30),
+                      CircleAvatar(
+                        radius: 24,
+                        backgroundImage: AssetImage(
+                            'lib/assets/images/Meal Matrix Logo.png'),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Delicious food delivered fast at NSBM!',
+                    style: TextStyle(color: Colors.grey[600], fontSize: 16),
+                  ),
+                  const SizedBox(height: 24),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Flexible(
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Profile()),
+                            );
+                          },
+                          child: Card(
+                            elevation: 4,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            color: Colors.white.withOpacity(0.9),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 12),
+                              child: Row(
+                                children: [
+                                  const Icon(
+                                    Icons.person,
+                                    color: Colors.teal,
+                                    size: 28,
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Flexible(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Welcome',
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.grey[600],
+                                          ),
+                                        ),
+                                        Text(
+                                          Logdata.userEmail,
+                                          style: const TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.teal,
+                                          ),
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    SizedBox(width: 16),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Cart()),
-                        );
-                      },
-                      child: Icon(
-                        Icons.shopping_cart_outlined,
-                        color: Colors.grey,
+                      const SizedBox(width: 12),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => Cart()),
+                          );
+                        },
+                        child: CircleAvatar(
+                          backgroundColor: Colors.teal,
+                          child: const Icon(
+                            Icons.shopping_cart_outlined,
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 24),
-                Center(
-                  child: Container(
+                    ],
+                  ),
+                  const SizedBox(height: 24),
+                  // Promotional Banner
+                  Container(
+                    height: 140,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
-                      image: DecorationImage(
+                      image: const DecorationImage(
                         image: AssetImage('lib/assets/images/kottu.jpg'),
                         fit: BoxFit.cover,
                       ),
                     ),
-                    height: 100,
-                    width: MediaQuery.of(context).size.width * 0.8,
                   ),
-                ),
-                SizedBox(height: 22),
-                Row(
-                  children: [
-                    Text(
-                      'Favorite Items',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Spacer(),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Favorite()),
-                        );
-                      },
-                      child: Text(
-                        'See more',
+                  const SizedBox(height: 24),
+                  Row(
+                    children: [
+                      const Text(
+                        'Favorite Items',
                         style: TextStyle(
-                          fontSize: 12,
+                          fontSize: 20,
                           fontWeight: FontWeight.bold,
+                          color: Colors.teal,
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                FavoriteItem(
-                  favrendering.favdata.sublist(
-                    0,
-                    favrendering.favdata.length < 4
-                        ? favrendering.favdata.length
-                        : 4,
-                  ),
-                ),
-                SizedBox(height: 24),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Canteen selection',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 6),
-                GridView.count(
-                  crossAxisCount: 2,
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  crossAxisSpacing: 8,
-                  mainAxisSpacing: 8,
-                  children: [
-                    _buildCanteenItem(
-                      title: 'Finagle Canteen',
-                      time: '8.0 AM - 5.0 PM',
-                      telephone: '0761571745',
-                      location: 'map location', // map location
-                      imagePath: 'lib/assets/images/Finagle.jpg',
-                      onTap: () async {
-                        try {
-                          final response = await http.get(
-                            Uri.parse(
-                              'http://192.168.177.67/Firebase/Menus/Finagle.php',
-                            ),
+                      const Spacer(),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => Favorite()),
                           );
-
-                          if (response.statusCode == 200) {
-                            Navigator.push(
-                              // ignore: use_build_context_synchronously
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => Finagle(),
+                        },
+                        child: const Text(
+                          'See more',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.teal,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  FavoriteItem(
+                    favrendering.favdata.sublist(
+                      0,
+                      favrendering.favdata.length < 4
+                          ? favrendering.favdata.length
+                          : 4,
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  const Text(
+                    'Canteen Selection',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.teal,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  GridView.count(
+                    crossAxisCount: 2,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    crossAxisSpacing: 12,
+                    mainAxisSpacing: 12,
+                    children: [
+                      _buildCanteenCard(
+                        title: 'Finagle Canteen',
+                        time: '8.0 AM - 5.0 PM',
+                        imagePath: 'lib/assets/images/Finagle.jpg',
+                        onTap: () async {
+                          try {
+                            final response = await http.get(
+                              Uri.parse(
+                                'http://192.168.8.101/Firebase/Menus/Finagle.php',
                               ),
                             );
-                            log("Data found");
-                          } else {
-                            log("Data not available");
+                            if (response.statusCode == 200) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Finagle()),
+                              );
+                              log("Data found");
+                            } else {
+                              log("Data not available");
+                            }
+                          } catch (ex) {
+                            log("Unexpected error: $ex");
                           }
-                        } catch (ex) {
-                          log("Unexpected error: $ex");
-                        }
-                      },
-                    ),
-                    _buildCanteenItem(
-                      title: 'Hostel Canteen',
-                      time: '8.0 AM - 5.0 PM',
-                      telephone: '0761571744',
-                      location: 'map location', // map location
-                      imagePath: 'lib/assets/images/Hostel.jpeg',
-                      onTap: () async {
-                        try {
-                          final response = await http.get(
-                            Uri.parse(
-                              'http://192.168.177.67/Firebase/Menus/Hostel.php',
-                            ),
-                          );
-
-                          if (response.statusCode == 200) {
-                            Navigator.push(
-                              // ignore: use_build_context_synchronously
-                              context,
-                              MaterialPageRoute(builder: (context) => Hostel()),
+                        },
+                      ),
+                      _buildCanteenCard(
+                        title: 'Hostel Canteen',
+                        time: '8.0 AM - 5.0 PM',
+                        imagePath: 'lib/assets/images/Hostel.jpeg',
+                        onTap: () async {
+                          try {
+                            final response = await http.get(
+                              Uri.parse(
+                                'http://192.168.8.101/Firebase/Menus/Hostel.php',
+                              ),
                             );
-                            log("Data found");
-                          } else {
-                            log("Data not available");
+                            if (response.statusCode == 200) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Hostel()),
+                              );
+                              log("Data found");
+                            } else {
+                              log("Data not available");
+                            }
+                          } catch (ex) {
+                            log("Unexpected error: $ex");
                           }
-                        } catch (ex) {
-                          log("Unexpected error: $ex");
-                        }
-                      },
-                    ),
-                    _buildCanteenItem(
-                      title: 'Edge Canteen',
-                      time: '8.0 AM - 5.0 PM',
-                      telephone: '0761571743',
-                      location: 'map location', // map location
-                      imagePath: 'lib/assets/images/Edge.jpeg',
-                      onTap: () async {
-                        try {
-                          final response = await http.get(
-                            Uri.parse(
-                              'http://192.168.177.67/Firebase/Menus/Edge.php',
-                            ),
-                          );
-
-                          if (response.statusCode == 200) {
-                            Navigator.push(
-                              // ignore: use_build_context_synchronously
-                              context,
-                              MaterialPageRoute(builder: (context) => Edge()),
+                        },
+                      ),
+                      _buildCanteenCard(
+                        title: 'Edge Canteen',
+                        time: '8.0 AM - 5.0 PM',
+                        imagePath: 'lib/assets/images/Edge.jpeg',
+                        onTap: () async {
+                          try {
+                            final response = await http.get(
+                              Uri.parse(
+                                'http://192.168.8.101/Firebase/Menus/Edge.php',
+                              ),
                             );
-                            log("Data found");
-                          } else {
-                            log("Data not available");
+                            if (response.statusCode == 200) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => Edge()),
+                              );
+                              log("Data found");
+                            } else {
+                              log("Data not available");
+                            }
+                          } catch (ex) {
+                            log("Unexpected error: $ex");
                           }
-                        } catch (ex) {
-                          log("Unexpected error: $ex");
-                        }
-                      },
-                    ),
-                    _buildCanteenItem(
-                      title: 'Audi Canteen',
-                      time: '8.0 AM - 5.0 PM',
-                      telephone: '0761571845',
-                      location: 'map location', // map location
-                      imagePath: 'lib/assets/images/Audi.jpg',
-                      onTap: () async {
-                        try {
-                          final response = await http.get(
-                            Uri.parse(
-                              'http://192.168.177.67/Firebase/Menus/Audi.php',
-                            ),
-                          );
-
-                          if (response.statusCode == 200) {
-                            Navigator.push(
-                              // ignore: use_build_context_synchronously
-                              context,
-                              MaterialPageRoute(builder: (context) => Audi()),
+                        },
+                      ),
+                      _buildCanteenCard(
+                        title: 'Audi Canteen',
+                        time: '8.0 AM - 5.0 PM',
+                        imagePath: 'lib/assets/images/Audi.jpg',
+                        onTap: () async {
+                          try {
+                            final response = await http.get(
+                              Uri.parse(
+                                'http://192.168.8.101/Firebase/Menus/Audi.php',
+                              ),
                             );
-                            log("Data found");
-                          } else {
-                            log("Data not available");
+                            if (response.statusCode == 200) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => Audi()),
+                              );
+                              log("Data found");
+                            } else {
+                              log("Data not available");
+                            }
+                          } catch (ex) {
+                            log("Unexpected error: $ex");
                           }
-                        } catch (ex) {
-                          log("Unexpected error: $ex");
-                        }
-                      },
-                    ),
-                  ],
-                ),
-                SizedBox(height: 3),
-                Divider(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    _buildBottomNavItem(
-                      Icons.home,
-                      'Home',
-                      const Color.fromARGB(255, 74, 73, 73),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Home()),
-                        );
-                      },
-                    ),
-                    _buildBottomNavItem(
-                      Icons.list_alt,
-                      'Orders',
-                      const Color.fromARGB(255, 74, 73, 73),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => OrderHistory(),
-                          ),
-                        );
-                      },
-                    ),
-                    _buildBottomNavItem(
-                      Icons.favorite,
-                      'Favorite',
-                      const Color.fromARGB(255, 74, 73, 73),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Favorite()),
-                          //change Audi name
-                        );
-                      },
-                    ),
-                    _buildBottomNavItem(
-                      Icons.settings,
-                      'Setting',
-                      const Color.fromARGB(255, 74, 73, 73),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Setting()),
-                          //change Audi name
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              ],
+                        },
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                ],
+              ),
             ),
           ),
         ),
@@ -411,119 +417,107 @@ class HomeState extends State<Home> {
     }
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          child: SizedBox(height: 8),
-        ),
-        ListView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: favdata.length,
-          itemBuilder: (context, index) {
-            final product = favdata[index];
-            return Column(
-              children: [
-                ListTile(
-                  leading: CircleAvatar(
-                    backgroundImage: NetworkImage(product['image']),
-                    radius: 30,
-                  ),
-                  title: Text(product['name']),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(product['supply']),
-                      Text(product['canteen']),
-                      Text(product['price']),
-                    ],
-                  ),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ProductDetail(
-                          image: product['image'],
-                          name: product['name'],
-                          price: product['price'].toString(),
-                          supply: product['supply'],
-                          canteen: product['canteen'],
-                        ),
-                      ),
-                    );
-                  },
-                ),
-                const Divider(),
-              ],
-            );
-          },
-        ),
-      ],
-    );
-  }
-
-  Widget _buildCanteenItem({
-    required String title,
-    required String time,
-    required String telephone,
-    required String location,
-    required String imagePath,
-    required VoidCallback onTap, // Add onTap as a required parameter
-  }) {
-    return GestureDetector(
-      onTap: onTap, // Use the onTap parameter
-      child: Column(
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: Container(
-              height: 100,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(imagePath),
-                  fit: BoxFit.cover,
-                ),
+      children: favdata.map((product) {
+        return Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          elevation: 2,
+          color: Colors.white, // White card background
+          child: ListTile(
+            leading: CircleAvatar(
+              backgroundImage: NetworkImage(product['image']),
+              radius: 30,
+            ),
+            title: Text(
+              product['name'],
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.teal,
               ),
             ),
+            subtitle: Text(
+              '${product['canteen']} • Rs. ${product['price']}',
+              style: TextStyle(color: Colors.grey[600]),
+            ),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ProductDetail(
+                    image: product['image'],
+                    name: product['name'],
+                    price: product['price'].toString(),
+                    supply: product['supply'],
+                    canteen: product['canteen'],
+                  ),
+                ),
+              );
+            },
           ),
-          SizedBox(height: 5),
-          Text(
-            title,
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          ),
-          Text(
-            time,
-            style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-          ),
-          Text(
-            telephone,
-            style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-          ),
-          Text(
-            location,
-            style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-          ),
-        ],
-      ),
+        );
+      }).toList(),
     );
   }
 
-  Widget _buildBottomNavItem(
-    IconData icon,
-    String label,
-    Color color, {
+  Widget _buildCanteenCard({
+    required String title,
+    required String time,
+    required String imagePath,
     required VoidCallback onTap,
   }) {
     return GestureDetector(
       onTap: onTap,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, color: color),
-          Text(label, style: TextStyle(fontSize: 12, color: color)),
-        ],
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white, // White card background
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: const [
+            BoxShadow(
+              color: Colors.black12,
+              blurRadius: 6,
+              offset: Offset(2, 2),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ClipRRect(
+              borderRadius:
+                  const BorderRadius.vertical(top: Radius.circular(16)),
+              child: Image.asset(
+                imagePath,
+                height: 100,
+                width: double.infinity,
+                fit: BoxFit.cover,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.teal,
+                    ),
+                  ),
+                  Text(
+                    time,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.grey[600],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

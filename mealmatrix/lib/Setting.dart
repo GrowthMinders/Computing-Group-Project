@@ -1,6 +1,10 @@
-// ignore_for_file: file_names, use_key_in_widget_constructors, camel_case_types, use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, deprecated_member_use, use_key_in_widget_constructors, file_names, camel_case_types, unused_import
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:developer';
+import 'dart:convert';
+import 'dart:typed_data';
 import 'package:mealmatrix/CanteenOwner.dart';
 import 'package:mealmatrix/ChangePassword.dart';
 import 'package:mealmatrix/CustomerSupport.dart';
@@ -11,10 +15,6 @@ import 'package:mealmatrix/OrderHistory.dart';
 import 'package:mealmatrix/Profile.dart';
 import 'package:mealmatrix/deleterequest.dart';
 import 'package:mealmatrix/main.dart';
-import 'package:http/http.dart' as http;
-import 'dart:developer';
-import 'dart:convert';
-import 'dart:typed_data';
 
 class SettingScreen extends StatelessWidget {
   @override
@@ -37,315 +37,348 @@ class user {
 
 class SettingState extends State<Setting> {
   bool isDarkMode = false;
-  int currentIndex = 3;
 
   @override
   Widget build(BuildContext context) {
-    Widget bottomNavBar;
+    // Define navigation items based on user type
+    List<BottomNavigationBarItem> navItems;
+    int currentIndex;
+    VoidCallback? onHomeTap;
+    VoidCallback? onOrdersTap;
+    VoidCallback? onFavoriteTap;
+    VoidCallback? onSettingTap;
 
-    if (Logdata.userEmail == "Ayush@gmail.com") {
-      bottomNavBar = Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          _buildBottomNavItem(
-            Icons.home,
-            'Home',
-            const Color.fromARGB(255, 74, 73, 73),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Canteen()),
-              );
-            },
-          ),
-          _buildBottomNavItem(
-            Icons.list_alt,
-            'Orders',
-            const Color.fromARGB(255, 74, 73, 73),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Order()),
-              );
-            },
-          ),
-          _buildBottomNavItem(
-            Icons.settings,
-            'Setting',
-            const Color.fromARGB(255, 74, 73, 73),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Setting()),
-              );
-            },
-          ),
-        ],
-      );
+    if (Logdata.userEmail == "Ayush@gmail.com" ||
+        Logdata.userEmail == "So@gmail.com" ||
+        Logdata.userEmail == "Leyons@gmail.com" ||
+        Logdata.userEmail == "Ocean@gmail.com" ||
+        Logdata.userEmail == "Hela@gmail.com" ||
+        Logdata.userEmail == "Finagle@gmail.com" ||
+        Logdata.userEmail == "ayushcafe2002@gmail.com") {
+      // Canteen owner navigation
+      navItems = const [
+        BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+        BottomNavigationBarItem(icon: Icon(Icons.list_alt), label: 'Orders'),
+        BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Setting'),
+      ];
+      currentIndex = 2; // Highlight "Setting"
+      onHomeTap = () {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => Home()), // Assuming Canteen is Home
+        );
+      };
+      onOrdersTap = () {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => Order()),
+        );
+      };
+      onSettingTap = () {
+        // Already on Setting, do nothing
+      };
     } else {
-      bottomNavBar = Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          _buildBottomNavItem(
-            Icons.home,
-            'Home',
-            const Color.fromARGB(255, 74, 73, 73),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Home()),
-              );
-            },
-          ),
-          _buildBottomNavItem(
-            Icons.list_alt,
-            'Orders',
-            const Color.fromARGB(255, 74, 73, 73),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => OrderHistory()),
-              );
-            },
-          ),
-          _buildBottomNavItem(
-            Icons.favorite,
-            'Favorite',
-            const Color.fromARGB(255, 74, 73, 73),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Favorite()),
-              );
-            },
-          ),
-          _buildBottomNavItem(
-            Icons.settings,
-            'Setting',
-            const Color.fromARGB(255, 74, 73, 73),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Setting()),
-              );
-            },
-          ),
-        ],
-      );
+      // Regular user navigation
+      navItems = const [
+        BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+        BottomNavigationBarItem(icon: Icon(Icons.list_alt), label: 'Orders'),
+        BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'Favorite'),
+        BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Setting'),
+      ];
+      currentIndex = 3; // Highlight "Setting"
+      onHomeTap = () {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => Home()),
+        );
+      };
+      onOrdersTap = () {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => OrderHistory()),
+        );
+      };
+      onFavoriteTap = () {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => Favorite()),
+        );
+      };
+      onSettingTap = () {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => Setting()),
+        );
+      };
     }
 
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 100,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(bottom: Radius.circular(50)),
+        backgroundColor: Colors.teal,
+        title: const Text(
+          'Settings',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
-        backgroundColor: Colors.green,
-        title: Row(
-          children: [
-            Icon(Icons.settings, color: Colors.white),
-            SizedBox(width: 10),
-            Text(
-              'Settings',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
-        ),
+        centerTitle: true,
+        elevation: 4,
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: CircleAvatar(
-              backgroundImage: AssetImage(
-                'lib/assets/images/Meal Matrix Logo.png',
-              ),
-              radius: 25,
+              backgroundImage:
+                  AssetImage('lib/assets/images/Meal Matrix Logo.png'),
+              radius: 20,
             ),
           ),
         ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        selectedItemColor: Colors.green,
+        unselectedItemColor: Colors.grey[600],
+        currentIndex: currentIndex,
+        onTap: (index) {
+          if (Logdata.userEmail == "Ayush@gmail.com" ||
+              Logdata.userEmail == "So@gmail.com" ||
+              Logdata.userEmail == "Leyons@gmail.com" ||
+              Logdata.userEmail == "Ocean@gmail.com" ||
+              Logdata.userEmail == "Hela@gmail.com" ||
+              Logdata.userEmail == "Finagle@gmail.com" ||
+              Logdata.userEmail == "ayushcafe2002@gmail.com") {
+            // Canteen owner navigation
+            if (index == 0) onHomeTap?.call();
+            if (index == 1) onOrdersTap?.call();
+            if (index == 2) onSettingTap?.call();
+          } else {
+            // Regular user navigation
+            if (index == 0) onHomeTap?.call();
+            if (index == 1) onOrdersTap?.call();
+            if (index == 2) onFavoriteTap?.call();
+            if (index == 3) onSettingTap?.call();
+          }
+        },
+        items: navItems,
       ),
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.white, Colors.green.shade50],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
+            colors: [Color(0xFFFFE082), Color(0xFFFFB300)], // Amber gradient
+            begin: Alignment.bottomRight,
+            end: Alignment.topLeft,
           ),
         ),
-        padding: const EdgeInsets.all(16.0),
-        child: ListView(
-          children: [
-            SizedBox(height: 50),
-            Card(
-              elevation: 4,
-              child: ListTile(
-                leading: Icon(Icons.person, color: Colors.green),
-                title: Text('My Account'),
-                onTap: () async {
-                  try {
-                    var url = Uri.parse(
-                      "http://192.168.177.67/Firebase/profile.php",
-                    );
-                    var response = await http.post(
-                      url,
-                      body: {'email': Logdata.userEmail},
-                    );
-
-                    if (response.statusCode == 200) {
-                      log("Data loaded");
-                      var data = jsonDecode(response.body);
-
-                      if (data is Map<String, dynamic>) {
-                        setState(() {
-                          user.name = data['name'].toString();
-                          user.email = data['email'].toString();
-                          user.tel = data['contact'].toString();
-                          if (data['image'] != null) {
-                            user.imageBytes = base64Decode(data['image']);
-                          }
-                        });
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Profile()),
-                        );
-                      } else {
-                        log("Blank");
-                      }
-                    }
-                  } catch (ex) {
-                    log("Error fetching profile: $ex");
-                  }
-                },
-              ),
-            ),
-            SizedBox(height: 10),
-            Card(
-              elevation: 4,
-              child: ListTile(
-                leading: Icon(Icons.dark_mode, color: Colors.green),
-                title: Text('Dark mode'),
-                trailing: Switch(
-                  value: isDarkMode,
-                  onChanged: (value) {
-                    setState(() {
-                      isDarkMode = value;
-                    });
-                  },
-                ),
-              ),
-            ),
-            SizedBox(height: 10),
-            Card(
-              elevation: 4,
-              child: ListTile(
-                leading: Icon(Icons.support, color: Colors.green),
-                title: Text('Customer Support'),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => CustomerSupport()),
-                  );
-                },
-              ),
-            ),
-            SizedBox(height: 10),
-            Card(
-              elevation: 4,
-              child: ListTile(
-                leading: Icon(Icons.lock, color: Colors.green),
-                title: Text('Change password'),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ChangePassword()),
-                  );
-                },
-              ),
-            ),
-            SizedBox(height: 10),
-            Card(
-              elevation: 4,
-              child: ListTile(
-                leading: Icon(Icons.logout, color: Colors.green),
-                title: Text('Log Out'),
-                onTap: () async {
-                  user.email = "";
-                  user.name = "";
-                  user.tel = "";
-                  Logdata.canteen = false;
-
-                  try {
-                    var url = Uri.parse(
-                      "http://192.168.177.67/Firebase/emptycart.php",
-                    );
-                    var response = await http.post(
-                      url,
-                      body: {'email': Logdata.userEmail},
-                    );
-
-                    if (response.statusCode == 200) {
-                      log("Cart Cleaned");
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(builder: (context) => const MyApp()),
-                        (route) => false,
-                      );
-                      Logdata.userEmail = "";
-                    }
-                  } catch (ex) {
-                    log("Error fetching profile: $ex");
-                  }
-                },
-              ),
-            ),
-            SizedBox(height: 10),
-            Card(
-              elevation: 4,
-              margin: EdgeInsets.symmetric(vertical: 8),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: ListTile(
-                leading: Icon(Icons.delete_forever, color: Colors.red),
-                title: Text(
-                  'Delete Account',
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: ListView(
+              children: [
+                const Text(
+                  '',
                   style: TextStyle(
+                    fontSize: 24,
                     fontWeight: FontWeight.bold,
-                    color: Colors.red,
+                    color: Colors.teal,
                   ),
                 ),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => DeleteRequest()),
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
-      bottomNavigationBar: bottomNavBar,
-    );
-  }
+                const SizedBox(height: 16),
+                Card(
+                  elevation: 4,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  color: Colors.white.withOpacity(0.9),
+                  child: ListTile(
+                    leading: const Icon(Icons.person, color: Colors.teal),
+                    title: const Text(
+                      'My Account',
+                      style: TextStyle(
+                          color: Colors.teal, fontWeight: FontWeight.bold),
+                    ),
+                    onTap: () async {
+                      try {
+                        var url = Uri.parse(
+                          "http://192.168.8.101/Firebase/profile.php",
+                        );
+                        var response = await http.post(
+                          url,
+                          body: {'email': Logdata.userEmail},
+                        );
 
-  Widget _buildBottomNavItem(
-    IconData icon,
-    String label,
-    Color color, {
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, color: color),
-          Text(label, style: TextStyle(fontSize: 12, color: color)),
-        ],
+                        if (response.statusCode == 200) {
+                          log("Data loaded");
+                          var data = jsonDecode(response.body);
+
+                          if (data is Map<String, dynamic>) {
+                            setState(() {
+                              user.name = data['name'].toString();
+                              user.email = data['email'].toString();
+                              user.tel = data['contact'].toString();
+                              if (data['image'] != null) {
+                                user.imageBytes = base64Decode(data['image']);
+                              }
+                            });
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Profile()),
+                            );
+                          } else {
+                            log("Blank");
+                          }
+                        }
+                      } catch (ex) {
+                        log("Error fetching profile: $ex");
+                      }
+                    },
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Card(
+                  elevation: 4,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  color: Colors.white.withOpacity(0.9),
+                  child: ListTile(
+                    leading: const Icon(Icons.dark_mode, color: Colors.teal),
+                    title: const Text(
+                      'Dark Mode',
+                      style: TextStyle(
+                          color: Colors.teal, fontWeight: FontWeight.bold),
+                    ),
+                    trailing: Switch(
+                      value: isDarkMode,
+                      activeColor: Colors.teal,
+                      onChanged: (value) {
+                        setState(() {
+                          isDarkMode = value;
+                        });
+                      },
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Card(
+                  elevation: 4,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  color: Colors.white.withOpacity(0.9),
+                  child: ListTile(
+                    leading: const Icon(Icons.support, color: Colors.teal),
+                    title: const Text(
+                      'Customer Support',
+                      style: TextStyle(
+                          color: Colors.teal, fontWeight: FontWeight.bold),
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => CustomerSupport()),
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Card(
+                  elevation: 4,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  color: Colors.white.withOpacity(0.9),
+                  child: ListTile(
+                    leading: const Icon(Icons.lock, color: Colors.teal),
+                    title: const Text(
+                      'Change Password',
+                      style: TextStyle(
+                          color: Colors.teal, fontWeight: FontWeight.bold),
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ChangePassword()),
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Card(
+                  elevation: 4,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  color: Colors.white.withOpacity(0.9),
+                  child: ListTile(
+                    leading: const Icon(Icons.logout, color: Colors.teal),
+                    title: const Text(
+                      'Log Out',
+                      style: TextStyle(
+                          color: Colors.teal, fontWeight: FontWeight.bold),
+                    ),
+                    onTap: () async {
+                      user.email = "";
+                      user.name = "";
+                      user.tel = "";
+                      Logdata.canteen = false;
+
+                      try {
+                        var url = Uri.parse(
+                          "http://192.168.8.101/Firebase/emptycart.php",
+                        );
+                        var response = await http.post(
+                          url,
+                          body: {'email': Logdata.userEmail},
+                        );
+
+                        if (response.statusCode == 200) {
+                          log("Cart Cleaned");
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const MyApp()),
+                            (route) => false,
+                          );
+                          Logdata.userEmail = "";
+                        }
+                      } catch (ex) {
+                        log("Error fetching profile: $ex");
+                      }
+                    },
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Card(
+                  elevation: 4,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  color: Colors.white.withOpacity(0.9),
+                  child: ListTile(
+                    leading:
+                        const Icon(Icons.delete_forever, color: Colors.red),
+                    title: const Text(
+                      'Delete Account',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.red,
+                      ),
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => DeleteRequest()),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }

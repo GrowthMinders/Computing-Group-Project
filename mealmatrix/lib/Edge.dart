@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:mealmatrix/Cart.dart';
 import 'dart:convert';
 import 'dart:developer';
 
@@ -20,8 +19,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.green,
-        scaffoldBackgroundColor: Colors.white,
+        primarySwatch: Colors.teal,
       ),
       home: const Edge(),
     );
@@ -44,10 +42,18 @@ class EdgeState extends State<Edge> {
   List<dynamic> snack = [];
   List<dynamic> desert = [];
 
+  final ScrollController _scrollController = ScrollController();
+  final GlobalKey _riceCurryKey = GlobalKey();
+  final GlobalKey _friedRiceKey = GlobalKey();
+  final GlobalKey _kottuKey = GlobalKey();
+  final GlobalKey _drinksKey = GlobalKey();
+  final GlobalKey _snackKey = GlobalKey();
+  final GlobalKey _desertKey = GlobalKey();
+
   Future<void> fetchProducts() async {
     try {
       final response = await http.get(
-        Uri.parse('http://192.168.177.67/Firebase/Menus/Edge.php'),
+        Uri.parse('http://192.168.8.101/Firebase/Menus/Edge.php'),
       );
 
       if (response.statusCode == 200) {
@@ -79,124 +85,214 @@ class EdgeState extends State<Edge> {
   }
 
   @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _scrollToCategory(GlobalKey key) {
+    final context = key.currentContext;
+    if (context != null) {
+      final RenderBox box = context.findRenderObject() as RenderBox;
+      final position = box.localToGlobal(Offset.zero).dy;
+      _scrollController.animateTo(
+        _scrollController.offset + position - 80,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              _buildHeader(),
-              const SizedBox(height: 16),
-              _buildSearchBar(),
-              const SizedBox(height: 16),
-              _buildCategoryList('Rice and Curry', ricecurry),
-              _buildCategoryList('Fried Rice', friedrice),
-              _buildCategoryList('Kottu', kottu),
-              _buildCategoryList('Drinks', teacoffee),
-              _buildCategoryList('Snack', snack),
-              _buildCategoryList('Desert', desert),
-              const Divider(),
-              _buildBottomNavBar(context),
+      appBar: AppBar(
+        backgroundColor: Colors.teal,
+        title: const Text(
+          'Edge Canteen',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        centerTitle: true,
+        elevation: 4,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: CircleAvatar(
+              backgroundImage:
+                  AssetImage('lib/assets/images/Meal Matrix Logo.png'),
+              radius: 20,
+            ),
+          ),
+        ],
+      ),
+      bottomNavigationBar: Container(
+        color: Colors.white,
+        padding: const EdgeInsets.symmetric(vertical: 8),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            _buildBottomNavItem(
+              Icons.home,
+              'Home',
+              () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Home()),
+              ),
+            ),
+            _buildBottomNavItem(
+              Icons.list_alt,
+              'Orders',
+              () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => OrderHistory()),
+              ),
+            ),
+            _buildBottomNavItem(
+              Icons.favorite,
+              'Favorite',
+              () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Favorite()),
+              ),
+            ),
+            _buildBottomNavItem(
+              Icons.settings,
+              'Settings',
+              () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Setting()),
+              ),
+            ),
+          ],
+        ),
+      ),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xFFFFE082), Color(0xFFFFB300)],
+            begin: Alignment.bottomRight,
+            end: Alignment.topLeft,
+          ),
+        ),
+        child: SafeArea(
+          child: SingleChildScrollView(
+            controller: _scrollController,
+            child: Column(
+              children: [
+                const SizedBox(height: 16),
+                Card(
+                  elevation: 4,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    side: BorderSide(color: Colors.white, width: 1),
+                  ),
+                  color: Colors.white,
+                  margin: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4),
+                    child: SizedBox(
+                      height: 48,
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        children: [
+                          _buildCategoryButton('Rice and Curry', _riceCurryKey),
+                          _buildCategoryButton('Fried Rice', _friedRiceKey),
+                          _buildCategoryButton('Kottu', _kottuKey),
+                          _buildCategoryButton('Drinks', _drinksKey),
+                          _buildCategoryButton('Snack', _snackKey),
+                          _buildCategoryButton('Desert', _desertKey),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 16),
+                  padding: const EdgeInsets.all(8),
+                  child: Column(
+                    children: [
+                      _buildCategoryList(
+                          'Rice and Curry', ricecurry, _riceCurryKey),
+                      _buildCategoryList(
+                          'Fried Rice', friedrice, _friedRiceKey),
+                      _buildCategoryList('Kottu', kottu, _kottuKey),
+                      _buildCategoryList('Drinks', teacoffee, _drinksKey),
+                      _buildCategoryList('Snack', snack, _snackKey),
+                      _buildCategoryList('Desert', desert, _desertKey),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 16),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCategoryButton(String title, GlobalKey key) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 4),
+      child: GestureDetector(
+        onTap: () => _scrollToCategory(key),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          decoration: BoxDecoration(
+            color: Colors.teal[700],
+            borderRadius: BorderRadius.circular(30),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.white.withOpacity(0.3),
+                blurRadius: 4,
+                offset: const Offset(0, 2),
+              ),
             ],
           ),
+          child: Center(
+            child: Text(
+              title,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildHeader() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-      decoration: const BoxDecoration(
-        color: Color.fromARGB(255, 13, 176, 18),
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(32),
-          bottomRight: Radius.circular(32),
-        ),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          IconButton(
-            icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-          const Text(
-            'Edge Canteen',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 24,
-              fontStyle: FontStyle.italic,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Image.asset(
-              'lib/assets/images/Meal Matrix Logo.png',
-              width: 50,
-              height: 50,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSearchBar() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Row(
-        children: [
-          Expanded(
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey.shade300),
-                borderRadius: BorderRadius.circular(24),
-              ),
-              child: const TextField(
-                decoration: InputDecoration(
-                  hintText: 'Search menu, restaurant or etc',
-                  border: InputBorder.none,
-                  hintStyle: TextStyle(fontSize: 14),
-                  icon: Icon(Icons.search, color: Colors.grey),
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(width: 8),
-          IconButton(
-            icon: const Icon(Icons.shopping_cart_outlined),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Cart()),
-              );
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildCategoryList(String title, List<dynamic> items) {
+  Widget _buildCategoryList(String title, List<dynamic> items, GlobalKey key) {
     return Column(
+      key: key,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
           child: Text(
             title,
-            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.teal,
+            ),
           ),
         ),
+        const Divider(),
         const SizedBox(height: 8),
         ListView.builder(
           shrinkWrap: true,
@@ -219,63 +315,64 @@ class EdgeState extends State<Edge> {
                   ),
                 );
               },
-              child: Column(
-                children: [
-                  ListTile(
-                    leading: CircleAvatar(
-                      backgroundImage: NetworkImage(product['image']),
-                      radius: 30,
-                    ),
-                    title: Text(product['name']),
-                    subtitle: Text(
-                      'Rs.${product['price']}\n${product['supply']}\n${product['canteen']}',
-                    ),
+              child: Card(
+                elevation: 4,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                color: Colors.white,
+                margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Image.network(
+                          product['image'],
+                          width: 100,
+                          height: 100,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              product['name'],
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.teal,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              'Rs.${product['price']}',
+                              style: TextStyle(
+                                  fontSize: 14, color: Colors.grey[600]),
+                            ),
+                            Text(
+                              product['supply'],
+                              style: TextStyle(
+                                  fontSize: 14, color: Colors.grey[600]),
+                            ),
+                            Text(
+                              product['canteen'],
+                              style: TextStyle(
+                                  fontSize: 14, color: Colors.grey[600]),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                  const Divider(),
-                ],
+                ),
               ),
             );
           },
-        ),
-      ],
-    );
-  }
-
-  Widget _buildBottomNavBar(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        _buildBottomNavItem(
-          Icons.home,
-          'Home',
-          () => Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => Home()),
-          ),
-        ),
-        _buildBottomNavItem(
-          Icons.list_alt,
-          'Orders',
-          () => Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => OrderHistory()),
-          ),
-        ),
-        _buildBottomNavItem(
-          Icons.favorite,
-          'Favorite',
-          () => Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => Favorite()),
-          ),
-        ),
-        _buildBottomNavItem(
-          Icons.settings,
-          'Settings',
-          () => Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => Setting()),
-          ),
         ),
       ],
     );
@@ -287,8 +384,8 @@ class EdgeState extends State<Edge> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, color: Colors.blueGrey),
-          Text(label, style: const TextStyle(fontSize: 12, color: Colors.grey)),
+          Icon(icon, color: Colors.grey[600]),
+          Text(label, style: TextStyle(fontSize: 12, color: Colors.grey[600])),
         ],
       ),
     );

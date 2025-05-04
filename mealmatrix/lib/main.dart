@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, deprecated_member_use
 
 import 'package:flutter/material.dart';
 import 'package:mealmatrix/CanteenOwner.dart';
@@ -58,13 +58,14 @@ class Logdata {
 
 Widget errors() {
   if (Logdata.errmessage.isNotEmpty) {
-    return SizedBox(
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10),
       child: Text(
         '* ${Logdata.errmessage}',
-        style: const TextStyle(
-          color: Color.fromARGB(119, 235, 17, 17),
-          fontSize: 15,
-          fontWeight: FontWeight.bold,
+        style: TextStyle(
+          color: Colors.red.withOpacity(0.9),
+          fontSize: 14,
+          fontWeight: FontWeight.w600,
         ),
       ),
     );
@@ -74,314 +75,293 @@ Widget errors() {
 
 class MyAppState extends State<MyApp> {
   bool isChecked = false;
-  bool isHoveredLogin = false;
-  bool isHoveredRegister = false;
   bool obscureText = true;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFF7FFF5),
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Center(
+        child: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+            child: Container(
+              constraints: BoxConstraints(
+                minHeight: MediaQuery.of(context).size.height -
+                    MediaQuery.of(context).padding.top,
+              ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   errors(),
-
                   Image.asset(
                     'lib/assets/images/Meal Matrix Logo.png',
-                    height: 250,
-                    width: 250,
-                    fit: BoxFit.contain,
+                    height: 160,
                   ),
-                  const SizedBox(height: 20),
-
-                  // Welcome Text
+                  const SizedBox(height: 32),
                   const Text(
-                    'Welcome to Meal Matrix \n\n',
+                    'Welcome to Meal Matrix',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      color: Color(0xff228B22),
-                      fontSize: 20,
+                      color: Colors.teal,
+                      fontSize: 22,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-
-                  SizedBox(
+                  const SizedBox(height: 32),
+                  Container(
                     width: 300,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 6,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
                     child: TextField(
-                      onTap: () {
-                        setState(() {
-                          Logdata.error = 0;
-                          Logdata.errmessage = "";
-                          Logdata.canteen = false;
-                        });
-                      },
                       controller: controller1,
+                      onTap: () => setState(() {
+                        Logdata.error = 0;
+                        Logdata.errmessage = "";
+                        Logdata.canteen = false;
+                      }),
                       decoration: InputDecoration(
-                        prefixIcon: const Icon(Icons.person_2_outlined),
-                        prefixIconColor: const Color(0xffA6A6A6),
-                        hintText: 'Enter Email',
-                        hintStyle: const TextStyle(
-                          color: Color(0xffA6A6A6),
-                          fontWeight: FontWeight.bold,
+                        hintText: 'Email Address',
+                        prefixIcon: const Icon(Icons.person_outline,
+                            color: Colors.teal),
+                        filled: true,
+                        fillColor: Colors.white,
+                        contentPadding:
+                            const EdgeInsets.symmetric(horizontal: 20),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(color: Colors.teal),
+                          borderRadius: BorderRadius.circular(12),
                         ),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 20),
-
-                  SizedBox(
+                  const SizedBox(height: 32),
+                  Container(
                     width: 300,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 6,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
                     child: TextField(
-                      onTap: () {
-                        setState(() {
-                          Logdata.error = 0;
-                          Logdata.errmessage = "";
-                          Logdata.canteen = false;
-                        });
-                      },
                       controller: controller2,
                       obscureText: obscureText,
+                      onTap: () => setState(() {
+                        Logdata.error = 0;
+                        Logdata.errmessage = "";
+                        Logdata.canteen = false;
+                      }),
                       decoration: InputDecoration(
-                        prefixIcon: const Icon(Icons.lock_outline_rounded),
-                        prefixIconColor: const Color(0xffA6A6A6),
-                        hintText: 'Enter Password',
-                        suffixIcon: GestureDetector(
-                          onTap: () {
+                        hintText: 'Password',
+                        prefixIcon:
+                            const Icon(Icons.lock_outline, color: Colors.teal),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            obscureText
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                            color: Colors.teal,
+                          ),
+                          onPressed: () {
                             setState(() {
-                              if (obscureText == true) {
-                                obscureText = false;
-                              } else {
-                                obscureText = true;
-                              }
+                              obscureText = !obscureText;
                             });
                           },
-                          child: const Icon(
-                            Icons.remove_red_eye_outlined,
-                            color: Color(0xff888888),
-                          ),
                         ),
-                        hintStyle: const TextStyle(
-                          color: Color(0xffA6A6A6),
-                          fontWeight: FontWeight.bold,
+                        filled: true,
+                        fillColor: Colors.white,
+                        contentPadding:
+                            const EdgeInsets.symmetric(horizontal: 20),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(color: Colors.teal),
+                          borderRadius: BorderRadius.circular(12),
                         ),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 20),
-
+                  const SizedBox(height: 15),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SizedBox(
-                        width: 200, // Adjusted width
-                        child: CheckboxListTile(
-                          value: isChecked,
-                          title: const Text('Remember Password'),
-                          controlAffinity: ListTileControlAffinity.leading,
-                          onChanged: (value) {
-                            setState(() {
-                              isChecked = value ?? false;
-                            });
-                          },
-                        ),
+                      Checkbox(
+                        value: isChecked,
+                        activeColor: Colors.teal,
+                        onChanged: (value) {
+                          setState(() {
+                            isChecked = value ?? false;
+                          });
+                        },
                       ),
+                      Text(
+                        'Remember Me',
+                        style: TextStyle(color: Colors.grey[800]),
+                      ),
+                      const Spacer(),
                       TextButton(
                         onPressed: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => forgot_password(),
-                            ),
+                                builder: (_) => forgot_password()),
                           );
                         },
                         child: const Text(
-                          "Forgot Password?",
+                          'Forgot Password?',
+                          style: TextStyle(color: Colors.teal),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 32),
+                  SizedBox(
+                    width: 300,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        elevation: 5,
+                        shadowColor: Colors.black.withOpacity(0.2),
+                        backgroundColor: Colors.teal[700],
+                      ),
+                      child: const Center(
+                        child: Text(
+                          'Log In',
                           style: TextStyle(
-                            color: Colors.blue,
+                            color: Colors.white,
+                            fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
-                    ],
-                  ),
+                      onPressed: () async {
+                        setState(() {
+                          Logdata.email = controller1.text.trim();
+                          Logdata.pass = controller2.text.trim();
+                        });
 
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      // Login Button
-                      MouseRegion(
-                        onEnter: (_) => setState(() => isHoveredLogin = true),
-                        onExit: (_) => setState(() => isHoveredLogin = false),
-                        child: SizedBox(
-                          width: 130,
-                          child: ElevatedButton(
-                            onPressed: () async {
-                              setState(() {
-                                Logdata.email = controller1.text.trim();
-                                Logdata.pass = controller2.text.trim();
-                              });
-                              Logdata.validate();
-                              if (Logdata.error == 0) {
-                                try {
-                                  var url = Uri.parse(
-                                    "http://192.168.177.67/Firebase/login.php",
-                                  );
+                        Logdata.validate();
+                        if (Logdata.error == 0) {
+                          try {
+                            var url = Uri.parse(
+                                "http://192.168.8.101/Firebase/login.php");
+                            var response = await http.post(url, body: {
+                              'email': Logdata.email,
+                              'pass': Logdata.pass,
+                            });
 
-                                  var response = await http.post(
-                                    url,
-                                    body: {
-                                      'email': Logdata.email,
-                                      'pass': Logdata.pass,
-                                    },
-                                  );
-                                  if (response.statusCode == 200) {
-                                    log("Success: Login Succeeded");
-                                    final Map<String, dynamic> responseData =
-                                        jsonDecode(response.body);
+                            if (response.statusCode == 200) {
+                              final Map<String, dynamic> responseData =
+                                  jsonDecode(response.body);
+                              Logdata.userEmail = responseData['user'];
 
-                                    setState(() {
-                                      Logdata.userEmail = responseData['user'];
-                                    });
-                                    //Cart empting
-                                    try {
-                                      var url1 = Uri.parse(
-                                        "http://192.168.177.67/Firebase/emptycart.php",
-                                      );
-                                      var response1 = await http.post(
-                                        url1,
-                                        body: {'email': Logdata.userEmail},
-                                      );
-
-                                      if (response1.statusCode == 200) {
-                                        log("Cart Cleaned");
-                                        Navigator.pushAndRemoveUntil(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) => Home()),
-                                          (route) => false,
-                                        );
-                                      } else {
-                                        log("cart not cleaned");
-                                      }
-                                    } catch (ex) {
-                                      log("Error fetching profile: $ex");
-                                    }
-
-                                    if (regexmailcanteen
-                                        .hasMatch(Logdata.userEmail)) {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (_) => Canteen(),
-                                        ),
-                                      );
-                                    } else {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (_) => Home(),
-                                        ),
-                                      );
-                                    }
-
-                                    setState(() {
-                                      controller1.text = "";
-                                      controller2.text = "";
-                                      Regdata.email = "";
-                                      Regdata.pass = "";
-                                      Regdata.error = 0;
-                                      Regdata.errmessage = "";
-                                    });
-                                  } else if (response.statusCode == 203) {
-                                    log("Invalid Credentials");
-                                    setState(() {
-                                      Logdata.error++;
-                                      Logdata.errmessage =
-                                          "Invalid Credentials";
-                                      Logdata.canteen = false;
-                                    });
-                                  } else if (response.statusCode == 204) {
-                                    log("Account does not exist");
-                                    setState(() {
-                                      Logdata.error++;
-                                      Logdata.errmessage =
-                                          "Account does not exist";
-                                      Logdata.canteen = false;
-                                    });
-                                  }
-                                } catch (ex) {
-                                  log("Unexpected error: $ex");
-                                }
-                              }
-                            },
-                            style: ButtonStyle(
-                              backgroundColor: WidgetStateProperty.all(
-                                isHoveredLogin ? Colors.green : Colors.white,
-                              ),
-                              foregroundColor: WidgetStateProperty.all(
-                                isHoveredLogin ? Colors.white : Colors.black,
-                              ),
-                            ),
-                            child: const Text(
-                              'Log in',
-                              style: TextStyle(fontFamily: "Trebuchet MS"),
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 20),
-
-                      MouseRegion(
-                        onEnter: (_) =>
-                            setState(() => isHoveredRegister = true),
-                        onExit: (_) =>
-                            setState(() => isHoveredRegister = false),
-                        child: SizedBox(
-                          width: 130,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => RegistrationPage(),
-                                ),
+                              await http.post(
+                                Uri.parse(
+                                    "http://192.168.8.101/Firebase/emptycart.php"),
+                                body: {'email': Logdata.userEmail},
                               );
-                            },
-                            style: ButtonStyle(
-                              backgroundColor: WidgetStateProperty.all(
-                                isHoveredRegister ? Colors.green : Colors.white,
-                              ),
-                              foregroundColor: WidgetStateProperty.all(
-                                isHoveredRegister ? Colors.white : Colors.black,
-                              ),
-                            ),
-                            child: const Text('Register'),
-                          ),
+
+                              if (regexmailcanteen
+                                  .hasMatch(Logdata.userEmail)) {
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (_) => Canteen()));
+                              } else {
+                                Navigator.pushReplacement(context,
+                                    MaterialPageRoute(builder: (_) => Home()));
+                              }
+
+                              controller1.clear();
+                              controller2.clear();
+                            } else if (response.statusCode == 203) {
+                              setState(() {
+                                Logdata.error++;
+                                Logdata.errmessage = "Invalid Credentials";
+                              });
+                            } else if (response.statusCode == 204) {
+                              setState(() {
+                                Logdata.error++;
+                                Logdata.errmessage = "Account does not exist";
+                              });
+                            }
+                          } catch (ex) {
+                            log("Error: $ex");
+                          }
+                        }
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 32),
+                  SizedBox(
+                    width: 300,
+                    child: OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        minimumSize: const Size.fromHeight(50),
+                        side: const BorderSide(color: Colors.teal),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
                         ),
                       ),
-                    ],
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => RegistrationPage()),
+                        );
+                      },
+                      child: const Text(
+                        'Register',
+                        style: TextStyle(
+                          color: Colors.teal,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
                   ),
-
-                  const SizedBox(height: 30),
-                  const Text('By signing you are agreeing to our'),
+                  const SizedBox(height: 32),
+                  Text(
+                    'By signing in you agree to our',
+                    style: TextStyle(color: Colors.grey[800]),
+                  ),
                   GestureDetector(
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                          builder: (context) => TermsAndConditions(),
-                        ),
+                        MaterialPageRoute(builder: (_) => TermsAndConditions()),
                       );
                     },
-                    child: Text.rich(
-                      TextSpan(
-                        text: 'Terms and Conditions',
-                        style: TextStyle(color: Colors.blue),
+                    child: const Text(
+                      'Terms and Conditions',
+                      style: TextStyle(
+                        color: Colors.teal,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        decoration: TextDecoration.underline,
                       ),
                     ),
                   ),

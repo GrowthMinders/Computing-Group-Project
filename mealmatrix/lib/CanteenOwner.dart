@@ -18,17 +18,52 @@ class Canteen extends StatefulWidget {
 
 class CanteenState extends State<Canteen> {
   List<Map<String, dynamic>> orderData = [];
+  bool isLoading = true;
+  String canteenName = "Your Canteen";
 
   @override
   void initState() {
     super.initState();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
+    _determineCanteenName();
     fetchOrderData();
   }
 
+  void _determineCanteenName() {
+    if (Logdata.userEmail == "Ayush@gmail.com") {
+      setState(() {
+        canteenName = "Ayush Canteen";
+      });
+    } else if (Logdata.userEmail == "So@gmail.com") {
+      setState(() {
+        canteenName = "So Cafe";
+      });
+    } else if (Logdata.userEmail == "Leyons@gmail.com") {
+      setState(() {
+        canteenName = "Leyons Canteen";
+      });
+    } else if (Logdata.userEmail == "Ocean@gmail.com") {
+      setState(() {
+        canteenName = "Ocean Canteen";
+      });
+    } else if (Logdata.userEmail == "Hela@gmail.com") {
+      setState(() {
+        canteenName = "Hela Bojun";
+      });
+    } else if (Logdata.userEmail == "Finagle@gmail.com") {
+      setState(() {
+        canteenName = "Finagle Canteen";
+      });
+    }
+  }
+
   Future<void> fetchOrderData() async {
+    setState(() {
+      isLoading = true;
+    });
+
     try {
-      var url = Uri.parse("http://192.168.177.67/Firebase/canteenowner1.php");
+      var url = Uri.parse("http://192.168.8.101/Firebase/canteenowner1.php");
       Map<String, String> body = {};
 
       if (Logdata.userEmail == "Ayush@gmail.com") {
@@ -64,18 +99,37 @@ class CanteenState extends State<Canteen> {
               'email': record['email'],
             };
           }).toList();
+          isLoading = false;
         });
       } else {
         log("Failed to fetch data: ${response.statusCode}");
+        setState(() {
+          isLoading = false;
+        });
       }
     } catch (ex) {
       log("Unexpected error: $ex");
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 
   Future<void> _handleOrderComplete(Map<String, dynamic> order) async {
     try {
-      var url = Uri.parse("http://192.168.177.67/Firebase/updatestate.php");
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return const Center(
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.teal),
+            ),
+          );
+        },
+      );
+
+      var url = Uri.parse("http://192.168.8.101/Firebase/updatestate.php");
       Map<String, String> body = {};
 
       if (Logdata.userEmail == "Ayush@gmail.com") {
@@ -130,33 +184,44 @@ class CanteenState extends State<Canteen> {
 
       var response = await http.post(url, body: body);
 
+      Navigator.of(context).pop(); // Close loading dialog
+
       if (response.statusCode == 200) {
         // Remove the completed order from the list
         setState(() {
           orderData.removeWhere((item) => item['oid'] == order['oid']);
         });
 
+        // Show success message
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Order marked as completed'),
+            backgroundColor: Colors.green,
+            duration: Duration(seconds: 2),
+          ),
+        );
+
         // Send notification
         try {
           var notifyUrl;
           if (Logdata.userEmail == "Ayush@gmail.com") {
             notifyUrl = Uri.parse(
-                "http://192.168.177.67/Firebase/notifications/userordernotify1.php");
+                "http://192.168.8.101/Firebase/notifications/userordernotify1.php");
           } else if (Logdata.userEmail == "So@gmail.com") {
             notifyUrl = Uri.parse(
-                "http://192.168.177.67/Firebase/notifications/userordernotify2.php");
+                "http://192.168.8.101/Firebase/notifications/userordernotify2.php");
           } else if (Logdata.userEmail == "Hela@gmail.com") {
             notifyUrl = Uri.parse(
-                "http://192.168.177.67/Firebase/notifications/userordernotify3.php");
+                "http://192.168.8.101/Firebase/notifications/userordernotify3.php");
           } else if (Logdata.userEmail == "Leyons@gmail.com") {
             notifyUrl = Uri.parse(
-                "http://192.168.177.67/Firebase/notifications/userordernotify4.php");
+                "http://192.168.8.101/Firebase/notifications/userordernotify4.php");
           } else if (Logdata.userEmail == "Finagle@gmail.com") {
             notifyUrl = Uri.parse(
-                "http://192.168.177.67/Firebase/notifications/userordernotify5.php");
+                "http://192.168.8.101/Firebase/notifications/userordernotify5.php");
           } else if (Logdata.userEmail == "Ocean@gmail.com") {
             notifyUrl = Uri.parse(
-                "http://192.168.177.67/Firebase/notifications/userordernotify6.php");
+                "http://192.168.8.101/Firebase/notifications/userordernotify6.php");
           }
 
           await http.post(notifyUrl, body: {
@@ -168,100 +233,208 @@ class CanteenState extends State<Canteen> {
         }
       }
     } catch (ex) {
+      Navigator.of(context).pop(); // Close loading dialog
       log("Error updating state: $ex");
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Failed to update order'),
+          backgroundColor: Colors.red,
+          duration: Duration(seconds: 2),
+        ),
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: Center(
-        child: Container(
-          padding: const EdgeInsets.all(16),
-          child: SingleChildScrollView(
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        selectedItemColor: Colors.teal,
+        unselectedItemColor: Colors.grey[600],
+        currentIndex: 0, // Highlight "Home"
+        onTap: (index) {
+          switch (index) {
+            case 0:
+              // Already on Home, refresh data
+              fetchOrderData();
+              break;
+            case 1:
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const Order()),
+              );
+              break;
+            case 2:
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => Setting()),
+              );
+              break;
+          }
+        },
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.list_alt), label: 'Orders'),
+          BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Setting'),
+        ],
+      ),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Color(0xFFFFE082),
+              Color(0xFFFFB300)
+            ], // Amber gradient matching user home
+            begin: Alignment.bottomRight,
+            end: Alignment.topLeft,
+          ),
+        ),
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 24),
-                Stack(
-                  children: [
-                    const Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        'Meal Matrix',
-                        style: TextStyle(fontSize: 40, fontFamily: 'Lobster'),
-                      ),
-                    ),
-                    const Align(
-                      alignment: Alignment.centerRight,
-                      child: CircleAvatar(
-                        radius: 24,
-                        backgroundImage: AssetImage(
-                          'lib/assets/images/Meal Matrix Logo.png',
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 3),
-                const SizedBox(height: 16),
-                Column(
-                  children: orderData.map((order) {
-                    return Column(
-                      children: [
-                        Orders(
-                          imageUrl: order['image'],
-                          title: order['name'] + " (${order['qty']})",
-                          price: 'Rs.${order['price']}',
-                          onIconPressed: () => _handleOrderComplete(order),
-                        ),
-                        const Divider(),
-                      ],
-                    );
-                  }).toList(),
-                ),
+                // Header Section
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    _buildBottomNavItem(
-                      Icons.home,
-                      'Home',
-                      const Color.fromARGB(255, 74, 73, 73),
-                      onTap: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const Canteen(),
-                          ),
-                        );
-                      },
+                    const Text(
+                      'Meal Matrix',
+                      style: TextStyle(
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.teal,
+                      ),
                     ),
-                    _buildBottomNavItem(
-                      Icons.list_alt,
-                      'Orders',
-                      const Color.fromARGB(255, 74, 73, 73),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const Order(),
-                          ),
-                        );
-                      },
-                    ),
-                    _buildBottomNavItem(
-                      Icons.settings,
-                      'Setting',
-                      const Color.fromARGB(255, 74, 73, 73),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Setting()),
-                        );
-                      },
+                    CircleAvatar(
+                      radius: 24,
+                      backgroundImage: AssetImage(
+                        'lib/assets/images/Meal Matrix Logo.png',
+                      ),
                     ),
                   ],
+                ),
+
+                const SizedBox(height: 8),
+                Text(
+                  'Manage your canteen orders efficiently',
+                  style: TextStyle(color: Colors.grey[700], fontSize: 16),
+                ),
+
+                const SizedBox(height: 20),
+
+                // Canteen Info Card
+                Card(
+                  elevation: 4,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  color: Colors.white.withOpacity(0.9),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.restaurant,
+                          color: Colors.teal,
+                          size: 36,
+                        ),
+                        const SizedBox(width: 16),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              canteenName,
+                              style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.teal,
+                              ),
+                            ),
+                            Text(
+                              'Logged in as: ${Logdata.userEmail}',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.grey[600],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 20),
+
+                // Pending Orders Header
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Pending Orders',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.teal,
+                      ),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.refresh, color: Colors.teal),
+                      onPressed: fetchOrderData,
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 10),
+
+                // Orders List
+                Expanded(
+                  child: isLoading
+                      ? const Center(
+                          child: CircularProgressIndicator(
+                            valueColor:
+                                AlwaysStoppedAnimation<Color>(Colors.teal),
+                          ),
+                        )
+                      : orderData.isEmpty
+                          ? Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Icon(
+                                    Icons.check_circle_outline,
+                                    size: 80,
+                                    color: Colors.teal,
+                                  ),
+                                  const SizedBox(height: 16),
+                                  Text(
+                                    'No pending orders',
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      color: Colors.grey[700],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : ListView.builder(
+                              itemCount: orderData.length,
+                              itemBuilder: (context, index) {
+                                final order = orderData[index];
+                                return OrderCard(
+                                  imageUrl: order['image'],
+                                  title: order['name'],
+                                  quantity: order['qty'],
+                                  price: 'Rs.${order['price']}',
+                                  customerEmail: order['email'],
+                                  orderTime: order['stime'],
+                                  onComplete: () => _handleOrderComplete(order),
+                                );
+                              },
+                            ),
                 ),
               ],
             ),
@@ -270,81 +443,142 @@ class CanteenState extends State<Canteen> {
       ),
     );
   }
-
-  Widget _buildBottomNavItem(
-    IconData icon,
-    String label,
-    Color color, {
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, color: color),
-          Text(label, style: TextStyle(fontSize: 12, color: color)),
-        ],
-      ),
-    );
-  }
 }
 
-class Orders extends StatelessWidget {
+class OrderCard extends StatelessWidget {
   final String imageUrl;
   final String title;
+  final String quantity;
   final String price;
-  final int? quantity;
-  final VoidCallback? onIconPressed;
+  final String customerEmail;
+  final String orderTime;
+  final VoidCallback onComplete;
 
-  const Orders({
+  const OrderCard({
     Key? key,
     required this.imageUrl,
     required this.title,
+    required this.quantity,
     required this.price,
-    this.quantity,
-    this.onIconPressed,
+    required this.customerEmail,
+    required this.orderTime,
+    required this.onComplete,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
-            spreadRadius: 2,
-            blurRadius: 5,
-          ),
-        ],
+    return Card(
+      margin: const EdgeInsets.only(bottom: 16),
+      elevation: 4,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
       ),
-      child: Row(
-        children: [
-          Image.network(imageUrl, width: 80, height: 80, fit: BoxFit.cover),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.network(
+                    imageUrl,
+                    width: 80,
+                    height: 80,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) => Container(
+                      width: 80,
+                      height: 80,
+                      color: Colors.grey[300],
+                      child: const Icon(Icons.image_not_supported,
+                          color: Colors.grey),
+                    ),
                   ),
                 ),
-                Text(price, style: const TextStyle(color: Colors.grey)),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.teal,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 2),
+                            decoration: BoxDecoration(
+                              color: Colors.amber.withOpacity(0.2),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Text(
+                              'Qty: $quantity',
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.amber[800],
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            price,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        'Customer: ${customerEmail.split('@')[0]}',
+                        style: const TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Text(
+                        'Ordered at: $orderTime',
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
-          ),
-          IconButton(
-            icon: const Icon(Icons.done_all),
-            onPressed: onIconPressed,
-          ),
-        ],
+            const SizedBox(height: 12),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton.icon(
+                icon: const Icon(Icons.check_circle_outline),
+                label: const Text('Mark as Complete'),
+                onPressed: onComplete,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.teal,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

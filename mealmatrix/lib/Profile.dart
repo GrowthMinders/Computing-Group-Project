@@ -1,4 +1,4 @@
-// ignore_for_file: file_names, use_key_in_widget_constructors
+// ignore_for_file: use_key_in_widget_constructors, deprecated_member_use, file_names
 
 import 'package:flutter/material.dart';
 import 'package:mealmatrix/Favorite.dart';
@@ -7,8 +7,6 @@ import 'package:mealmatrix/Order.dart';
 import 'package:mealmatrix/OrderHistory.dart';
 import 'package:mealmatrix/Setting.dart';
 import 'package:mealmatrix/main.dart';
-
-// Remove the StatelessWidget version completely and keep only the StatefulWidget
 
 class Profile extends StatefulWidget {
   @override
@@ -19,70 +17,21 @@ class ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.green,
-        title: Text('My Account', style: TextStyle(color: Colors.white)),
+        backgroundColor: Colors.teal,
+        title: const Text(
+          'My Profile',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+        centerTitle: true,
+        elevation: 4,
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: CircleAvatar(
-              backgroundImage: AssetImage(
-                'lib/assets/images/Meal Matrix Logo.png',
-              ),
-            ),
-          ),
-        ],
-      ),
-      body: Column(
-        children: [
-          SizedBox(height: 100),
-          Center(
-            child: CircleAvatar(
-              radius: 75,
-              backgroundImage: user.imageBytes != null
-                  ? Image.memory(user.imageBytes!).image
-                  : AssetImage('lib/assets/images/DefaultProfile.png'),
-            ),
-          ),
-          SizedBox(height: 40),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Name : ${user.name}',
-                    style: TextStyle(fontSize: 18),
-                  ),
-                ),
-                SizedBox(height: 10),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Email : ${user.email}',
-                    style: TextStyle(fontSize: 18),
-                  ),
-                ),
-                SizedBox(height: 10),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Password : **********',
-                    style: TextStyle(fontSize: 18),
-                  ),
-                ),
-                SizedBox(height: 10),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Telephone number : ${user.tel}',
-                    style: TextStyle(fontSize: 18),
-                  ),
-                ),
-              ],
+              backgroundImage:
+                  AssetImage('lib/assets/images/Meal Matrix Logo.png'),
+              radius: 20,
             ),
           ),
         ],
@@ -93,7 +42,7 @@ class ProfileState extends State<Profile> {
           _buildBottomNavItem(
             Icons.home,
             'Home',
-            const Color.fromARGB(255, 74, 73, 73),
+            Colors.grey[600]!,
             onTap: () {
               Navigator.push(
                 context,
@@ -104,7 +53,7 @@ class ProfileState extends State<Profile> {
           _buildBottomNavItem(
             Icons.list_alt,
             'Orders',
-            const Color.fromARGB(255, 74, 73, 73),
+            Colors.grey[600]!,
             onTap: () {
               if (Logdata.userEmail == "ayushcafe2002@gmail.com") {
                 Navigator.push(
@@ -122,7 +71,7 @@ class ProfileState extends State<Profile> {
           _buildBottomNavItem(
             Icons.favorite,
             'Favorite',
-            const Color.fromARGB(255, 74, 73, 73),
+            Colors.grey[600]!,
             onTap: () {
               Navigator.push(
                 context,
@@ -133,7 +82,7 @@ class ProfileState extends State<Profile> {
           _buildBottomNavItem(
             Icons.settings,
             'Setting',
-            const Color.fromARGB(255, 74, 73, 73),
+            Colors.grey[600]!,
             onTap: () {
               Navigator.push(
                 context,
@@ -142,6 +91,137 @@ class ProfileState extends State<Profile> {
             },
           ),
         ],
+      ),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xFFFFE082), Color(0xFFFFB300)],
+            begin: Alignment.bottomRight,
+            end: Alignment.topLeft,
+          ),
+        ),
+        child: SafeArea(
+          child: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        '',
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.teal,
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+                      Center(
+                        child: CircleAvatar(
+                          radius: 60,
+                          backgroundImage: user.imageBytes != null
+                              ? Image.memory(user.imageBytes!).image
+                              : AssetImage(
+                                  'lib/assets/images/DefaultProfile.png'),
+                          backgroundColor: Colors.white.withOpacity(0.9),
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+                      Card(
+                        elevation: 4,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        color: Colors.white.withOpacity(0.9),
+                        child: Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  const Icon(Icons.person,
+                                      color: Colors.teal, size: 24),
+                                  const SizedBox(width: 12),
+                                  Expanded(
+                                    child: Text(
+                                      user.name.isNotEmpty ? user.name : 'N/A',
+                                      style: const TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.teal,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 16),
+                              Row(
+                                children: [
+                                  const Icon(Icons.email,
+                                      color: Colors.teal, size: 24),
+                                  const SizedBox(width: 12),
+                                  Expanded(
+                                    child: Text(
+                                      user.email.isNotEmpty
+                                          ? user.email
+                                          : 'N/A',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.grey[600],
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 16),
+                              Row(
+                                children: [
+                                  const Icon(Icons.lock,
+                                      color: Colors.teal, size: 24),
+                                  const SizedBox(width: 12),
+                                  Text(
+                                    '**********',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.grey[600],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 16),
+                              Row(
+                                children: [
+                                  const Icon(Icons.phone,
+                                      color: Colors.teal, size: 24),
+                                  const SizedBox(width: 12),
+                                  Expanded(
+                                    child: Text(
+                                      user.tel.isNotEmpty ? user.tel : 'N/A',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.grey[600],
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

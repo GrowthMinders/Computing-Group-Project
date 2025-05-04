@@ -62,7 +62,7 @@ if($result){
        $data4 = array($email);
        $result4 = sqlsrv_query($conn, $sql4, $data4);
        if($result4){
-          header("Location: http://192.168.177.67/FireBase/invoicemailer.php?email=$email&iid=$conid");
+          header("Location: http://192.168.8.101/FireBase/invoicemailer.php?email=$email&iid=$conid");
           exit();
        }
     }
