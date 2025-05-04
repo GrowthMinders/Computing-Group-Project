@@ -23,7 +23,7 @@ class favrendering {
   Future<void> renderfav() async {
     try {
       var url =
-          Uri.parse("http://192.168.8.101/Firebase/favoriterendering.php");
+          Uri.parse("http://192.168.195.67/Firebase/favoriterendering.php");
       var response = await http.post(url, body: {'email': Logdata.userEmail});
 
       if (response.statusCode == 200) {
@@ -148,12 +148,42 @@ class HomeState extends State<Home> {
                     children: [
                       Flexible(
                         child: GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => Profile()),
-                            );
+                          onTap: () async {
+                            try {
+                              var url = Uri.parse(
+                                "http://192.168.195.67/Firebase/profile.php",
+                              );
+                              var response = await http.post(
+                                url,
+                                body: {'email': Logdata.userEmail},
+                              );
+
+                              if (response.statusCode == 200) {
+                                log("Data loaded");
+                                var data = jsonDecode(response.body);
+
+                                if (data is Map<String, dynamic>) {
+                                  setState(() {
+                                    user.name = data['name'].toString();
+                                    user.email = data['email'].toString();
+                                    user.tel = data['contact'].toString();
+                                    if (data['image'] != null) {
+                                      user.imageBytes =
+                                          base64Decode(data['image']);
+                                    }
+                                  });
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Profile()),
+                                  );
+                                } else {
+                                  log("Blank");
+                                }
+                              }
+                            } catch (ex) {
+                              log("Error fetching profile: $ex");
+                            }
                           },
                           child: Card(
                             elevation: 4,
@@ -297,7 +327,7 @@ class HomeState extends State<Home> {
                           try {
                             final response = await http.get(
                               Uri.parse(
-                                'http://192.168.8.101/Firebase/Menus/Finagle.php',
+                                'http://192.168.195.67/Firebase/Menus/Finagle.php',
                               ),
                             );
                             if (response.statusCode == 200) {
@@ -323,7 +353,7 @@ class HomeState extends State<Home> {
                           try {
                             final response = await http.get(
                               Uri.parse(
-                                'http://192.168.8.101/Firebase/Menus/Hostel.php',
+                                'http://192.168.195.67/Firebase/Menus/Hostel.php',
                               ),
                             );
                             if (response.statusCode == 200) {
@@ -349,7 +379,7 @@ class HomeState extends State<Home> {
                           try {
                             final response = await http.get(
                               Uri.parse(
-                                'http://192.168.8.101/Firebase/Menus/Edge.php',
+                                'http://192.168.195.67/Firebase/Menus/Edge.php',
                               ),
                             );
                             if (response.statusCode == 200) {
@@ -374,7 +404,7 @@ class HomeState extends State<Home> {
                           try {
                             final response = await http.get(
                               Uri.parse(
-                                'http://192.168.8.101/Firebase/Menus/Audi.php',
+                                'http://192.168.195.67/Firebase/Menus/Audi.php',
                               ),
                             );
                             if (response.statusCode == 200) {

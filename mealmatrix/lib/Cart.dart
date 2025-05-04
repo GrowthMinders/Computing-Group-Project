@@ -17,7 +17,7 @@ List<Map<String, dynamic>> cartdata = [];
 class CartState extends State<Cart> {
   Future<void> rendercart() async {
     try {
-      var url = Uri.parse("http://192.168.8.101/Firebase/cartrendering.php");
+      var url = Uri.parse("http://192.168.195.67/Firebase/cartrendering.php");
 
       var response = await http.post(url, body: {'email': Logdata.userEmail});
 
@@ -242,7 +242,7 @@ class CartState extends State<Cart> {
                   onPressed: () async {
                     try {
                       var url = Uri.parse(
-                        "http://192.168.8.101/Firebase/prodelcart.php",
+                        "http://192.168.195.67/Firebase/prodelcart.php",
                       );
 
                       var response = await http.post(

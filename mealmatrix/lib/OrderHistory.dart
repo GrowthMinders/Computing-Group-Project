@@ -29,7 +29,7 @@ class _OrderHistoryState extends State<OrderHistory> {
   Future<void> fetchOrderHistory() async {
     try {
       var url = Uri.parse(
-        "http://192.168.8.101/Firebase/orderhistoryrendering.php",
+        "http://192.168.195.67/Firebase/orderhistoryrendering.php",
       );
       var response = await http.post(url, body: {'email': Logdata.userEmail});
 
@@ -144,10 +144,24 @@ class _OrderHistoryState extends State<OrderHistory> {
         backgroundColor: Colors.teal,
         title: const Text(
           'Order History',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         centerTitle: true,
         elevation: 4,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            // Navigate to Home screen when back button is pressed
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => Home()),
+            );
+          },
+        ),
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),

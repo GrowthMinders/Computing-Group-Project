@@ -1,12 +1,6 @@
 // ignore_for_file: file_names, use_key_in_widget_constructors, use_super_parameters, deprecated_member_use
 
 import 'package:flutter/material.dart';
-import 'package:mealmatrix/Favorite.dart';
-import 'package:mealmatrix/Home.dart';
-import 'package:mealmatrix/Order.dart';
-import 'package:mealmatrix/OrderHistory.dart';
-import 'package:mealmatrix/Setting.dart';
-import 'package:mealmatrix/main.dart';
 
 class CustomerSupport extends StatelessWidget {
   @override
@@ -29,62 +23,6 @@ class CustomerSupport extends StatelessWidget {
               ),
               radius: 20,
             ),
-          ),
-        ],
-      ),
-      bottomNavigationBar: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          _buildBottomNavItem(
-            Icons.home,
-            'Home',
-            Colors.grey[600]!,
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Home()),
-              );
-            },
-          ),
-          _buildBottomNavItem(
-            Icons.list_alt,
-            'Orders',
-            Colors.grey[600]!,
-            onTap: () {
-              if (Logdata.userEmail == "ayushcafe2002@gmail.com") {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Order()),
-                );
-              } else {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => OrderHistory()),
-                );
-              }
-            },
-          ),
-          _buildBottomNavItem(
-            Icons.favorite,
-            'Favorite',
-            Colors.grey[600]!,
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Favorite()),
-              );
-            },
-          ),
-          _buildBottomNavItem(
-            Icons.settings,
-            'Setting',
-            Colors.grey[600]!,
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Setting()),
-              );
-            },
           ),
         ],
       ),
@@ -136,24 +74,6 @@ class CustomerSupport extends StatelessWidget {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildBottomNavItem(
-    IconData icon,
-    String label,
-    Color color, {
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, color: color),
-          Text(label, style: TextStyle(fontSize: 12, color: color)),
-        ],
       ),
     );
   }

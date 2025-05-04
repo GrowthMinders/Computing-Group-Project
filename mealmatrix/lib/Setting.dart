@@ -53,8 +53,7 @@ class SettingState extends State<Setting> {
         Logdata.userEmail == "Leyons@gmail.com" ||
         Logdata.userEmail == "Ocean@gmail.com" ||
         Logdata.userEmail == "Hela@gmail.com" ||
-        Logdata.userEmail == "Finagle@gmail.com" ||
-        Logdata.userEmail == "ayushcafe2002@gmail.com") {
+        Logdata.userEmail == "Finagle@gmail.com") {
       // Canteen owner navigation
       navItems = const [
         BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
@@ -65,8 +64,7 @@ class SettingState extends State<Setting> {
       onHomeTap = () {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(
-              builder: (context) => Home()), // Assuming Canteen is Home
+          MaterialPageRoute(builder: (context) => Canteen()),
         );
       };
       onOrdersTap = () {
@@ -76,7 +74,10 @@ class SettingState extends State<Setting> {
         );
       };
       onSettingTap = () {
-        // Already on Setting, do nothing
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => Setting()),
+        );
       };
     } else {
       // Regular user navigation
@@ -114,25 +115,76 @@ class SettingState extends State<Setting> {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.teal,
-        title: const Text(
-          'Settings',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-        centerTitle: true,
-        elevation: 4,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: CircleAvatar(
-              backgroundImage:
-                  AssetImage('lib/assets/images/Meal Matrix Logo.png'),
-              radius: 20,
+      appBar: (Logdata.userEmail == "Ayush@gmail.com" ||
+              Logdata.userEmail == "So@gmail.com" ||
+              Logdata.userEmail == "Leyons@gmail.com" ||
+              Logdata.userEmail == "Ocean@gmail.com" ||
+              Logdata.userEmail == "Hela@gmail.com" ||
+              Logdata.userEmail == "Finagle@gmail.com")
+          ? AppBar(
+              backgroundColor: Colors.teal,
+              title: const Text(
+                'Settings',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              centerTitle: true,
+              elevation: 4,
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back, color: Colors.white),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Canteen()),
+                  );
+                },
+              ),
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CircleAvatar(
+                    backgroundImage:
+                        AssetImage('lib/assets/images/Meal Matrix Logo.png'),
+                    radius: 20,
+                  ),
+                ),
+              ],
+            )
+          : AppBar(
+              backgroundColor: Colors.teal,
+              title: const Text(
+                'Settings',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              centerTitle: true,
+              elevation: 4,
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back, color: Colors.white),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Home()),
+                  );
+                },
+              ),
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CircleAvatar(
+                    backgroundImage:
+                        AssetImage('lib/assets/images/Meal Matrix Logo.png'),
+                    radius: 20,
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
-      ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         selectedItemColor: Colors.green,
@@ -198,7 +250,7 @@ class SettingState extends State<Setting> {
                     onTap: () async {
                       try {
                         var url = Uri.parse(
-                          "http://192.168.8.101/Firebase/profile.php",
+                          "http://192.168.195.67/Firebase/profile.php",
                         );
                         var response = await http.post(
                           url,
@@ -231,31 +283,6 @@ class SettingState extends State<Setting> {
                         log("Error fetching profile: $ex");
                       }
                     },
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Card(
-                  elevation: 4,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  color: Colors.white.withOpacity(0.9),
-                  child: ListTile(
-                    leading: const Icon(Icons.dark_mode, color: Colors.teal),
-                    title: const Text(
-                      'Dark Mode',
-                      style: TextStyle(
-                          color: Colors.teal, fontWeight: FontWeight.bold),
-                    ),
-                    trailing: Switch(
-                      value: isDarkMode,
-                      activeColor: Colors.teal,
-                      onChanged: (value) {
-                        setState(() {
-                          isDarkMode = value;
-                        });
-                      },
-                    ),
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -326,7 +353,7 @@ class SettingState extends State<Setting> {
 
                       try {
                         var url = Uri.parse(
-                          "http://192.168.8.101/Firebase/emptycart.php",
+                          "http://192.168.195.67/Firebase/emptycart.php",
                         );
                         var response = await http.post(
                           url,

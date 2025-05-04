@@ -63,7 +63,7 @@ class CanteenState extends State<Canteen> {
     });
 
     try {
-      var url = Uri.parse("http://192.168.8.101/Firebase/canteenowner1.php");
+      var url = Uri.parse("http://192.168.195.67/Firebase/canteenowner1.php");
       Map<String, String> body = {};
 
       if (Logdata.userEmail == "Ayush@gmail.com") {
@@ -129,7 +129,7 @@ class CanteenState extends State<Canteen> {
         },
       );
 
-      var url = Uri.parse("http://192.168.8.101/Firebase/updatestate.php");
+      var url = Uri.parse("http://192.168.195.67/Firebase/updatestate.php");
       Map<String, String> body = {};
 
       if (Logdata.userEmail == "Ayush@gmail.com") {
@@ -206,22 +206,22 @@ class CanteenState extends State<Canteen> {
           var notifyUrl;
           if (Logdata.userEmail == "Ayush@gmail.com") {
             notifyUrl = Uri.parse(
-                "http://192.168.8.101/Firebase/notifications/userordernotify1.php");
+                "http://192.168.195.67/Firebase/notifications/userordernotify1.php");
           } else if (Logdata.userEmail == "So@gmail.com") {
             notifyUrl = Uri.parse(
-                "http://192.168.8.101/Firebase/notifications/userordernotify2.php");
+                "http://192.168.195.67/Firebase/notifications/userordernotify2.php");
           } else if (Logdata.userEmail == "Hela@gmail.com") {
             notifyUrl = Uri.parse(
-                "http://192.168.8.101/Firebase/notifications/userordernotify3.php");
+                "http://192.168.195.67/Firebase/notifications/userordernotify3.php");
           } else if (Logdata.userEmail == "Leyons@gmail.com") {
             notifyUrl = Uri.parse(
-                "http://192.168.8.101/Firebase/notifications/userordernotify4.php");
+                "http://192.168.195.67/Firebase/notifications/userordernotify4.php");
           } else if (Logdata.userEmail == "Finagle@gmail.com") {
             notifyUrl = Uri.parse(
-                "http://192.168.8.101/Firebase/notifications/userordernotify5.php");
+                "http://192.168.195.67/Firebase/notifications/userordernotify5.php");
           } else if (Logdata.userEmail == "Ocean@gmail.com") {
             notifyUrl = Uri.parse(
-                "http://192.168.8.101/Firebase/notifications/userordernotify6.php");
+                "http://192.168.195.67/Firebase/notifications/userordernotify6.php");
           }
 
           await http.post(notifyUrl, body: {
@@ -427,7 +427,7 @@ class CanteenState extends State<Canteen> {
                                 return OrderCard(
                                   imageUrl: order['image'],
                                   title: order['name'],
-                                  quantity: order['qty'],
+                                  quantity: order['qty'].toString(),
                                   price: 'Rs.${order['price']}',
                                   customerEmail: order['email'],
                                   orderTime: order['stime'],

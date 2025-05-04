@@ -16,7 +16,7 @@ $today = date('d/m/Y');
 
 $value = (int)($price/296);
 
-$cancelUrl = "http://192.168.8.101/FireBase/state/paymentunsuccess.php?" . http_build_query([
+$cancelUrl = "http://192.168.195.67/FireBase/state/paymentunsuccess.php?" . http_build_query([
     'oid' => $conid,
     'date' => $today,
     'price' => $price
@@ -29,7 +29,7 @@ $supply = urldecode($_GET['supplies']);
 $email = urldecode($_GET['email']); 
 $qty = urldecode($_GET['qdata']);
 
-$returnUrl = "http://192.168.8.101/FireBase/cashpayment.php?" . http_build_query([
+$returnUrl = "http://192.168.195.67/FireBase/cashpayment.php?" . http_build_query([
     'names' => $products,
     'supply' => $supply,
     'email' => $email,

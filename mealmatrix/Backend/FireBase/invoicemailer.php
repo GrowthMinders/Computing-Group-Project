@@ -307,10 +307,10 @@ try {
     if ($mail->send()) {
         http_response_code(200);
         echo "<script>
-                 window.location.href = 'http://192.168.8.101/FireBase/state/paymentsuccess.php?total=$total&invoice=$invoiceno';
+                 window.location.href = 'http://192.168.195.67/FireBase/state/paymentsuccess.php?total=$total&invoice=$invoiceno';
               </script>
               <noscript>
-                 <meta http-equiv='refresh' content='0;url=http://192.168.8.101/FireBase/state/paymentsuccess.php?total=$total&invoice=$invoiceno' />
+                 <meta http-equiv='refresh' content='0;url=http://192.168.195.67/FireBase/state/paymentsuccess.php?total=$total&invoice=$invoiceno' />
              </noscript>";
     } else {
         echo json_encode(array("status" => "error", "message" => "Mail not sent"));

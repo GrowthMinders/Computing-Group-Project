@@ -32,7 +32,7 @@ class FavoriteState extends State<Favorite> {
   Future<void> renderfav() async {
     try {
       var url =
-          Uri.parse("http://192.168.8.101/Firebase/favoriterendering.php");
+          Uri.parse("http://192.168.195.67/Firebase/favoriterendering.php");
       var response = await http.post(url, body: {'email': Logdata.userEmail});
 
       if (response.statusCode == 200) {
@@ -66,19 +66,21 @@ class FavoriteState extends State<Favorite> {
     VoidCallback? onFavoriteTap;
     VoidCallback? onSettingTap;
 
-    if (Logdata.userEmail == "Ayush@gmail.com" ||
+    bool isCanteenOwner = Logdata.userEmail == "Ayush@gmail.com" ||
         Logdata.userEmail == "So@gmail.com" ||
         Logdata.userEmail == "Leyons@gmail.com" ||
         Logdata.userEmail == "Ocean@gmail.com" ||
         Logdata.userEmail == "Hela@gmail.com" ||
         Logdata.userEmail == "Finagle@gmail.com" ||
-        Logdata.userEmail == "ayushcafe2002@gmail.com") {
+        Logdata.userEmail == "ayushcafe2002@gmail.com";
+
+    if (isCanteenOwner) {
       navItems = const [
         BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
         BottomNavigationBarItem(icon: Icon(Icons.list_alt), label: 'Orders'),
         BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Setting'),
       ];
-      currentIndex = -1; // No highlight for canteen owners
+      currentIndex = -1;
       onHomeTap = () {
         Navigator.pushReplacement(
           context,
@@ -104,7 +106,7 @@ class FavoriteState extends State<Favorite> {
         BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'Favorite'),
         BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Setting'),
       ];
-      currentIndex = 2; // Highlight Favorite
+      currentIndex = 2;
       onHomeTap = () {
         Navigator.pushReplacement(
           context,
@@ -144,7 +146,10 @@ class FavoriteState extends State<Favorite> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => Home()),
+            );
           },
         ),
         actions: [
@@ -164,13 +169,7 @@ class FavoriteState extends State<Favorite> {
         unselectedItemColor: Colors.grey[600],
         currentIndex: currentIndex,
         onTap: (index) {
-          if (Logdata.userEmail == "Ayush@gmail.com" ||
-              Logdata.userEmail == "So@gmail.com" ||
-              Logdata.userEmail == "Leyons@gmail.com" ||
-              Logdata.userEmail == "Ocean@gmail.com" ||
-              Logdata.userEmail == "Hela@gmail.com" ||
-              Logdata.userEmail == "Finagle@gmail.com" ||
-              Logdata.userEmail == "ayushcafe2002@gmail.com") {
+          if (isCanteenOwner) {
             if (index == 0) onHomeTap?.call();
             if (index == 1) onOrdersTap?.call();
             if (index == 2) onSettingTap?.call();
@@ -186,7 +185,7 @@ class FavoriteState extends State<Favorite> {
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xFFFFE082), Color(0xFFFFB300)], // Amber gradient
+            colors: [Color(0xFFFFE082), Color(0xFFFFB300)],
             begin: Alignment.bottomRight,
             end: Alignment.topLeft,
           ),
@@ -267,7 +266,7 @@ class FavoriteState extends State<Favorite> {
               onTap: () async {
                 try {
                   var url = Uri.parse(
-                    "http://192.168.8.101/Firebase/favdelete.php",
+                    "http://192.168.195.67/Firebase/favdelete.php",
                   );
                   var response = await http.post(
                     url,
@@ -288,6 +287,10 @@ class FavoriteState extends State<Favorite> {
                             item['canteen'] == product['canteen'],
                       );
                     });
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Home()),
+                    );
                   }
                 } catch (ex) {
                   log("Unexpected error: $ex");

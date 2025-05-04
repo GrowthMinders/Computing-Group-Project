@@ -63,7 +63,7 @@ class _OrderState extends State<Order> {
     });
 
     try {
-      var url = Uri.parse("http://192.168.8.101/Firebase/canteenowner2.php");
+      var url = Uri.parse("http://192.168.195.67/Firebase/canteenowner2.php");
       Map<String, String> body = {};
 
       if (Logdata.userEmail == "Ayush@gmail.com") {

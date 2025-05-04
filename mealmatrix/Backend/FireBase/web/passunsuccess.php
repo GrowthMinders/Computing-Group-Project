@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Password Change Success</title>
-    <link rel="stylesheet" href="http://10.16.130.245/Firebase/web/Messages.css" type="text/css" />
+    <link rel="stylesheet" href="http://192.168.195.6716.130.245/Firebase/web/Messages.css" type="text/css" />
 </head>
 <body>
     <div class="container">
         <div class="success-icon">
             <center>
-            <img src = "http://10.16.130.245/Firebase/web/images/Cancel.png" height="150" width="150" style="margin-bottom : 50px;">
+            <img src = "http://192.168.195.6716.130.245/Firebase/web/images/Cancel.png" height="150" width="150" style="margin-bottom : 50px;">
             </center>
             
         </div>

@@ -268,7 +268,7 @@ class MyAppState extends State<MyApp> {
                         if (Logdata.error == 0) {
                           try {
                             var url = Uri.parse(
-                                "http://192.168.8.101/Firebase/login.php");
+                                "http://192.168.195.67/Firebase/login.php");
                             var response = await http.post(url, body: {
                               'email': Logdata.email,
                               'pass': Logdata.pass,
@@ -281,7 +281,7 @@ class MyAppState extends State<MyApp> {
 
                               await http.post(
                                 Uri.parse(
-                                    "http://192.168.8.101/Firebase/emptycart.php"),
+                                    "http://192.168.195.67/Firebase/emptycart.php"),
                                 body: {'email': Logdata.userEmail},
                               );
 

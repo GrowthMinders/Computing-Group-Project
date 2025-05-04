@@ -53,7 +53,7 @@ class EdgeState extends State<Edge> {
   Future<void> fetchProducts() async {
     try {
       final response = await http.get(
-        Uri.parse('http://192.168.8.101/Firebase/Menus/Edge.php'),
+        Uri.parse('http://192.168.195.67/Firebase/Menus/Edge.php'),
       );
 
       if (response.statusCode == 200) {
@@ -302,19 +302,20 @@ class EdgeState extends State<Edge> {
             final product = items[index];
             return GestureDetector(
               onTap: () {
+                //
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => ProductDetail(
-                      image: product['image'],
                       name: product['name'],
+                      image: product['image'],
                       price: product['price'].toString(),
                       supply: product['supply'],
                       canteen: product['canteen'],
                     ),
                   ),
                 );
-              },
+              }, //
               child: Card(
                 elevation: 4,
                 shape: RoundedRectangleBorder(

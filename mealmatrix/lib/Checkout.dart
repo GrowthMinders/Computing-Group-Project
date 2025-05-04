@@ -36,7 +36,7 @@ List<Map<String, dynamic>> checkoutdata = [];
 class _CheckoutState extends State<Checkout> {
   Future<void> rendercheckout() async {
     try {
-      var url = Uri.parse("http://192.168.8.101/Firebase/cartrendering.php");
+      var url = Uri.parse("http://192.168.195.67/Firebase/cartrendering.php");
 
       var response = await http.post(url, body: {'email': Logdata.userEmail});
 
@@ -405,7 +405,8 @@ class PlaceOrderButton extends StatelessWidget {
               checkoutdata.map((item) => item["qty"] as int).toList();
 
           final String totalValue = total.toStringAsFixed(2);
-          final String url = "http://192.168.8.101/Firebase/paymentgateway.php?"
+          final String url =
+              "http://192.168.195.67/Firebase/paymentgateway.php?"
               "amount=${totalValue.toString()}"
               "&email=${Uri.encodeComponent(Logdata.userEmail)}"
               "&names=${Uri.encodeComponent(json.encode(proceedNames))}"

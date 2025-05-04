@@ -41,7 +41,7 @@ class _DeleteState extends State<Delete> {
     setState(() => _isLoading = true);
 
     try {
-      final url = Uri.parse("http://192.168.8.101/Firebase/accdelete.php");
+      final url = Uri.parse("http://192.168.195.67/Firebase/accdelete.php");
       final response = await http.post(url, body: {
         'email': Logdata.userEmail,
         'pass': password,
